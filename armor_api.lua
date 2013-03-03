@@ -29,7 +29,9 @@ armor_api.get_wielded_item_texture = function(self, player)
 	end
 	local texture = minetest.registered_items[item].inventory_image
 	if texture == "" then
-		return minetest.registered_items[item].tiles[1]
+		if minetest.registered_items[item].tiles[1] then
+			texture = minetest.registered_items[item].tiles[1]
+		end
 	end
 	return texture
 end
@@ -58,7 +60,7 @@ armor_api.set_player_armor = function(self, player)
 	armor["shield"] = stack:get_definition().groups["armor_shield"] or 0
 	if armor["shield"] > 0 then
 		item = stack:get_name()
-		texture = texture.."^[combine:16x16:16,0="..minetest.registered_items[item].inventory_image
+		texture = texture.."^[combine:64x64:16,0="..minetest.registered_items[item].inventory_image
 	end
 	local armor_level = math.floor(
 		(.2*armor["head"]) + 
