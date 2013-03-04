@@ -29,9 +29,10 @@ armor_api.get_wielded_item_texture = function(self, player)
 	end
 	local texture = minetest.registered_items[item].inventory_image
 	if texture == "" then
-		if minetest.registered_items[item].tiles[1] then
-			texture = minetest.registered_items[item].tiles[1]
+		if not minetest.registered_items[item].tiles then
+			return nil	
 		end
+		texture = minetest.registered_items[item].tiles[1]
 	end
 	return texture
 end
