@@ -1,0 +1,84 @@
+3D Armor -- Visible Player Armor
+--------------------------------
+
+Crafting Guide
+--------------
+
+S = Steel Ingot [default:steel_ingot], W = Wood [default:wood]
+
+Steel Helmet [3d_armor:helmet_steel]
+
++---+---+---+
+| S | S | S |
++---+---+---+
+| S |   | S |
++---+---+---+
+|   |   |   |
++---+---+---+
+
+Steel Chestplate [3d_armor:chestplate_steel]
+
++---+---+---+
+| S |   | S |
++---+---+---+
+| S | S | S |
++---+---+---+
+| S | S | S |
++---+---+---+
+
+Steel Leggings [3d_armor:leggings_steel]
+
++---+---+---+
+| S | S | S |
++---+---+---+
+| S |   | S |
++---+---+---+
+| S |   | S |
++---+---+---+
+
+Steel Shield [3d_armor:shield_steel]
+
++---+---+---+
+| S | S | S |
++---+---+---+
+| S | S | S |
++---+---+---+
+|   | S |   |
++---+---+---+
+
+Wooden Shield [3d_armor:shield_wood]
+
++---+---+---+
+| W | W | W |
++---+---+---+
+| w | W | W |
++---+---+---+
+|   | W |   |
++---+---+---+
+
+Enhanced Wooden Shield [3d_armor:shield_enhanced_wood]
+
++---+---+---+
+| S | W | S |
++---+---+---+
+| W | S | W |
++---+---+---+
+|   | W |   |
++---+---+---+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
