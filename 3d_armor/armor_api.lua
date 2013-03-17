@@ -1,6 +1,6 @@
 
 armor_api = {
-	default_character_skin = "3d_armor_character.png",
+	default_character_skin = "character.png",
 	player_hp = {},
 	wielded_items = {},
 }
@@ -10,7 +10,7 @@ armor_api.get_player_skin = function(self, name)
 	if mod_path then
 		local skin = skins.skins[name]
 		if skin then
-			if skin ~= skins.default() and skins.get_type(skin) == skins.type.MODEL then
+			if skins.get_type(skin) == skins.type.MODEL then
 				return skin..".png"
 			end
 		end
@@ -110,7 +110,7 @@ armor_api.update_armor = function(self, player)
 	end
 	local name = player:get_player_name()
 	local hp = player:get_hp()
-	if hp == nil or hp == self.player_hp[name] then
+	if hp == nil or hp == 0 or hp == self.player_hp[name] then
 		return
 	end
 	if self.player_hp[name] > hp then
@@ -122,15 +122,22 @@ armor_api.update_armor = function(self, player)
 		local heal_max = 0
 		for _,v in ipairs({"head", "torso", "legs", "shield"}) do
 			local stack = armor_inv:get_stack("armor_"..v, 1)
-			local use = stack:get_definition().groups["armor_use"] or 0
-			local heal = stack:get_definition().groups["armor_heal"] or 0
-			stack:add_wear(use)
-			armor_inv:set_stack("armor_"..v, 1, stack)
-			player_inv:set_stack("armor_"..v, 1, stack)		
-			if stack:get_count() == 0 then
-				self:set_player_armor(player)
+			if stack:get_count() > 0 then
+				local use = stack:get_definition().groups["armor_use"] or 0
+				local heal = stack:get_definition().groups["armor_heal"] or 0
+				local item = stack:get_name()
+				stack:add_wear(use)
+				armor_inv:set_stack("armor_"..v, 1, stack)
+				player_inv:set_stack("armor_"..v, 1, stack)
+				if stack:get_count() == 0 then
+					local desc = minetest.registered_items[item].description
+					if desc then
+						minetest.chat_send_player(name, "Your "..desc.." got destroyed!")
+					end				
+					self:set_player_armor(player)
+				end
+				heal_max = heal_max + heal
 			end
-			heal_max = heal_max + heal
 		end
 		if heal_max > math.random(100) then
 			player:set_hp(self.player_hp[name])
