@@ -1,0 +1,89 @@
+3D Armor -- Moreores Armor
+--------------------------
+
+Crafting Guide
+--------------
+
+B = Bronze Ingot [moreores:bronze_ingot], M = Mithril Ingot [moreores:mithril_ingot]
+
+Bronze Helmet [more_armor:helmet_bronze]
+
++---+---+---+
+| B | B | B |
++---+---+---+
+| B |   | B |
++---+---+---+
+|   |   |   |
++---+---+---+
+
+Bronze Chestplate [more_armor:chestplate_bronze]
+
++---+---+---+
+| B |   | B |
++---+---+---+
+| B | B | B |
++---+---+---+
+| B | B | B |
++---+---+---+
+
+Bronze Leggings [more_armor:leggings_bronze]
+
++---+---+---+
+| B | B | B |
++---+---+---+
+| B |   | B |
++---+---+---+
+| B |   | B |
++---+---+---+
+
+Bronze Shield [more_armor:shield_bronze]
+
++---+---+---+
+| B | B | B |
++---+---+---+
+| B | B | B |
++---+---+---+
+|   | B |   |
++---+---+---+
+
+Mithril Helmet [more_armor:helmet_mithril]
+
++---+---+---+
+| M | M | M |
++---+---+---+
+| M |   | M |
++---+---+---+
+|   |   |   |
++---+---+---+
+
+Mithril Chestplate [more_armor:chestplate_mithril]
+
++---+---+---+
+| M |   | M |
++---+---+---+
+| M | M | M |
++---+---+---+
+| M | M | M |
++---+---+---+
+
+Mithril Leggings [more_armor:leggings_mithril]
+
++---+---+---+
+| M | M | M |
++---+---+---+
+| M |   | M |
++---+---+---+
+| M |   | M |
++---+---+---+
+
+Mithril Shield [more_armor:shield_mithril]
+
++---+---+---+
+| M | M | M |
++---+---+---+
+| M | M | M |
++---+---+---+
+|   | M |   |
++---+---+---+
+
+
