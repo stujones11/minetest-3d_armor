@@ -1,56 +1,15 @@
 
 armor_api = {
-	default_character_skin = "character.png",
 	player_hp = {},
-	wielded_items = {},
 }
 
-armor_api.get_player_skin = function(self, name)
-	local mod_path = minetest.get_modpath("skins")	
-	if mod_path then
-		local skin = skins.skins[name]
-		if skin then
-			if skins.get_type(skin) == skins.type.MODEL then
-				return skin..".png"
-			end
-		end
-	end
-	return self.default_character_skin
-end
-
-armor_api.get_wielded_item_texture = function(self, player)
-	if not player then
-		return nil
-	end
-	local stack = player:get_wielded_item()
-	local item = stack:get_name()
-	if not item then
-		return nil
-	end
-	if not minetest.registered_items[item] then
-		return nil
-	end
-	local texture = minetest.registered_items[item].inventory_image
-	if texture == "" then
-		if not minetest.registered_items[item].tiles then
-			return nil	
-		end
-		texture = minetest.registered_items[item].tiles[1]
-	end
-	return texture
-end
-
-armor_api.set_player_armor = function(self, player)
+armor_api.get_player_armor = function(self, player)
 	if not player then
 		return
 	end
 	local name = player:get_player_name()
-	local texture = "3d_armor_character_bg.png^[combine:64x64:0,32="..self:get_player_skin(name)
+	local texture = ""
 	local player_inv = player:get_inventory()
-	local wielded_item_texture = self:get_wielded_item_texture(player)
-	if wielded_item_texture then
-		texture = texture.."^[combine:64x64:0,0="..wielded_item_texture
-	end
 	local armor = {head, torso, legs, shield}
 	for _,v in ipairs({"head", "torso", "legs"}) do
 		local stack = player_inv:get_stack("armor_"..v, 1)
@@ -74,34 +33,14 @@ armor_api.set_player_armor = function(self, player)
 	)
 	local level = (armor_level / 2) + 0.5
 	local fleshy = 3 - (armor_level / 2)
+	if fleshy < 0 then
+		fleshy = 0
+	end
 	local armor_groups = {level=1, fleshy=3, snappy=1, choppy=1}
 	armor_groups.level = level
 	armor_groups.fleshy = fleshy
 	player:set_armor_groups(armor_groups)
-	player:set_properties({
-		visual = "mesh",
-		textures = {texture},
-		visual_size = {x=1, y=1},
-	})
-end
-
-armor_api.update_wielded_item = function(self, player)
-	if not player then
-		return
-	end
-	local name = player:get_player_name()
-	local stack = player:get_wielded_item()
-	local item = stack:get_name()
-	if not item then
-		return
-	end
-	if self.wielded_items[name] then
-		if self.wielded_items[name] == item then
-			return
-		end	
-		self:set_player_armor(player)
-	end
-	self.wielded_items[name] = item
+	return texture
 end
 
 armor_api.update_armor = function(self, player)
@@ -134,7 +73,7 @@ armor_api.update_armor = function(self, player)
 					if desc then
 						minetest.chat_send_player(name, "Your "..desc.." got destroyed!")
 					end				
-					self:set_player_armor(player)
+					wieldview:update_player_visuals(player)
 				end
 				heal_max = heal_max + heal
 			end
