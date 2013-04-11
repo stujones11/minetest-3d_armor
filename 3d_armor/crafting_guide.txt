@@ -1,84 +1,74 @@
-3D Armor -- Visible Player Armor
---------------------------------
+3d_armor -- Crafting Guide
+--------------------------
 
-Crafting Guide
---------------
-
-S = Steel Ingot [default:steel_ingot], W = Wood [default:wood]
-
-Steel Helmet [3d_armor:helmet_steel]
+Helmets:
 
 +---+---+---+
-| S | S | S |
+| X | X | X |
 +---+---+---+
-| S |   | S |
+| X |   | X |
 +---+---+---+
 |   |   |   |
 +---+---+---+
 
-Steel Chestplate [3d_armor:chestplate_steel]
+[3d_armor:helmet_wood] X = [default:wood]
+[3d_armor:helmet_steel] X = [default:steel_ingot]
+[3d_armor:helmet_bronze] X = [default:bronze_ingot]
+
+Chestplates:
 
 +---+---+---+
-| S |   | S |
+| X |   | X |
 +---+---+---+
-| S | S | S |
+| X | X | X |
 +---+---+---+
-| S | S | S |
-+---+---+---+
-
-Steel Leggings [3d_armor:leggings_steel]
-
-+---+---+---+
-| S | S | S |
-+---+---+---+
-| S |   | S |
-+---+---+---+
-| S |   | S |
+| X | X | X |
 +---+---+---+
 
-Steel Shield [3d_armor:shield_steel]
+[3d_armor:chestplate_wood] X = [default:wood]
+[3d_armor:chestplate_steel] X = [default:steel_ingot]
+[3d_armor:chestplate_bronze] X = [default:bronze_ingot]
+
+Leggings:
 
 +---+---+---+
-| S | S | S |
+| X | X | X |
 +---+---+---+
-| S | S | S |
+| X |   | X |
 +---+---+---+
-|   | S |   |
-+---+---+---+
-
-Wooden Shield [3d_armor:shield_wood]
-
-+---+---+---+
-| W | W | W |
-+---+---+---+
-| w | W | W |
-+---+---+---+
-|   | W |   |
+| X |   | X |
 +---+---+---+
 
-Enhanced Wooden Shield [3d_armor:shield_enhanced_wood]
+[3d_armor:leggings_wood] X = [default:wood]
+[3d_armor:leggings_steel] X = [default:steel_ingot]
+[3d_armor:leggings_bronze] X = [default:bronze_ingot]
+
+Shields:
 
 +---+---+---+
-| S | W | S |
+| X | X | X |
 +---+---+---+
-| W | S | W |
+| X | X | X |
 +---+---+---+
-|   | W |   |
+|   | X |   |
 +---+---+---+
 
+[3d_armor:shield_wood] X = [default:wood]
+[3d_armor:shield_steel] X = [default:steel_ingot]
+[3d_armor:shield_bronze] X = [default:bronze_ingot
 
+Enhanced Wooden Shield:
 
+SI = [default:steel_ingot]
+WS = [3d_armor:shield_wood]
 
++----+
+| SI |
++----+
+| WS |
++----+
+| SI |
++----+
 
-
-
-
-
-
-
-
-
-
-
-
+[3d_armor:shield_enhanced_wood]
 

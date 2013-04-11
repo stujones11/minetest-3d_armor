@@ -1,46 +1,50 @@
 
 armor_api = {
 	player_hp = {},
+	fleshy_max = 20
 }
 
-armor_api.get_player_armor = function(self, player)
+armor_api.get_armor_textures = function(self, player)
 	if not player then
 		return
 	end
 	local name = player:get_player_name()
-	local texture = ""
+	local textures = {}
 	local player_inv = player:get_inventory()
-	local armor = {head, torso, legs, shield}
 	for _,v in ipairs({"head", "torso", "legs"}) do
 		local stack = player_inv:get_stack("armor_"..v, 1)
-		armor[v] = stack:get_definition().groups["armor_"..v] or 0
-		if armor[v] > 0 then
-			item = stack:get_name()
-			texture = texture.."^[combine:64x64:0,32="..item:gsub("%:", "_")..".png"
+		if stack:get_definition().groups["armor_"..v] then
+			local item = stack:get_name()
+			textures[v] = item:gsub("%:", "_")..".png"
 		end
 	end
 	local stack = player_inv:get_stack("armor_shield", 1)
-	armor["shield"] = stack:get_definition().groups["armor_shield"] or 0
-	if armor["shield"] > 0 then
-		item = stack:get_name()
-		texture = texture.."^[combine:64x64:16,0="..minetest.registered_items[item].inventory_image
+	if stack:get_definition().groups["armor_shield"] then
+		local item = stack:get_name()
+		textures["shield"] = minetest.registered_items[item].inventory_image
+	end	
+	return textures
+end
+
+armor_api.set_player_armor = function(self, player)
+	if not player then
+		return
 	end
-	local armor_level = math.floor(
-		(.2*armor["head"]) + 
-		(.3*armor["torso"]) +
-		(.2*armor["legs"]) +
-		(.3*armor["shield"])
-	)
-	local level = (armor_level / 2) + 0.5
-	local fleshy = 3 - (armor_level / 2)
-	if fleshy < 0 then
-		fleshy = 0
+	local name = player:get_player_name()
+	local player_inv = player:get_inventory()
+	local armor_level = 0
+	for _,v in ipairs({"head", "torso", "legs", "shield"}) do
+		local stack = player_inv:get_stack("armor_"..v, 1)
+		local armor = stack:get_definition().groups["armor_"..v] or 0
+		armor_level = armor_level + armor
 	end
-	local armor_groups = {level=1, fleshy=3, snappy=1, choppy=1}
-	armor_groups.level = level
-	armor_groups.fleshy = fleshy
+	local armor_groups = {fleshy=100}
+	if armor_level > 0 then
+		armor_groups.level = math.floor(armor_level / 20)
+		armor_groups.fleshy = 100 - armor_level
+	end
 	player:set_armor_groups(armor_groups)
-	return texture
+	uniskins:update_player_visuals(player)
 end
 
 armor_api.update_armor = function(self, player)
@@ -73,7 +77,7 @@ armor_api.update_armor = function(self, player)
 					if desc then
 						minetest.chat_send_player(name, "Your "..desc.." got destroyed!")
 					end				
-					wieldview:update_player_visuals(player)
+					self:set_player_armor(player)
 				end
 				heal_max = heal_max + heal
 			end
