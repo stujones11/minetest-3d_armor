@@ -1,7 +1,6 @@
 
 armor_api = {
 	player_hp = {},
-	fleshy_max = 20
 }
 
 armor_api.get_armor_textures = function(self, player)

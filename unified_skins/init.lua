@@ -33,7 +33,7 @@ uniskins.update_player_visuals = function(self, player)
 			texture = texture.."^[combine:64x64:0,0="..wielded_item_texture
 		end
 	end
-	if minetest.get_modpath("3d_armor")	then
+	if minetest.get_modpath("3d_armor") then
 		local textures = armor_api:get_armor_textures(player)
 		for _,v in ipairs({"head", "torso", "legs"}) do
 			if textures[v] then
