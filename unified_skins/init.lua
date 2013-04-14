@@ -56,6 +56,9 @@ uniskins.update_player_visuals = function(self, player)
 end
 
 minetest.register_on_joinplayer(function(player)
+	if not minetest.get_modpath("player_textures") then
+		return
+	end
 	local name = player:get_player_name()
 	local filename = minetest.get_modpath("player_textures").."/textures/player_"..name
 	local f = io.open(filename..".png")
