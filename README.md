@@ -24,7 +24,7 @@ Note: Currently only supports 16x16px texture packs, sorry!
 
 depends: default, unified_skins, inventory_plus
 
-Adds craftable armor that is visible to other players. Each armor item worn contibutes to
+Adds craftable armor that is visible to other players. Each armor item worn contributes to
 a player's armor group level making them less vulnerable to weapons.
 
 Armor takes damage when a player is hurt, however, many armor items offer a 'stackable'
