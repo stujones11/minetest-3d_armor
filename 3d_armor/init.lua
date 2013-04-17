@@ -1,4 +1,3 @@
-
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/armor_api.lua")
 
 local time = 0
@@ -115,7 +114,7 @@ local craft_ingreds = {
 	bronze = "default:bronze_ingot",
 }	
 
-for k, v in ipairs({"wood", "steel", "bronze"}) do
+for k, v in pairs(craft_ingreds) do
 	minetest.register_craft({
 		output = "3d_armor:helmet_"..k,
 		recipe = {
