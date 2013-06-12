@@ -27,10 +27,10 @@ uniskins.update_player_visuals = function(self, player)
 	local texture = self:get_player_skin(name)
 	local has_wieldview = minetest.get_modpath("wieldview")
 	if has_wieldview then
-		texture = "wieldview_character_bg.png^[combine:64x64:0,32="..texture
+		texture = "wieldview_character_bg.png^[map:0,0.5,1,1="..texture
 		local wielded_item_texture = wieldview:get_wielded_item_texture(player)
 		if wielded_item_texture then
-			texture = texture.."^[combine:64x64:0,0="..wielded_item_texture
+			texture = texture.."^[map:0,0,0.25,0.25="..wielded_item_texture
 		end
 	end
 	if minetest.get_modpath("3d_armor") then
@@ -39,13 +39,13 @@ uniskins.update_player_visuals = function(self, player)
 			if textures[v] then
 				texture = texture.."^"
 				if has_wieldview then
-					texture = texture.."[combine:64x64:0,32="
+					texture = texture.."[map:0,0.5,1,1="
 				end
 				texture = texture..textures[v]
 			end
 		end
 		if has_wieldview and textures["shield"] then
-			texture = texture.."^[combine:64x64:16,0="..textures["shield"]
+			texture = texture.."^[map:0.25,0,0.5,0.25="..textures["shield"]
 		end
 	end
 	player:set_properties({
