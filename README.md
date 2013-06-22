@@ -30,12 +30,3 @@ a player's armor group level making them less vulnerable to weapons.
 Armor takes damage when a player is hurt, however, many armor items offer a 'stackable'
 percentage chance of restoring the lost health points.
 
-[mod] Moreores Armor [more_armor]
----------------------------------
-
-Now included for legacy support only! Unless you are using a customized ore system, this
-mod is not really recommended and will most likely be removed from future versions.
-
-depends: default, moreores, 3d_armor
-
-Adds Mithril armor and upgrades moreores Mithril Sword.
