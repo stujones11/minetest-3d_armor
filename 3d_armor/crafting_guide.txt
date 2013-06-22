@@ -43,32 +43,16 @@ Leggings:
 [3d_armor:leggings_steel] X = [default:steel_ingot]
 [3d_armor:leggings_bronze] X = [default:bronze_ingot]
 
-Shields:
+Boots:
 
 +---+---+---+
-| X | X | X |
+| X |   | X |
 +---+---+---+
-| X | X | X |
-+---+---+---+
-|   | X |   |
+| X |   | X |
 +---+---+---+
 
-[3d_armor:shield_wood] X = [default:wood]
-[3d_armor:shield_steel] X = [default:steel_ingot]
-[3d_armor:shield_bronze] X = [default:bronze_ingot
+[3d_armor:boots_wood] X = [default:wood]
+[3d_armor:boots_steel] X = [default:steel_ingot]
+[3d_armor:boots_bronze] X = [default:bronze_ingot
 
-Enhanced Wooden Shield:
-
-SI = [default:steel_ingot]
-WS = [3d_armor:shield_wood]
-
-+----+
-| SI |
-+----+
-| WS |
-+----+
-| SI |
-+----+
-
-[3d_armor:shield_enhanced_wood]
 
