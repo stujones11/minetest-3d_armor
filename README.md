@@ -38,4 +38,4 @@ percentage chance of restoring the lost health points.
 depends: 3d_armor
 
 Originally a part of 3d_armor, shields have been re-included as an optional extra.
-If you do not what shields then simply remove the shields folder from the modpack.
+If you do not want shields then simply remove the shields folder from the modpack.
