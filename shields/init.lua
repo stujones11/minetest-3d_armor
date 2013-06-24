@@ -33,6 +33,7 @@ local craft_ingreds = {
 	wood = "default:wood",
 	steel = "default:steel_ingot",
 	bronze = "default:bronze_ingot",
+	diamond = "default:diamond",
 }	
 
 for k, v in pairs(craft_ingreds) do
