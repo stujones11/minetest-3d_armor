@@ -7,6 +7,13 @@ end
 
 armor = {
 	player_hp = {},
+	elements = {"head", "torso", "legs", "feet"},
+	formspec = "size[8,8.5]button[0,0;2,0.5;main;Back]"
+		.."list[current_player;main;0,4.5;8,4;]"
+		.."list[detached:player_name_armor;armor_head;3,0;1,1;]"
+		.."list[detached:player_name_armor;armor_torso;3,1;1,1;]"
+		.."list[detached:player_name_armor;armor_legs;3,2;1,1;]"
+		.."list[detached:player_name_armor;armor_feet;3,3;1,1;]",
 }
 
 armor.set_player_armor = function(self, player)
@@ -18,7 +25,7 @@ armor.set_player_armor = function(self, player)
 	local armor_texture = uniskins.default_texture
 	local armor_level = 0
 	local textures = {}
-	for _,v in ipairs({"head", "torso", "legs", "feet"}) do
+	for _,v in ipairs(self.elements) do
 		local stack = player_inv:get_stack("armor_"..v, 1)
 		local level = stack:get_definition().groups["armor_"..v]
 		if level then
@@ -56,7 +63,7 @@ armor.update_armor = function(self, player)
 			return
 		end
 		local heal_max = 0
-		for _,v in ipairs({"head", "torso", "legs", "feet"}) do
+		for _,v in ipairs(self.elements) do
 			local stack = armor_inv:get_stack("armor_"..v, 1)
 			if stack:get_count() > 0 then
 				local use = stack:get_definition().groups["armor_use"] or 0
@@ -87,14 +94,9 @@ end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local name = player:get_player_name()
+	local formspec = armor.formspec:gsub("player_name", name)
 	if fields.armor then
-		inventory_plus.set_inventory_formspec(player, "size[8,8.5]"
-		.."button[0,0;2,0.5;main;Back]"
-		.."list[current_player;main;0,4.5;8,4;]"
-		.."list[detached:"..name.."_armor;armor_head;3,0;1,1;]"
-		.."list[detached:"..name.."_armor;armor_torso;3,1;1,1;]"
-		.."list[detached:"..name.."_armor;armor_legs;3,2;1,1;]"
-		.."list[detached:"..name.."_armor;armor_feet;3,3;1,1;]")
+		inventory_plus.set_inventory_formspec(player, formspec)
 		return
 	end
 	for field, _ in pairs(fields) do
@@ -133,7 +135,7 @@ minetest.register_on_joinplayer(function(player)
 			return 0
 		end,
 	})
-	for _,v in ipairs({"head", "torso", "legs", "feet"}) do
+	for _,v in ipairs(armor.elements) do
 		local list = "armor_"..v
 		player_inv:set_size(list, 1)
 		armor_inv:set_size(list, 1)

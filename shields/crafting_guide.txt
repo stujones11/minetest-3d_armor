@@ -1,0 +1,17 @@
+Shields -- Crafting Guide
+--------------------------
+
++---+---+---+
+| X | X | X |
++---+---+---+
+| X | X | X |
++---+---+---+
+|   | X |   |
++---+---+---+
+
+[shields:shield_wood] X = [default:wood]
+[shields:shield_steel] X = [default:steel_ingot]
+[shields:shield_bronze] X = [default:bronze_ingot]
+[shields:shield_diamond] X = [default:diamond]
+
+

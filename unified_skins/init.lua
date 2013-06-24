@@ -4,7 +4,7 @@ uniskins = {
 	armor = {},
 	wielditem = {},
 	default_skin = "character.png",
-	default_texture = nil
+	default_texture = nil,
 }
 
 uniskins.update_player_visuals = function(self, player)
@@ -14,13 +14,13 @@ uniskins.update_player_visuals = function(self, player)
 	local name = player:get_player_name()
 	local texture = "uniskins_trans.png"
 	if self.wielditem[name] then
-		texture = texture.."^[combine:64x64:0,0="..self.wielditem[name]
+		texture = texture.."^[combine:64x80:48,64="..self.wielditem[name]
 	end
 	if self.skin[name] then
-		texture = texture.."^[combine:64x64:0,32="..self.skin[name]
+		texture = texture.."^[combine:64x80:0,32="..self.skin[name]
 	end
 	if self.armor[name] then
-		texture = texture.."^[combine:64x64:0,0="..self.armor[name]
+		texture = texture.."^[combine:64x80:0,0="..self.armor[name]
 	end
 	player:set_properties({
 		visual = "mesh",
