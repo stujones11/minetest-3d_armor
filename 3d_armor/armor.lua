@@ -94,8 +94,8 @@ end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local name = player:get_player_name()
-	local formspec = armor.formspec:gsub("player_name", name)
 	if fields.armor then
+		local formspec = armor.formspec:gsub("player_name", name)
 		inventory_plus.set_inventory_formspec(player, formspec)
 		return
 	end
