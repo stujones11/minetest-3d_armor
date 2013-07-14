@@ -4,7 +4,7 @@ uniskins = {
 	armor = {},
 	wielditem = {},
 	default_skin = "character.png",
-	default_texture = nil,
+	default_texture = "uniskins_trans.png",
 }
 
 uniskins.update_player_visuals = function(self, player)
@@ -12,20 +12,14 @@ uniskins.update_player_visuals = function(self, player)
 		return
 	end
 	local name = player:get_player_name()
-	local texture = "uniskins_trans.png"
-	if self.wielditem[name] then
-		texture = texture.."^[combine:64x80:48,64="..self.wielditem[name]
-	end
-	if self.skin[name] then
-		texture = texture.."^[combine:64x80:0,32="..self.skin[name]
-	end
-	if self.armor[name] then
-		texture = texture.."^[combine:64x80:0,0="..self.armor[name]
-	end
 	player:set_properties({
 		visual = "mesh",
 		mesh = "uniskins_character.x",
-		textures = {texture},
+		textures = {
+			self.skin[name],
+			self.armor[name],
+			self.wielditem[name]
+		},
 		visual_size = {x=1, y=1},
 	})
 end
@@ -33,6 +27,8 @@ end
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	uniskins.skin[name] = uniskins.default_skin
+	uniskins.armor[name] = uniskins.default_texture
+	uniskins.wielditem[name] = uniskins.default_texture
 	if minetest.get_modpath("player_textures") then
 		local filename = minetest.get_modpath("player_textures").."/textures/player_"..name
 		local f = io.open(filename..".png")
