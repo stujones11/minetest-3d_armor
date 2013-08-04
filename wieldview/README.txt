@@ -12,4 +12,6 @@ default settings: [minetest.conf]
 # Set number of seconds between visible wielded item updates.
 wieldview_update_time = 2
 
+# Show nodes as tiles, disabled by default
+wieldview_node_tiles = false
 

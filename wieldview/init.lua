@@ -4,23 +4,33 @@ if not update_time then
 	update_time = 2
 	minetest.setting_set("wieldview_update_time", tostring(update_time))
 end
+local node_tiles = minetest.setting_getbool("wieldview_node_tiles")
+if not node_tiles then
+	node_tiles = false
+	minetest.setting_set("wieldview_node_tiles", "false")
+end
+
+dofile(minetest.get_modpath(minetest.get_current_modname()).."/transform.lua")
 
 wieldview = {
 	wielded_item = {},
 }
 
 wieldview.get_item_texture = function(self, item)
+	local texture = uniskins.default_texture
 	if item ~= "" then
 		if minetest.registered_items[item] then
 			if minetest.registered_items[item].inventory_image ~= "" then
-				return minetest.registered_items[item].inventory_image
-			end
-			if minetest.registered_items[item].tiles then
-				return minetest.registered_items[item].tiles[1]
+				texture = minetest.registered_items[item].inventory_image
+			elseif node_tiles == true and minetest.registered_items[item].tiles then
+				texture = minetest.registered_items[item].tiles[1]
 			end
 		end
+		if wieldview_transform[item] then
+			texture = texture.."^[transform"..wieldview_transform[item]
+		end
 	end
-	return uniskins.default_texture
+	return texture
 end
 
 wieldview.update_wielded_item = function(self, player)
