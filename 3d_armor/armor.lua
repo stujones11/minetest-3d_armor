@@ -24,6 +24,8 @@ armor.set_player_armor = function(self, player)
 	local player_inv = player:get_inventory()
 	local armor_texture = uniskins.default_texture
 	local armor_level = 0
+	local state = 0
+	local items = 0
 	local textures = {}
 	for _,v in ipairs(self.elements) do
 		local stack = player_inv:get_stack("armor_"..v, 1)
@@ -32,6 +34,8 @@ armor.set_player_armor = function(self, player)
 			local item = stack:get_name()
 			table.insert(textures, item:gsub("%:", "_")..".png")
 			armor_level = armor_level + level
+			state = state + stack:get_wear()
+			items = items+1
 		end			
 	end
 	if table.getn(textures) > 0 then
@@ -45,6 +49,9 @@ armor.set_player_armor = function(self, player)
 	player:set_armor_groups(armor_groups)
 	uniskins.armor[name] = armor_texture
 	uniskins:update_player_visuals(player)
+	if minetest.get_modpath("hud") ~= nil then
+		hud.set_armor(player, state, items)
+	end
 end
 
 armor.update_armor = function(self, player)
@@ -63,6 +70,8 @@ armor.update_armor = function(self, player)
 			return
 		end
 		local heal_max = 0
+		local state = 0
+		local items = 0
 		for _,v in ipairs(self.elements) do
 			local stack = armor_inv:get_stack("armor_"..v, 1)
 			if stack:get_count() > 0 then
@@ -72,6 +81,8 @@ armor.update_armor = function(self, player)
 				stack:add_wear(use)
 				armor_inv:set_stack("armor_"..v, 1, stack)
 				player_inv:set_stack("armor_"..v, 1, stack)
+				state = state + stack:get_wear()
+				items = items+1
 				if stack:get_count() == 0 then
 					local desc = minetest.registered_items[item].description
 					if desc then
@@ -81,6 +92,9 @@ armor.update_armor = function(self, player)
 				end
 				heal_max = heal_max + heal
 			end
+		end
+		if minetest.get_modpath("hud") ~= nil then
+			hud.set_armor(player, state, items)
 		end
 		if heal_max > math.random(100) then
 			player:set_hp(self.player_hp[name])
