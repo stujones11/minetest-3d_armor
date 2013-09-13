@@ -16,6 +16,11 @@ armor = {
 		.."list[detached:player_name_armor;armor_feet;3,3;1,1;]",
 }
 
+armor.def = {
+	state = 0,
+	count = 0
+}
+
 armor.set_player_armor = function(self, player)
 	if not player then
 		return
@@ -49,9 +54,8 @@ armor.set_player_armor = function(self, player)
 	player:set_armor_groups(armor_groups)
 	uniskins.armor[name] = armor_texture
 	uniskins:update_player_visuals(player)
-	if minetest.get_modpath("hud") ~= nil then
-		hud.set_armor(player, state, items)
-	end
+	armor.def[name].state = state
+	armor.def[name].count = items
 end
 
 armor.update_armor = function(self, player)
@@ -93,9 +97,8 @@ armor.update_armor = function(self, player)
 				heal_max = heal_max + heal
 			end
 		end
-		if minetest.get_modpath("hud") ~= nil then
-			hud.set_armor(player, state, items)
-		end
+		armor.def[name].state = state
+		armor.def[name].count = items
 		if heal_max > math.random(100) then
 			player:set_hp(self.player_hp[name])
 			return
@@ -155,7 +158,11 @@ minetest.register_on_joinplayer(function(player)
 		armor_inv:set_size(list, 1)
 		armor_inv:set_stack(list, 1, player_inv:get_stack(list, 1))
 	end
-	armor.player_hp[name] = 0
+	armor.player_hp[name] = 0	
+	armor.def[name] = {
+	state = 0,
+	count = 0
+	}
 	minetest.after(0, function(player)
 		armor:set_player_armor(player)
 	end, player)	
