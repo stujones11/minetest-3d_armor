@@ -1,11 +1,9 @@
 [mod] visible wielded items [wieldview]
 =======================================
 
-depends: default, unified_skins
+depends: default, 3d_armor
 
-Makes hand wielded items visible to other players. Compatible with player skins mod [skins].
-
-Note: Currently only supports 16x16px texture packs, sorry!
+Makes hand wielded items visible to other players.
 
 default settings: [minetest.conf]
 

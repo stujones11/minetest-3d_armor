@@ -10,14 +10,15 @@ if not node_tiles then
 	minetest.setting_set("wieldview_node_tiles", "false")
 end
 
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/transform.lua")
-
 wieldview = {
 	wielded_item = {},
+	transform = {},
 }
 
+dofile(minetest.get_modpath(minetest.get_current_modname()).."/transform.lua")
+
 wieldview.get_item_texture = function(self, item)
-	local texture = uniskins.default_texture
+	local texture = "3d_armor_trans.png"
 	if item ~= "" then
 		if minetest.registered_items[item] then
 			if minetest.registered_items[item].inventory_image ~= "" then
@@ -26,8 +27,8 @@ wieldview.get_item_texture = function(self, item)
 				texture = minetest.registered_items[item].tiles[1]
 			end
 		end
-		if wieldview_transform[item] then
-			texture = texture.."^[transform"..wieldview_transform[item]
+		if wieldview.transform[item] then
+			texture = texture.."^[transform"..wieldview.transform[item]
 		end
 	end
 	return texture
@@ -47,8 +48,8 @@ wieldview.update_wielded_item = function(self, player)
 		if self.wielded_item[name] == item then
 			return
 		end
-		uniskins.wielditem[name] = self:get_item_texture(item)
-		uniskins:update_player_visuals(player)
+		armor.textures[name].wielditem = self:get_item_texture(item)
+		armor:update_player_visuals(player)
 	end
 	self.wielded_item[name] = item
 end

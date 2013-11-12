@@ -14,12 +14,30 @@ armor = {
 		.."list[detached:player_name_armor;armor_torso;3,1;1,1;]"
 		.."list[detached:player_name_armor;armor_legs;3,2;1,1;]"
 		.."list[detached:player_name_armor;armor_feet;3,3;1,1;]",
+	textures = {},
+	default_skin = "character.png",
 }
+
+-- armor.def - Added by BlockMen for HUD integration
 
 armor.def = {
 	state = 0,
-	count = 0
+	count = 0,
 }
+
+armor.update_player_visuals = function(self, player)
+	if not player then
+		return
+	end
+	local name = player:get_player_name()
+	if self.textures[name] then
+		default.player_set_textures(player, {
+			self.textures[name].skin,
+			self.textures[name].armor,
+			self.textures[name].wielditem,
+		})
+	end
+end
 
 armor.set_player_armor = function(self, player)
 	if not player then
@@ -27,23 +45,33 @@ armor.set_player_armor = function(self, player)
 	end
 	local name = player:get_player_name()
 	local player_inv = player:get_inventory()
-	local armor_texture = uniskins.default_texture
+	local armor_texture = "3d_armor_trans.png"
 	local armor_level = 0
 	local state = 0
 	local items = 0
 	local textures = {}
-	for _,v in ipairs(self.elements) do
+	local elements = {}
+	for i, v in ipairs(self.elements) do
 		local stack = player_inv:get_stack("armor_"..v, 1)
 		local level = stack:get_definition().groups["armor_"..v]
+		local item = stack:get_name()
+		elements[i] = string.match(item, "%:.+_(.+)$")
 		if level then
-			local item = stack:get_name()
 			table.insert(textures, item:gsub("%:", "_")..".png")
 			armor_level = armor_level + level
 			state = state + stack:get_wear()
-			items = items+1
-		end			
+			items = items + 1
+		end
 	end
-	if table.getn(textures) > 0 then
+	if minetest.get_modpath("shields") then
+		armor_level = armor_level * 0.9
+	end
+	if elements[1] == elements[2] and
+		elements[1] == elements[3] and
+		elements[1] == elements[4] then
+		armor_level = armor_level * 1.1
+	end
+	if #textures > 0 then
 		armor_texture = table.concat(textures, "^")
 	end
 	local armor_groups = {fleshy=100}
@@ -52,10 +80,10 @@ armor.set_player_armor = function(self, player)
 		armor_groups.fleshy = 100 - armor_level
 	end
 	player:set_armor_groups(armor_groups)
-	uniskins.armor[name] = armor_texture
-	uniskins:update_player_visuals(player)
-	armor.def[name].state = state
-	armor.def[name].count = items
+	self.textures[name].armor = armor_texture
+	self.def[name].state = state
+	self.def[name].count = items
+	self:update_player_visuals(player)
 end
 
 armor.update_armor = function(self, player)
@@ -86,26 +114,45 @@ armor.update_armor = function(self, player)
 				armor_inv:set_stack("armor_"..v, 1, stack)
 				player_inv:set_stack("armor_"..v, 1, stack)
 				state = state + stack:get_wear()
-				items = items+1
+				items = items + 1
 				if stack:get_count() == 0 then
 					local desc = minetest.registered_items[item].description
 					if desc then
 						minetest.chat_send_player(name, "Your "..desc.." got destroyed!")
-					end				
+					end
 					self:set_player_armor(player)
 				end
 				heal_max = heal_max + heal
 			end
 		end
-		armor.def[name].state = state
-		armor.def[name].count = items
+		self.def[name].state = state
+		self.def[name].count = items
 		if heal_max > math.random(100) then
 			player:set_hp(self.player_hp[name])
 			return
-		end		
+		end
 	end
 	self.player_hp[name] = hp
 end
+
+-- Register Player Model
+
+default.player_register_model("3d_armor_character.x", {
+	animation_speed = 30,
+	textures = {
+		armor.default_skin,
+		"3d_armor_trans.png",
+		"3d_armor_trans.png",
+	},
+	animations = {
+		stand = {x=0, y=79},
+		lay = {x=162, y=166},
+		walk = {x=168, y=187},
+		mine = {x=189, y=198},
+		walk_mine = {x=200, y=219},
+		sit = {x=81, y=160},
+	},
+})
 
 -- Register Callbacks
 
@@ -117,16 +164,17 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		return
 	end
 	for field, _ in pairs(fields) do
-		if string.sub(field,0,string.len("skins_set_")) == "skins_set_" then
+		if string.find(field, "^skins_set_") then
 			minetest.after(0, function(player)
-				uniskins.skin[name] = skins.skins[name]..".png"
-				uniskins:update_player_visuals(player)
+				armor.textures[name].skin = skins.skins[name]..".png"
+				armor:update_player_visuals(player)
 			end, player)
 		end
 	end
 end)
 
 minetest.register_on_joinplayer(function(player)
+	default.player_set_model(player, "3d_armor_character.x")
 	inventory_plus.register_button(player,"armor", "Armor")
 	local player_inv = player:get_inventory()
 	local name = player:get_player_name()
@@ -158,14 +206,33 @@ minetest.register_on_joinplayer(function(player)
 		armor_inv:set_size(list, 1)
 		armor_inv:set_stack(list, 1, player_inv:get_stack(list, 1))
 	end
-	armor.player_hp[name] = 0	
+	armor.player_hp[name] = 0
 	armor.def[name] = {
-	state = 0,
-	count = 0
+		state = 0,
+		count = 0,
 	}
+	armor.textures[name] = {
+		skin = armor.default_skin,
+		armor = "3d_armor_trans.png",
+		wielditem = "3d_armor_trans.png",
+	}
+	if minetest.get_modpath("skins") then
+		local skin = skins.skins[name]
+		if skin and skins.get_type(skin) == skins.type.MODEL then
+			armor.textures[name].skin = skin..".png"
+		end
+	end
+	if minetest.get_modpath("player_textures") then
+		local filename = minetest.get_modpath("player_textures").."/textures/player_"..name
+		local f = io.open(filename..".png")
+		if f then
+			f:close()
+			armor.textures[name].skin = "player_"..name..".png"
+		end
+	end
 	minetest.after(0, function(player)
 		armor:set_player_armor(player)
-	end, player)	
+	end, player)
 end)
 
 minetest.register_globalstep(function(dtime)

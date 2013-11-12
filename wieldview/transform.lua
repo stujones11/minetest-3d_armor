@@ -1,6 +1,6 @@
 -- Wielded Item Transformations - http://dev.minetest.net/texture
 
-wieldview_transform = {
+wieldview.transform = {
 	["default:torch"]="R270",
 	["default:sapling"]="R270",
 	["flowers:dandelion_white"]="R270",

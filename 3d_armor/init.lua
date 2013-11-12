@@ -1,4 +1,5 @@
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/armor.lua")
+local use_moreores = minetest.get_modpath("moreores")
 
 -- Regisiter Head Armor
 
@@ -30,6 +31,14 @@ minetest.register_tool("3d_armor:helmet_diamond", {
 	wear = 0,
 })
 
+if use_moreores then
+	minetest.register_tool("3d_armor:helmet_mithril", {
+		description = "Mithril Helmet",
+		inventory_image = "3d_armor_inv_helmet_mithril.png",
+		groups = {armor_head=15, armor_heal=12, armor_use=50},
+		wear = 0,
+	})
+end
 
 -- Regisiter Torso Armor
 
@@ -61,6 +70,14 @@ minetest.register_tool("3d_armor:chestplate_diamond", {
 	wear = 0,
 })
 
+if use_moreores then
+	minetest.register_tool("3d_armor:chestplate_mithril", {
+		description = "Mithril Chestplate",
+		inventory_image = "3d_armor_inv_chestplate_mithril.png",
+		groups = {armor_torso=20, armor_heal=12, armor_use=50},
+		wear = 0,
+	})
+end
 
 -- Regisiter Leg Armor
 
@@ -92,6 +109,15 @@ minetest.register_tool("3d_armor:leggings_diamond", {
 	wear = 0,
 })
 
+if use_moreores then
+	minetest.register_tool("3d_armor:leggings_mithril", {
+		description = "Mithril Leggings",
+		inventory_image = "3d_armor_inv_leggings_mithril.png",
+		groups = {armor_legs=20, armor_heal=12, armor_use=50},
+		wear = 0,
+	})
+end
+
 -- Regisiter Boots
 
 minetest.register_tool("3d_armor:boots_wood", {
@@ -122,6 +148,15 @@ minetest.register_tool("3d_armor:boots_diamond", {
 	wear = 0,
 })
 
+if use_moreores then
+	minetest.register_tool("3d_armor:boots_mithril", {
+		description = "Mithril Boots",
+		inventory_image = "3d_armor_inv_boots_mithril.png",
+		groups = {armor_feet=15, armor_heal=12, armor_use=50},
+		wear = 0,
+	})
+end
+
 -- Register Craft Recipies
 
 local craft_ingreds = {
@@ -129,7 +164,11 @@ local craft_ingreds = {
 	steel = "default:steel_ingot",
 	bronze = "default:bronze_ingot",
 	diamond = "default:diamond",
-}	
+}
+
+if use_moreores then
+	craft_ingreds.mithril = "moreores:mithril_ingot"
+end
 
 for k, v in pairs(craft_ingreds) do
 	minetest.register_craft({
@@ -164,5 +203,4 @@ for k, v in pairs(craft_ingreds) do
 		},
 	})
 end
-
 
