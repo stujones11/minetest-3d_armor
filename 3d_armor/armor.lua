@@ -51,8 +51,7 @@ armor.set_player_armor = function(self, player)
 	local state = 0
 	local items = 0
 	local textures = {}
-	local elements = {}
-	local has_physics = false
+	local elements = {}	
 	local physics_o = {speed=1,gravity=1,jump=1}
 	for i, v in ipairs(self.elements) do
 		local stack = player_inv:get_stack("armor_"..v, 1)
