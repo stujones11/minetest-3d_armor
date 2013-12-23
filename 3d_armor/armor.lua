@@ -243,7 +243,7 @@ minetest.register_on_joinplayer(function(player)
 			armor.textures[name].skin = "player_"..name..".png"
 		end
 	end
-	minetest.after(10, function(player)
+	minetest.after(1, function(player)
 		armor:set_player_armor(player)
 	end, player)
 end)
