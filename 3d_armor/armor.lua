@@ -8,6 +8,7 @@ end
 armor = {
 	player_hp = {},
 	elements = {"head", "torso", "legs", "feet"},
+	physics = {"jump","speed","gravity"},
 	formspec = "size[8,8.5]button[0,0;2,0.5;main;Back]"
 		.."list[current_player;main;0,4.5;8,4;]"
 		.."list[detached:player_name_armor;armor_head;3,0;1,1;]"
@@ -50,7 +51,8 @@ armor.set_player_armor = function(self, player)
 	local state = 0
 	local items = 0
 	local textures = {}
-	local elements = {}
+	local elements = {}	
+	local physics_o = {speed=1,gravity=1,jump=1}
 	for i, v in ipairs(self.elements) do
 		local stack = player_inv:get_stack("armor_"..v, 1)
 		local level = stack:get_definition().groups["armor_"..v]
@@ -62,7 +64,18 @@ armor.set_player_armor = function(self, player)
 			state = state + stack:get_wear()
 			items = items + 1
 		end
+
+		for kk,vv in ipairs(self.physics) do
+			local o_value = stack:get_definition().groups["physics_"..vv]
+			if ( o_value ~= nil ) then
+				physics_o[vv] = physics_o[vv] + o_value
+			end
+		end
+		
 	end
+	
+	player:set_physics_override(physics_o)
+	
 	if minetest.get_modpath("shields") then
 		armor_level = armor_level * 0.9
 	end
@@ -230,7 +243,7 @@ minetest.register_on_joinplayer(function(player)
 			armor.textures[name].skin = "player_"..name..".png"
 		end
 	end
-	minetest.after(0, function(player)
+	minetest.after(1, function(player)
 		armor:set_player_armor(player)
 	end, player)
 end)
