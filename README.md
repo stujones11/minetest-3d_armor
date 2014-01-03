@@ -1,4 +1,4 @@
-Modpack - 3d Armor [0.4.0]
+Modpack - 3d Armor [0.4.1]
 ==========================
 
 [mod] Visible Player Armor [3d_armor]
