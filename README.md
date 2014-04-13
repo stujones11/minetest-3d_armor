@@ -4,7 +4,9 @@ Modpack - 3d Armor [0.4.1]
 [mod] Visible Player Armor [3d_armor]
 -------------------------------------
 
-depends: default, inventory_plus
+depends: default
+
+recommends: inventory_plus or unified_inventory (use only one)
 
 Adds craftable armor that is visible to other players. Each armor item worn contributes to
 a player's armor group level making them less vulnerable to weapons.

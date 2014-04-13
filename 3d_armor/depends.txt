@@ -1,3 +1,4 @@
 default
-inventory_plus
+inventory_plus?
+unified_inventory?
 
