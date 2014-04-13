@@ -20,11 +20,11 @@ ARMOR_DROP = true
 -- Pulverise armor when a player dies, overrides ARMOR_DROP.
 ARMOR_DESTROY = false
 
--- You can use this to increase or decrease armor effectiveness,
--- eg: ARMOR_LEVEL_MULTIPLIER = 0.5 will reduce armor level by half,
+-- You can use this to increase or decrease overall armor effectiveness,
+-- eg: ARMOR_LEVEL_MULTIPLIER = 0.5 will reduce armor level by half
 ARMOR_LEVEL_MULTIPLIER = 1
 
--- You can use this to increase or decrease armor effectiveness,
+-- You can use this to increase or decrease overall armor healing,
 -- eg: ARMOR_HEAL_MULTIPLIER = 0 will disable healing altogether.
 ARMOR_HEAL_MULTIPLIER = 1
 
