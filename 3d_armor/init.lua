@@ -1,4 +1,5 @@
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/armor.lua")
+ARMOR_MOD_NAME = minetest.get_current_modname()
+dofile(minetest.get_modpath(ARMOR_MOD_NAME).."/armor.lua")
 local use_moreores = minetest.get_modpath("moreores")
 
 -- Regisiter Head Armor

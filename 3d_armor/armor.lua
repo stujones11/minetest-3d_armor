@@ -1,9 +1,20 @@
-local time = 0
-local update_time = tonumber(minetest.setting_get("3d_armor_update_time"))
-if not update_time then
-	update_time = 1
-	minetest.setting_set("3d_armor_update_time", tostring(update_time))
+ARMOR_INIT_DELAY = 1
+ARMOR_INIT_TIMES = 1
+ARMOR_BONES_DELAY = 1
+ARMOR_UPDATE_TIME = 1
+ARMOR_DROP = true
+ARMOR_DESTROY = false
+ARMOR_LEVEL_MULTIPLIER = 1
+ARMOR_HEAL_MULTIPLIER = 1
+
+local modpath = minetest.get_modpath(ARMOR_MOD_NAME)
+local input = io.open(modpath.."/armor.conf", "r")
+if input then
+	dofile(modpath.."/armor.conf")
+	input:close()
+	input = nil
 end
+local time = 0
 
 armor = {
 	player_hp = {},
@@ -125,6 +136,8 @@ armor.set_player_armor = function(self, player)
 	if material.type and material.count == #self.elements then
 		armor_level = armor_level * 1.1
 	end
+	armor_level = armor_level * ARMOR_LEVEL_MULTIPLIER
+	armor_heal = armor_heal * ARMOR_HEAL_MULTIPLIER
 	if #textures > 0 then
 		armor_texture = table.concat(textures, "^")
 	end
@@ -185,6 +198,7 @@ armor.update_armor = function(self, player)
 		end
 		self.def[name].state = state
 		self.def[name].count = items
+		heal_max = heal_max * ARMOR_HEAL_MULTIPLIER
 		if heal_max > math.random(100) then
 			player:set_hp(self.player_hp[name])
 			return
@@ -225,7 +239,7 @@ end
 default.player_register_model("3d_armor_character.x", {
 	animation_speed = 30,
 	textures = {
-		armor.default_skin,
+		armor.default_skin..".png",
 		"3d_armor_trans.png",
 		"3d_armor_trans.png",
 	},
@@ -340,15 +354,17 @@ minetest.register_on_joinplayer(function(player)
 			armor.textures[name].skin = "player_"..name..".png"
 		end
 	end
-	minetest.after(1, function(player)
-		armor:set_player_armor(player)
-		if inventory_plus == nil and unified_inventory == nil then
-			armor:update_inventory(player)
-		end
-	end, player)
+	for i=1, ARMOR_INIT_TIMES do
+		minetest.after(ARMOR_INIT_DELAY * i, function(player)
+			armor:set_player_armor(player)
+			if inventory_plus == nil and unified_inventory == nil then
+				armor:update_inventory(player)
+			end
+		end, player)
+	end
 end)
 
-if minetest.get_modpath("bones") then
+if ARMOR_DROP == true or ARMOR_DESTROY == true then
 	minetest.register_on_dieplayer(function(player)
 		local name = player:get_player_name()
 		local pos = player:getpos()
@@ -359,33 +375,62 @@ if minetest.get_modpath("bones") then
 			local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
 			for i=1, player_inv:get_size("armor") do
 				local stack = armor_inv:get_stack("armor", i)
-				table.insert(drop, stack)
-				armor_inv:set_stack("armor", i, nil)
-				player_inv:set_stack("armor", i, nil)
+				if stack:get_count() > 0 then
+					table.insert(drop, stack)
+					armor_inv:set_stack("armor", i, nil)
+					player_inv:set_stack("armor", i, nil)
+				end
 			end
 			armor:set_player_armor(player)
-			minetest.after(1, function() --TODO: Make delay configurable
-				local node = minetest.get_node(pos)
-				if node.name == "bones:bones" then
-					local meta = minetest.get_meta(pos)
-					local owner = meta:get_string("owner")
-					local inv = meta:get_inventory()
-					if name == owner then
-						for _,stack in ipairs(drop) do
-							if inv:room_for_item("main", stack) then
-								inv:add_item("main", stack)
+			if unified_inventory then
+				unified_inventory.set_inventory_formspec(player, "craft")
+			elseif inventory_plus then
+				local formspec = inventory_plus.get_formspec(player,"main")
+				inventory_plus.set_inventory_formspec(player, formspec)
+			else
+				armor:update_inventory(player)
+			end
+			if ARMOR_DESTROY == false then
+				if minetest.get_modpath("bones") then
+					minetest.after(ARMOR_BONES_DELAY, function()
+						local node = minetest.get_node(pos)
+						if node.name == "bones:bones" then
+							local meta = minetest.get_meta(pos)
+							local owner = meta:get_string("owner")
+							local inv = meta:get_inventory()
+							if name == owner then
+								for _,stack in ipairs(drop) do
+									if inv:room_for_item("main", stack) then
+										inv:add_item("main", stack)
+									end
+								end
 							end
+						end
+					end)
+				else
+					for _,stack in ipairs(drop) do
+						local obj = minetest.add_item(pos, stack:get_name())
+						if obj then
+							local x = math.random(1, 5)
+							if math.random(1,2) == 1 then
+								x = -x
+							end
+							local z = math.random(1, 5)
+							if math.random(1,2) == 1 then
+								z = -z
+							end
+							obj:setvelocity({x=1/x, y=obj:getvelocity().y, z=1/z})
 						end
 					end
 				end
-			end)
+			end
 		end
 	end)
 end
 
 minetest.register_globalstep(function(dtime)
 	time = time + dtime
-	if time > update_time then
+	if time > ARMOR_UPDATE_TIME then
 		for _,player in ipairs(minetest.get_connected_players()) do
 			armor:update_armor(player)
 		end

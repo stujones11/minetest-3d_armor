@@ -1,0 +1,30 @@
+--Armor Configuration (defaults)
+
+-- Increase this if you get initialization glitches when a player first joins.
+ARMOR_INIT_DELAY = 1
+
+-- Number of initialization attempts.
+-- Use in conjunction with ARMOR_INIT_DELAY if initialization problems persist.
+ARMOR_INIT_TIMES = 1
+
+-- Increase this if armor is not getting into bones due to server lag.
+ARMOR_BONES_DELAY = 1
+
+-- How often player armor/wield items are updated.
+ARMOR_UPDATE_TIME = 1
+
+-- Drop armor when a player dies.
+-- Uses bones mod if present, otherwise items are dropped around the player.
+ARMOR_DROP = true
+
+-- Pulverise armor when a player dies, overrides ARMOR_DROP.
+ARMOR_DESTROY = false
+
+-- You can use this to increase or decrease armor effectiveness,
+-- eg: ARMOR_LEVEL_MULTIPLIER = 0.5 will reduce armor level by half,
+ARMOR_LEVEL_MULTIPLIER = 1
+
+-- You can use this to increase or decrease armor effectiveness,
+-- eg: ARMOR_HEAL_MULTIPLIER = 0 will disable healing altogether.
+ARMOR_HEAL_MULTIPLIER = 1
+
