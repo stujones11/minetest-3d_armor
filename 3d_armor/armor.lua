@@ -192,6 +192,7 @@ armor.update_armor = function(self, player)
 						minetest.chat_send_player(name, "Your "..desc.." got destroyed!")
 					end
 					self:set_player_armor(player)
+					armor:update_inventory(player)
 				end
 				heal_max = heal_max + heal
 			end
@@ -217,20 +218,29 @@ armor.get_player_skin = function(self, name)
 	return skin or armor.default_skin
 end
 
+armor.get_armor_formspec = function(self, name)
+	local formspec = armor.formspec:gsub("player_name", name)
+	formspec = formspec:gsub("armor_preview", armor.textures[name].preview)
+	formspec = formspec:gsub("armor_level", armor.def[name].level)
+	return formspec:gsub("armor_heal", armor.def[name].heal)
+end
+
 armor.update_inventory = function(self, player)
 	local name = player:get_player_name()
 	if unified_inventory then
-		unified_inventory.set_inventory_formspec(player, "armor")
-	elseif inventory_plus then
-		local formspec = armor.formspec:gsub("player_name", name)
-		formspec = formspec:gsub("armor_preview", armor.textures[name].preview)
-		formspec = formspec:gsub("armor_level", armor.def[name].level)
-		formspec = formspec:gsub("armor_heal", armor.def[name].heal)
-		inventory_plus.set_inventory_formspec(player, formspec)
+		if unified_inventory.current_page[name] == "armor" then
+			unified_inventory.set_inventory_formspec(player, "armor")
+		end
 	else
-		local formspec = armor.formspec:gsub("player_name", name)
-		formspec = formspec:gsub("armor_preview", armor.textures[name].preview)
-		player:set_inventory_formspec(formspec)
+		local formspec = armor:get_armor_formspec(name)
+		if inventory_plus then
+			local page = player:get_inventory_formspec()
+			if page:find("detached:"..name.."_armor") then
+				inventory_plus.set_inventory_formspec(player, formspec)
+			end
+		else
+			player:set_inventory_formspec(formspec)
+		end
 	end
 end
 
@@ -257,8 +267,9 @@ default.player_register_model("3d_armor_character.x", {
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local name = player:get_player_name()
-	if fields.armor then
-		armor:update_inventory(player)
+	if inventory_plus and fields.armor then
+		local formspec = armor:get_armor_formspec(name)
+		inventory_plus.set_inventory_formspec(player, formspec)
 		return
 	end
 	for field, _ in pairs(fields) do
@@ -382,14 +393,7 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 				end
 			end
 			armor:set_player_armor(player)
-			if unified_inventory then
-				unified_inventory.set_inventory_formspec(player, "craft")
-			elseif inventory_plus then
-				local formspec = inventory_plus.get_formspec(player,"main")
-				inventory_plus.set_inventory_formspec(player, formspec)
-			else
-				armor:update_inventory(player)
-			end
+			armor:update_inventory(player)
 			if ARMOR_DESTROY == false then
 				if minetest.get_modpath("bones") then
 					minetest.after(ARMOR_BONES_DELAY, function()
