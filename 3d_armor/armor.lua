@@ -413,7 +413,7 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 					end)
 				else
 					for _,stack in ipairs(drop) do
-						local obj = minetest.add_item(pos, stack:get_name())
+						local obj = minetest.add_item(pos, stack)
 						if obj then
 							local x = math.random(1, 5)
 							if math.random(1,2) == 1 then
