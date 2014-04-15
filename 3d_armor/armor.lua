@@ -396,9 +396,9 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 			if ARMOR_DESTROY == false then
 				if minetest.get_modpath("bones") then
 					minetest.after(ARMOR_BONES_DELAY, function()
+						pos = vector.round(pos)
 						local node = minetest.get_node(pos)
 						if node.name == "bones:bones" then
-							pos = vector.round(pos)
 							local meta = minetest.get_meta(pos)
 							local owner = meta:get_string("owner")
 							local inv = meta:get_inventory()
