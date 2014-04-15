@@ -380,7 +380,6 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 		local name = player:get_player_name()
 		local pos = player:getpos()
 		if name and pos then
-			pos = vector.round(pos)
 			local drop = {}
 			local player_inv = player:get_inventory()
 			local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
@@ -399,6 +398,7 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 					minetest.after(ARMOR_BONES_DELAY, function()
 						local node = minetest.get_node(pos)
 						if node.name == "bones:bones" then
+							pos = vector.round(pos)
 							local meta = minetest.get_meta(pos)
 							local owner = meta:get_string("owner")
 							local inv = meta:get_inventory()
