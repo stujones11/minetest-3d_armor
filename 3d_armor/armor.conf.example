@@ -1,4 +1,4 @@
---Armor Configuration (defaults)
+-- Armor Configuration (defaults)
 
 -- Increase this if you get initialization glitches when a player first joins.
 ARMOR_INIT_DELAY = 1
@@ -21,10 +21,17 @@ ARMOR_DROP = true
 ARMOR_DESTROY = false
 
 -- You can use this to increase or decrease overall armor effectiveness,
--- eg: ARMOR_LEVEL_MULTIPLIER = 0.5 will reduce armor level by half
+-- eg: ARMOR_LEVEL_MULTIPLIER = 0.5 will reduce armor level by half.
 ARMOR_LEVEL_MULTIPLIER = 1
 
 -- You can use this to increase or decrease overall armor healing,
 -- eg: ARMOR_HEAL_MULTIPLIER = 0 will disable healing altogether.
 ARMOR_HEAL_MULTIPLIER = 1
+
+-- You can also use this file to execute arbitary lua code
+-- eg: Dumb the armor down if using Simple Mobs
+if minetest.get_modpath("mobs") then
+	ARMOR_LEVEL_MULTIPLIER = 0.5
+	ARMOR_HEAL_MULTIPLIER = 0
+end
 
