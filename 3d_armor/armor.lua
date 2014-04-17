@@ -392,7 +392,14 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 				end
 			end
 			armor:set_player_armor(player)
-			armor:update_inventory(player)
+			if unified_inventory then
+				unified_inventory.set_inventory_formspec(player, "craft")
+			elseif inventory_plus then
+				local formspec = inventory_plus.get_formspec(player,"main")
+				inventory_plus.set_inventory_formspec(player, formspec)
+			else
+				armor:update_inventory(player)
+			end
 			if ARMOR_DESTROY == false then
 				if minetest.get_modpath("bones") then
 					minetest.after(ARMOR_BONES_DELAY, function()
