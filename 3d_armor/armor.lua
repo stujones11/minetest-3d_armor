@@ -80,6 +80,9 @@ armor.set_player_armor = function(self, player)
 	end
 	local name = player:get_player_name()
 	local player_inv = player:get_inventory()
+	if not name or not player_inv then
+		return
+	end
 	local armor_texture = "3d_armor_trans.png"
 	local armor_level = 0
 	local armor_heal = 0
