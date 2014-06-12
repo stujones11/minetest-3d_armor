@@ -51,6 +51,7 @@ local craft_ingreds = {
 	steel = "default:steel_ingot",
 	bronze = "default:bronze_ingot",
 	diamond = "default:diamond",
+	gold = "default:gold_ingot",
 }	
 
 if has_moreores then
