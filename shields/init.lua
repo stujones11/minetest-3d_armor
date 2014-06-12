@@ -30,6 +30,13 @@ minetest.register_tool("shields:shield_diamond", {
 	wear = 0,
 })
 
+minetest.register_tool("shields:shield_gold", {
+	description = "Gold Shield",
+	inventory_image = "shields_inv_shield_gold.png",
+	groups = {armor_shield=10, armor_heal=6, armor_use=250},
+	wear = 0,
+})
+
 if use_moreores then
 	minetest.register_tool("shields:shield_mithril", {
 		description = "Mithril Shield",
@@ -44,6 +51,7 @@ local craft_ingreds = {
 	steel = "default:steel_ingot",
 	bronze = "default:bronze_ingot",
 	diamond = "default:diamond",
+	gold = "default:gold_ingot",
 }	
 
 if has_moreores then
