@@ -13,5 +13,4 @@ Shields -- Crafting Guide
 [shields:shield_steel] X = [default:steel_ingot]
 [shields:shield_bronze] X = [default:bronze_ingot]
 [shields:shield_diamond] X = [default:diamond]
-
-
+[shields:shield_gold] X = [default:gold_ingot]
