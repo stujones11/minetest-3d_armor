@@ -32,6 +32,13 @@ minetest.register_tool("3d_armor:helmet_diamond", {
 	wear = 0,
 })
 
+minetest.register_tool("3d_armor:helmet_gold", {
+	description = "Gold Helmet",
+	inventory_image = "3d_armor_inv_helmet_gold.png",
+	groups = {armor_head=15, armor_heal=12, armor_use=100},
+	wear = 0,
+})
+
 if use_moreores then
 	minetest.register_tool("3d_armor:helmet_mithril", {
 		description = "Mithril Helmet",
@@ -67,6 +74,13 @@ minetest.register_tool("3d_armor:chestplate_bronze", {
 minetest.register_tool("3d_armor:chestplate_diamond", {
 	description = "Diamond Chestplate",
 	inventory_image = "3d_armor_inv_chestplate_diamond.png",
+	groups = {armor_torso=20, armor_heal=12, armor_use=100},
+	wear = 0,
+})
+
+minetest.register_tool("3d_armor:chestplate_gold", {
+	description = "Gold Chestplate",
+	inventory_image = "3d_armor_inv_chestplate_gold.png",
 	groups = {armor_torso=20, armor_heal=12, armor_use=100},
 	wear = 0,
 })
@@ -110,6 +124,13 @@ minetest.register_tool("3d_armor:leggings_diamond", {
 	wear = 0,
 })
 
+minetest.register_tool("3d_armor:leggings_gold", {
+	description = "Gold Leggings",
+	inventory_image = "3d_armor_inv_leggings_gold.png",
+	groups = {armor_legs=20, armor_heal=12, armor_use=100},
+	wear = 0,
+})
+
 if use_moreores then
 	minetest.register_tool("3d_armor:leggings_mithril", {
 		description = "Mithril Leggings",
@@ -149,6 +170,13 @@ minetest.register_tool("3d_armor:boots_diamond", {
 	wear = 0,
 })
 
+minetest.register_tool("3d_armor:boots_gold", {
+	description = "Gold Boots",
+	inventory_image = "3d_armor_inv_boots_gold.png",
+	groups = {armor_feet=15, armor_heal=12, armor_use=100},
+	wear = 0,
+})
+
 if use_moreores then
 	minetest.register_tool("3d_armor:boots_mithril", {
 		description = "Mithril Boots",
@@ -165,6 +193,7 @@ local craft_ingreds = {
 	steel = "default:steel_ingot",
 	bronze = "default:bronze_ingot",
 	diamond = "default:diamond",
+	gold = "default:gold_ingot",
 }
 
 if use_moreores then
