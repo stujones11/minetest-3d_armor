@@ -35,7 +35,7 @@ minetest.register_tool("3d_armor:helmet_diamond", {
 minetest.register_tool("3d_armor:helmet_gold", {
 	description = "Gold Helmet",
 	inventory_image = "3d_armor_inv_helmet_gold.png",
-	groups = {armor_head=15, armor_heal=12, armor_use=100},
+	groups = {armor_head=10, armor_heal=6, armor_use=250},
 	wear = 0,
 })
 
@@ -81,7 +81,7 @@ minetest.register_tool("3d_armor:chestplate_diamond", {
 minetest.register_tool("3d_armor:chestplate_gold", {
 	description = "Gold Chestplate",
 	inventory_image = "3d_armor_inv_chestplate_gold.png",
-	groups = {armor_torso=20, armor_heal=12, armor_use=100},
+	groups = {armor_torso=15, armor_heal=6, armor_use=250},
 	wear = 0,
 })
 
@@ -127,7 +127,7 @@ minetest.register_tool("3d_armor:leggings_diamond", {
 minetest.register_tool("3d_armor:leggings_gold", {
 	description = "Gold Leggings",
 	inventory_image = "3d_armor_inv_leggings_gold.png",
-	groups = {armor_legs=20, armor_heal=12, armor_use=100},
+	groups = {armor_legs=15, armor_heal=6, armor_use=250},
 	wear = 0,
 })
 
@@ -173,7 +173,7 @@ minetest.register_tool("3d_armor:boots_diamond", {
 minetest.register_tool("3d_armor:boots_gold", {
 	description = "Gold Boots",
 	inventory_image = "3d_armor_inv_boots_gold.png",
-	groups = {armor_feet=15, armor_heal=12, armor_use=100},
+	groups = {armor_feet=10, armor_heal=6, armor_use=250},
 	wear = 0,
 })
 
