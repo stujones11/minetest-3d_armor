@@ -14,6 +14,8 @@ Overall level is boosted by 10% when wearing a full matching set.
 Configuration
 -------------
 
-Armor can be configured by adding a file called armor.conf in 3d_armor mod directory.
+Armor can be configured by adding a file called armor.conf in 3d_armor mod and/or world directory.
 see armor.conf.example for all available options.
+
+Note: worldpath config settings override any settings made in the mod's directory.
 

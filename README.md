@@ -17,7 +17,7 @@ when wearing a full matching set (helmet, chestplate, leggings and boots of the 
 
 Compatible with player skins [skins] by Zeg9 and Player Textures [player_textures] by PilzAdam.
 
-Armor can be configured by adding a file called armor.conf in 3d_armor mod directory.
+Armor can be configured by adding a file called armor.conf in 3d_armor mod or world directory.
 see armor.conf.example for all available options.
 
 [mod] Visible Wielded Items [wieldview]

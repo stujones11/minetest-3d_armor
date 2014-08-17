@@ -8,12 +8,20 @@ ARMOR_LEVEL_MULTIPLIER = 1
 ARMOR_HEAL_MULTIPLIER = 1
 
 local modpath = minetest.get_modpath(ARMOR_MOD_NAME)
+local worldpath = minetest.get_worldpath()
 local input = io.open(modpath.."/armor.conf", "r")
 if input then
 	dofile(modpath.."/armor.conf")
 	input:close()
 	input = nil
 end
+input = io.open(worldpath.."/armor.conf", "r")
+if input then
+	dofile(worldpath.."/armor.conf")
+	input:close()
+	input = nil
+end
+
 local time = 0
 
 armor = {
