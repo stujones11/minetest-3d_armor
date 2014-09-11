@@ -88,7 +88,11 @@ armor.set_player_armor = function(self, player)
 	end
 	local name = player:get_player_name()
 	local player_inv = player:get_inventory()
-	if not name or not player_inv then
+	if not name then
+		minetest.log("error", "Failed to read player name")
+		return
+	elseif not player_inv then
+		minetest.log("error", "Failed to read player inventory")
 		return
 	end
 	local armor_texture = "3d_armor_trans.png"
@@ -183,7 +187,11 @@ armor.update_armor = function(self, player)
 	if self.player_hp[name] > hp then
 		local player_inv = player:get_inventory()
 		local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
-		if not armor_inv then
+		if not player_inv then
+			minetest.log("error", "Failed to read player inventory")
+			return
+		elseif not armor_inv then
+			minetest.log("error", "Failed to read detached inventory")
 			return
 		end
 		local heal_max = 0
