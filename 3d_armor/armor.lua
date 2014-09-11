@@ -165,6 +165,9 @@ armor.set_player_armor = function(self, player)
 	self.def[name].count = items
 	self.def[name].level = armor_level
 	self.def[name].heal = armor_heal
+	self.def[name].jump = physics_o.jump
+	self.def[name].speed = physics_o.speed
+	self.def[name].gravity = physics_o.gravity
 	self:update_player_visuals(player)
 end
 
@@ -350,6 +353,9 @@ minetest.register_on_joinplayer(function(player)
 		count = 0,
 		level = 0,
 		heal = 0,
+		jump = 1,
+		speed = 1,
+		gravity = 1,
 	}
 	armor.textures[name] = {
 		skin = armor.default_skin..".png",
