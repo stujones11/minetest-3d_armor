@@ -376,6 +376,11 @@ minetest.register_on_joinplayer(function(player)
 		if skin and skins.get_type(skin) == skins.type.MODEL then
 			armor.textures[name].skin = skin..".png"
 		end
+	elseif minetest.get_modpath("simple_skins") then
+		local skin = skins.skins[name]
+		if skin then
+		    armor.textures[name].skin = skin..".png"
+		end
 	elseif minetest.get_modpath("u_skins") then
 		local skin = u_skins.u_skins[name]
 		if skin and u_skins.get_type(skin) == u_skins.type.MODEL then
