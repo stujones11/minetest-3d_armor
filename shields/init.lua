@@ -54,7 +54,7 @@ local craft_ingreds = {
 	gold = "default:gold_ingot",
 }	
 
-if has_moreores then
+if use_moreores then
 	craft_ingreds.mithril = "moreores:mithril_ingot"
 end
 
