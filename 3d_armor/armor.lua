@@ -295,7 +295,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		return
 	end
 	for field, _ in pairs(fields) do
-		if string.find(field, "skins_set_") then
+		if string.find(field, "skins_set") then
 			minetest.after(0, function(player)
 				local skin = armor:get_player_skin(name)
 				armor.textures[name].skin = skin..".png"
