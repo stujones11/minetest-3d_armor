@@ -10,7 +10,25 @@ Shields -- Crafting Guide
 +---+---+---+
 
 [shields:shield_wood] X = [default:wood]
+[shields:shield_cactus] X = [default:cactus]
 [shields:shield_steel] X = [default:steel_ingot]
 [shields:shield_bronze] X = [default:bronze_ingot]
 [shields:shield_diamond] X = [default:diamond]
 [shields:shield_gold] X = [default:gold_ingot]
+
+Enhanced Shields
+----------------
+
++---+
+| S |
++---+
+| X |
++---+
+| S |
++---+
+
+[shields:shield_enhanced_wood] X = [shields:shield_wood]
+[shields:shield_enhanced_cactus] X = [shields:shield_cactus]
+
+S = [default:steel_ingot]
+

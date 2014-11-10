@@ -2,9 +2,23 @@ local use_moreores = minetest.get_modpath("moreores")
 
 -- Regisiter Shields
 
+minetest.register_tool("shields:shield_admin", {
+	description = "Admin Shield",
+	inventory_image = "shields_inv_shield_admin.png",
+	groups = {armor_shield=1000, armor_heal=100, armor_use=0},
+	wear = 0,
+})
+
 minetest.register_tool("shields:shield_wood", {
 	description = "Wooden Shield",
 	inventory_image = "shields_inv_shield_wood.png",
+	groups = {armor_shield=5, armor_heal=0, armor_use=2000},
+	wear = 0,
+})
+
+minetest.register_tool("shields:shield_cactus", {
+	description = "Cactus Shield",
+	inventory_image = "shields_inv_shield_cactus.png",
 	groups = {armor_shield=5, armor_heal=0, armor_use=2000},
 	wear = 0,
 })
@@ -48,6 +62,7 @@ end
 
 local craft_ingreds = {
 	wood = "default:wood",
+	cactus = "default:cactus",
 	steel = "default:steel_ingot",
 	bronze = "default:bronze_ingot",
 	diamond = "default:diamond",
@@ -69,8 +84,38 @@ for k, v in pairs(craft_ingreds) do
 	})
 end
 
+minetest.register_tool("shields:shield_enhanced_wood", {
+	description = "Enhanced Wood Shield",
+	inventory_image = "shields_inv_shield_enhanced_wood.png",
+	groups = {armor_shield=8, armor_heal=0, armor_use=1000},
+	wear = 0,
+})
+
+minetest.register_tool("shields:shield_enhanced_cactus", {
+	description = "Enhanced Cactus Shield",
+	inventory_image = "shields_inv_shield_enhanced_cactus.png",
+	groups = {armor_shield=8, armor_heal=0, armor_use=1000},
+	wear = 0,
+})
+
+minetest.register_craft({
+	output = "shields:shield_enhanced_wood",
+	recipe = {
+		{"default:steel_ingot"},
+		{"shields:shield_wood"},
+		{"default:steel_ingot"},
+	},
+})
+
+minetest.register_craft({
+	output = "shields:shield_enhanced_cactus",
+	recipe = {
+		{"default:steel_ingot"},
+		{"shields:shield_cactus"},
+		{"default:steel_ingot"},
+	},
+})
+
 minetest.after(0, function()
 	table.insert(armor.elements, "shield")
 end)
-
- 

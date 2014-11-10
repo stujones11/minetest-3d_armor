@@ -12,6 +12,7 @@ Helmets:
 +---+---+---+
 
 [3d_armor:helmet_wood] X = [default:wood]
+[3d_armor:helmet_cactus] X = [default:cactus]
 [3d_armor:helmet_steel] X = [default:steel_ingot]
 [3d_armor:helmet_bronze] X = [default:bronze_ingot]
 [3d_armor:helmet_diamond] X = [default:diamond]
@@ -29,6 +30,7 @@ Chestplates:
 +---+---+---+
 
 [3d_armor:chestplate_wood] X = [default:wood]
+[3d_armor:chestplate_cactus] X = [default:cactus]
 [3d_armor:chestplate_steel] X = [default:steel_ingot]
 [3d_armor:chestplate_bronze] X = [default:bronze_ingot]
 [3d_armor:chestplate_diamond] X = [default:diamond]
@@ -46,6 +48,7 @@ Leggings:
 +---+---+---+
 
 [3d_armor:leggings_wood] X = [default:wood]
+[3d_armor:leggings_cactus] X = [default:cactus]
 [3d_armor:leggings_steel] X = [default:steel_ingot]
 [3d_armor:leggings_bronze] X = [default:bronze_ingot]
 [3d_armor:leggings_diamond] X = [default:diamond]
@@ -61,6 +64,7 @@ Boots:
 +---+---+---+
 
 [3d_armor:boots_wood] X = [default:wood]
+[3d_armor:boots_cactus] X = [default:cactus]
 [3d_armor:boots_steel] X = [default:steel_ingot]
 [3d_armor:boots_bronze] X = [default:bronze_ingot
 [3d_armor:boots_diamond] X = [default:diamond]
