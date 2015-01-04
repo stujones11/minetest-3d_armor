@@ -94,10 +94,10 @@ armor.set_player_armor = function(self, player)
 	local name = player:get_player_name()
 	local player_inv = player:get_inventory()
 	if not name then
-		minetest.log("error", "Failed to read player name")
+		minetest.log("error", "set_player_armor: Failed to read player name")
 		return
 	elseif not player_inv then
-		minetest.log("error", "Failed to read player inventory")
+		minetest.log("error", "set_player_armor: Failed to read player inventory")
 		return
 	end
 	local armor_texture = "3d_armor_trans.png"
@@ -182,9 +182,14 @@ end
 
 armor.update_armor = function(self, player)
 	if not player then
+		minetest.log("error", "update_armor: Invalid player object reference")
 		return
 	end
 	local name = player:get_player_name()
+	if not name then
+		minetest.log("error", "update_armor: Invalid player name")
+		return
+	end
 	local hp = player:get_hp() or 0
 	if hp == 0 or hp == self.player_hp[name] then
 		return
@@ -193,10 +198,10 @@ armor.update_armor = function(self, player)
 		local player_inv = player:get_inventory()
 		local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
 		if not player_inv then
-			minetest.log("error", "Failed to read player inventory")
+			minetest.log("error", "update_armor: Failed to read player inventory")
 			return
 		elseif not armor_inv then
-			minetest.log("error", "Failed to read detached inventory")
+			minetest.log("error", "update_armor: Failed to read detached inventory")
 			return
 		end
 		local heal_max = 0
@@ -253,7 +258,15 @@ armor.get_armor_formspec = function(self, name)
 end
 
 armor.update_inventory = function(self, player)
+	if not player then
+		minetest.log("error", "update_inventory: Invalid player object reference")
+		return
+	end
 	local name = player:get_player_name()
+	if not name then
+		minetest.log("error", "update_inventory: Invalid player name")
+		return
+	end
 	if inv_mod == "unified_inventory" then
 		if unified_inventory.current_page[name] == "armor" then
 			unified_inventory.set_inventory_formspec(player, "armor")
