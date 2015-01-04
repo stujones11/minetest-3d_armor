@@ -7,6 +7,9 @@ ARMOR_DESTROY = false
 ARMOR_LEVEL_MULTIPLIER = 1
 ARMOR_HEAL_MULTIPLIER = 1
 
+local skin_mod = nil
+local inv_mod = nil
+
 local modpath = minetest.get_modpath(ARMOR_MOD_NAME)
 local worldpath = minetest.get_worldpath()
 local input = io.open(modpath.."/armor.conf", "r")
@@ -30,21 +33,23 @@ armor = {
 	physics = {"jump","speed","gravity"},
 	formspec = "size[8,8.5]list[detached:player_name_armor;armor;0,1;2,3;]"
 		.."image[2,0.75;2,4;armor_preview]"
-    	.."list[current_player;main;0,4.5;8,4;]"
-    	.."list[current_player;craft;4,1;3,3;]"
-    	.."list[current_player;craftpreview;7,2;1,1;]",
+		.."list[current_player;main;0,4.5;8,4;]"
+		.."list[current_player;craft;4,1;3,3;]"
+		.."list[current_player;craftpreview;7,2;1,1;]",
 	textures = {},
 	default_skin = "character",
 }
 
-if inventory_plus then
+if minetest.get_modpath("inventory_plus") then
+	inv_mod = "inventory_plus"
 	armor.formspec = "size[8,8.5]button[0,0;2,0.5;main;Back]"
 		.."list[detached:player_name_armor;armor;0,1;2,3;]"
 		.."image[2.5,0.75;2,4;armor_preview]"
 		.."label[5,1;Level: armor_level]"
 		.."label[5,1.5;Heal:  armor_heal]"
 		.."list[current_player;main;0,4.5;8,4;]"
-elseif unified_inventory then
+elseif minetest.get_modpath("unified_inventory") then
+	inv_mod = "unified_inventory"
 	unified_inventory.register_button("armor", {
 		type = "image",
 		image = "inventory_plus_armor.png",
@@ -125,7 +130,7 @@ armor.set_player_armor = function(self, player)
 						items = items + 1
 						local heal = def.groups["armor_heal"] or 0
 						armor_heal = armor_heal + heal
-						for kk,vv in ipairs(self.physics) do							
+						for kk,vv in ipairs(self.physics) do
 							local o_value = def.groups["physics_"..vv]
 							if o_value then
 								physics_o[vv] = physics_o[vv] + o_value
@@ -232,9 +237,9 @@ end
 
 armor.get_player_skin = function(self, name)
 	local skin = nil
-	if skins then
+	if skin_mod == "skins" then
 		skin = skins.skins[name]
-	elseif u_skins then
+	elseif skin_mod == "u_skins" then
 		skin = u_skins.u_skins[name]
 	end
 	return skin or armor.default_skin
@@ -249,13 +254,13 @@ end
 
 armor.update_inventory = function(self, player)
 	local name = player:get_player_name()
-	if unified_inventory then
+	if inv_mod == "unified_inventory" then
 		if unified_inventory.current_page[name] == "armor" then
 			unified_inventory.set_inventory_formspec(player, "armor")
 		end
 	else
 		local formspec = armor:get_armor_formspec(name)
-		if inventory_plus then
+		if inv_mod == "inventory_plus" then
 			local page = player:get_inventory_formspec()
 			if page:find("detached:"..name.."_armor") then
 				inventory_plus.set_inventory_formspec(player, formspec)
@@ -289,7 +294,7 @@ default.player_register_model("3d_armor_character.x", {
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local name = player:get_player_name()
-	if inventory_plus and fields.armor then
+	if inv_mod == "inventory_plus" and fields.armor then
 		local formspec = armor:get_armor_formspec(name)
 		inventory_plus.set_inventory_formspec(player, formspec)
 		return
@@ -338,7 +343,7 @@ minetest.register_on_joinplayer(function(player)
 			return count
 		end,
 	})
-	if inventory_plus then
+	if inv_mod == "inventory_plus" then
 		inventory_plus.register_button(player,"armor", "Armor")
 	end
 	armor_inv:set_size("armor", 6)
@@ -372,16 +377,19 @@ minetest.register_on_joinplayer(function(player)
 		preview = armor.default_skin.."_preview.png",
 	}
 	if minetest.get_modpath("skins") then
+		skin_mod = "skins"
 		local skin = skins.skins[name]
 		if skin and skins.get_type(skin) == skins.type.MODEL then
 			armor.textures[name].skin = skin..".png"
 		end
 	elseif minetest.get_modpath("simple_skins") then
+		skin_mod = "skins"
 		local skin = skins.skins[name]
 		if skin then
 		    armor.textures[name].skin = skin..".png"
 		end
 	elseif minetest.get_modpath("u_skins") then
+		skin_mod = "u_skins"
 		local skin = u_skins.u_skins[name]
 		if skin and u_skins.get_type(skin) == u_skins.type.MODEL then
 			armor.textures[name].skin = skin..".png"
@@ -398,7 +406,7 @@ minetest.register_on_joinplayer(function(player)
 	for i=1, ARMOR_INIT_TIMES do
 		minetest.after(ARMOR_INIT_DELAY * i, function(player)
 			armor:set_player_armor(player)
-			if inventory_plus == nil and unified_inventory == nil then
+			if not inv_mod then
 				armor:update_inventory(player)
 			end
 		end, player)
@@ -422,9 +430,9 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 				end
 			end
 			armor:set_player_armor(player)
-			if unified_inventory then
+			if inv_mod == "unified_inventory" then
 				unified_inventory.set_inventory_formspec(player, "craft")
-			elseif inventory_plus then
+			elseif inv_mod == "inventory_plus" then
 				local formspec = inventory_plus.get_formspec(player,"main")
 				inventory_plus.set_inventory_formspec(player, formspec)
 			else
