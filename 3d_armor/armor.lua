@@ -92,12 +92,13 @@ armor.set_player_armor = function(self, player)
 		return
 	end
 	local name = player:get_player_name()
-	local player_inv = player:get_inventory()
 	if not name then
-		minetest.log("error", "set_player_armor: Failed to read player name")
+		minetest.log("error", "3d_armor: Player name is nil [set_player_armor]")
 		return
-	elseif not player_inv then
-		minetest.log("error", "set_player_armor: Failed to read player inventory")
+	end
+	local player_inv = player:get_inventory()
+	if not player_inv then
+		minetest.log("error", "3d_armor: Player inventory is nil [set_player_armor]")
 		return
 	end
 	local armor_texture = "3d_armor_trans.png"
@@ -182,12 +183,12 @@ end
 
 armor.update_armor = function(self, player)
 	if not player then
-		minetest.log("error", "update_armor: Invalid player object reference")
+		minetest.log("error", "3d_armor: Player reference is nil [update_armor]")
 		return
 	end
 	local name = player:get_player_name()
 	if not name then
-		minetest.log("error", "update_armor: Invalid player name")
+		minetest.log("error", "3d_armor: Player name is nil[update_armor]")
 		return
 	end
 	local hp = player:get_hp() or 0
@@ -198,10 +199,10 @@ armor.update_armor = function(self, player)
 		local player_inv = player:get_inventory()
 		local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
 		if not player_inv then
-			minetest.log("error", "update_armor: Failed to read player inventory")
+			minetest.log("error", "3d_armor: Player inventory is nil [update_armor]")
 			return
 		elseif not armor_inv then
-			minetest.log("error", "update_armor: Failed to read detached inventory")
+			minetest.log("error", "3d_armor: Detached inventory is nil [update_armor]")
 			return
 		end
 		local heal_max = 0
@@ -251,6 +252,18 @@ armor.get_player_skin = function(self, name)
 end
 
 armor.get_armor_formspec = function(self, name)
+	if not name then
+		minetest.log("error", "3d_armor: Player name is nil [get_armor_formspec]")
+		return ""
+	end
+	if not armor.textures[name] then
+		minetest.log("error", "3d_armor: Player texture["..name.."] is nil [get_armor_formspec]")
+		return ""
+	end
+	if not armor.def[name] then
+		minetest.log("error", "3d_armor: Armor def["..name.."] is nil [get_armor_formspec]")
+		return ""
+	end
 	local formspec = armor.formspec:gsub("player_name", name)
 	formspec = formspec:gsub("armor_preview", armor.textures[name].preview)
 	formspec = formspec:gsub("armor_level", armor.def[name].level)
@@ -259,12 +272,12 @@ end
 
 armor.update_inventory = function(self, player)
 	if not player then
-		minetest.log("error", "update_inventory: Invalid player object reference")
+		minetest.log("error", "3d_armor: Player reference is nil [update_inventory]")
 		return
 	end
 	local name = player:get_player_name()
 	if not name then
-		minetest.log("error", "update_inventory: Invalid player name")
+		minetest.log("error", "3d_armor: Player name is nil [update_inventory]")
 		return
 	end
 	if inv_mod == "unified_inventory" then
@@ -372,6 +385,7 @@ minetest.register_on_joinplayer(function(player)
 		armor_inv:add_item("armor", player_inv:get_stack(list, 1))
 		player_inv:set_stack(list, 1, nil)
 	end
+	-- TODO Remove this on the next version upate
 
 	armor.player_hp[name] = 0
 	armor.def[name] = {
