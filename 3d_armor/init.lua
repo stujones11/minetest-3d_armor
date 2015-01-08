@@ -11,6 +11,13 @@ minetest.register_tool("3d_armor:helmet_wood", {
 	wear = 0,
 })
 
+minetest.register_tool("3d_armor:helmet_cactus", {
+	description = "Cactuc Helmet",
+	inventory_image = "3d_armor_inv_helmet_cactus.png",
+	groups = {armor_head=5, armor_heal=0, armor_use=1000},
+	wear = 0,
+})
+
 minetest.register_tool("3d_armor:helmet_steel", {
 	description = "Steel Helmet",
 	inventory_image = "3d_armor_inv_helmet_steel.png",
@@ -54,6 +61,13 @@ minetest.register_tool("3d_armor:chestplate_wood", {
 	description = "Wood Chestplate",
 	inventory_image = "3d_armor_inv_chestplate_wood.png",
 	groups = {armor_torso=10, armor_heal=0, armor_use=2000},
+	wear = 0,
+})
+
+minetest.register_tool("3d_armor:chestplate_cactus", {
+	description = "Cactus Chestplate",
+	inventory_image = "3d_armor_inv_chestplate_cactus.png",
+	groups = {armor_torso=10, armor_heal=0, armor_use=1000},
 	wear = 0,
 })
 
@@ -103,6 +117,13 @@ minetest.register_tool("3d_armor:leggings_wood", {
 	wear = 0,
 })
 
+minetest.register_tool("3d_armor:leggings_cactus", {
+	description = "Cactus Leggings",
+	inventory_image = "3d_armor_inv_leggings_cactus.png",
+	groups = {armor_legs=5, armor_heal=0, armor_use=1000},
+	wear = 0,
+})
+
 minetest.register_tool("3d_armor:leggings_steel", {
 	description = "Steel Leggings",
 	inventory_image = "3d_armor_inv_leggings_steel.png",
@@ -149,6 +170,13 @@ minetest.register_tool("3d_armor:boots_wood", {
 	wear = 0,
 })
 
+minetest.register_tool("3d_armor:boots_cactus", {
+	description = "Cactus Boots",
+	inventory_image = "3d_armor_inv_boots_cactus.png",
+	groups = {armor_feet=5, armor_heal=0, armor_use=2000},
+	wear = 0,
+})
+
 minetest.register_tool("3d_armor:boots_steel", {
 	description = "Steel Boots",
 	inventory_image = "3d_armor_inv_boots_steel.png",
@@ -190,6 +218,7 @@ end
 
 local craft_ingreds = {
 	wood = "default:wood",
+	cactus = "default:cactus",
 	steel = "default:steel_ingot",
 	bronze = "default:bronze_ingot",
 	diamond = "default:diamond",
@@ -233,4 +262,14 @@ for k, v in pairs(craft_ingreds) do
 		},
 	})
 end
+
+-- Default to enabled in singleplayer and disabled in multiplayer
+--[[local singleplayer = minetest.is_singleplayer()
+local setting = minetest.setting_getbool("enable_admin_armor")
+if (not singleplayer and setting ~= true) or
+   (singleplayer and setting == false) then
+	return
+end]]
+
+dofile(minetest.get_modpath(ARMOR_MOD_NAME).."/admin.lua")
 

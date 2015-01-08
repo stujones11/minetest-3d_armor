@@ -9,6 +9,13 @@ minetest.register_tool("shields:shield_wood", {
 	wear = 0,
 })
 
+minetest.register_tool("shields:shield_cactus", {
+	description = "Cactus Shield",
+	inventory_image = "shields_inv_shield_cactus.png",
+	groups = {armor_shield=5, armor_heal=0, armor_use=2000},
+	wear = 0,
+})
+
 minetest.register_tool("shields:shield_steel", {
 	description = "Steel Shield",
 	inventory_image = "shields_inv_shield_steel.png",
@@ -48,6 +55,7 @@ end
 
 local craft_ingreds = {
 	wood = "default:wood",
+	cactus = "default:cactus",
 	steel = "default:steel_ingot",
 	bronze = "default:bronze_ingot",
 	diamond = "default:diamond",
@@ -69,8 +77,51 @@ for k, v in pairs(craft_ingreds) do
 	})
 end
 
+minetest.register_tool("shields:shield_enhanced_wood", {
+	description = "Enhanced Wood Shield",
+	inventory_image = "shields_inv_shield_enhanced_wood.png",
+	groups = {armor_shield=8, armor_heal=0, armor_use=1000},
+	wear = 0,
+})
+
+minetest.register_tool("shields:shield_enhanced_cactus", {
+	description = "Enhanced Cactus Shield",
+	inventory_image = "shields_inv_shield_enhanced_cactus.png",
+	groups = {armor_shield=8, armor_heal=0, armor_use=1000},
+	wear = 0,
+})
+
+minetest.register_craft({
+	output = "shields:shield_enhanced_wood",
+	recipe = {
+		{"default:steel_ingot"},
+		{"shields:shield_wood"},
+		{"default:steel_ingot"},
+	},
+})
+
+minetest.register_craft({
+	output = "shields:shield_enhanced_cactus",
+	recipe = {
+		{"default:steel_ingot"},
+		{"shields:shield_cactus"},
+		{"default:steel_ingot"},
+	},
+})
+ 
+local singleplayer = minetest.is_singleplayer()
+local setting = minetest.setting_getbool("enable_admin_armor")
+if (singleplayer) or (setting == true) then
+
+	minetest.register_tool("shields:shield_admin", {
+		description = "Admin Shield",
+		inventory_image = "shields_inv_shield_admin.png",
+		groups = {armor_shield=1000, armor_heal=100, armor_use=0},
+		wear = 0,
+	})
+
+end
+
 minetest.after(0, function()
 	table.insert(armor.elements, "shield")
 end)
-
- 
