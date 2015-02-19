@@ -6,6 +6,15 @@ ARMOR_DROP = minetest.get_modpath("bones") ~= nil
 ARMOR_DESTROY = false
 ARMOR_LEVEL_MULTIPLIER = 1
 ARMOR_HEAL_MULTIPLIER = 1
+ARMOR_MATERIALS = {
+	wood = "default:wood",
+	cactus = "default:cactus",
+	steel = "default:steel_ingot",
+	bronze = "default:bronze_ingot",
+	diamond = "default:diamond",
+	gold = "default:gold_ingot",
+	mithril = "moreores:mithril_ingot",
+}
 
 local skin_mod = nil
 local inv_mod = nil
@@ -24,6 +33,10 @@ if input then
 	input:close()
 	input = nil
 end
+if not minetest.get_modpath("moreores") then
+	ARMOR_MATERIALS.mithril = nil
+end
+
 
 local time = 0
 
