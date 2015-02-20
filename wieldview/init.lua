@@ -21,11 +21,12 @@ wieldview.get_item_texture = function(self, item)
 	local texture = "3d_armor_trans.png"
 	if item ~= "" then
 		if minetest.registered_items[item] then
-			local inventory_image = minetest.registered_items[item].inventory_image
-			if inventory_image and inventory_image ~= "" then
-				texture = inventory_image
-			elseif node_tiles == true and minetest.registered_items[item].tiles then
-				texture = minetest.registered_items[item].tiles[1]
+			if minetest.registered_items[item].inventory_image ~= "" then
+				texture = minetest.registered_items[item].inventory_image
+			elseif node_tiles == true and minetest.registered_items[item].tiles
+					and type(minetest.registered_items[item].tiles[1]) == "string"
+					and minetest.registered_items[item].tiles[1] ~= "" then
+				texture = minetest.inventorycube(minetest.registered_items[item].tiles[1])
 			end
 		end
 		if wieldview.transform[item] then

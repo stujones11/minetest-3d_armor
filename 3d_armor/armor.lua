@@ -6,6 +6,15 @@ ARMOR_DROP = minetest.get_modpath("bones") ~= nil
 ARMOR_DESTROY = false
 ARMOR_LEVEL_MULTIPLIER = 1
 ARMOR_HEAL_MULTIPLIER = 1
+ARMOR_MATERIALS = {
+	wood = "default:wood",
+	cactus = "default:cactus",
+	steel = "default:steel_ingot",
+	bronze = "default:bronze_ingot",
+	diamond = "default:diamond",
+	gold = "default:gold_ingot",
+	mithril = "moreores:mithril_ingot",
+}
 
 local skin_mod = nil
 local inv_mod = nil
@@ -24,6 +33,10 @@ if input then
 	input:close()
 	input = nil
 end
+if not minetest.get_modpath("moreores") then
+	ARMOR_MATERIALS.mithril = nil
+end
+
 
 local time = 0
 
@@ -299,7 +312,7 @@ end
 
 -- Register Player Model
 
-default.player_register_model("3d_armor_character.x", {
+default.player_register_model("3d_armor_character.b3d", {
 	animation_speed = 30,
 	textures = {
 		armor.default_skin..".png",
@@ -337,7 +350,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 minetest.register_on_joinplayer(function(player)
-	default.player_set_model(player, "3d_armor_character.x")
+	default.player_set_model(player, "3d_armor_character.b3d")
 	local name = player:get_player_name()
 	local player_inv = player:get_inventory()
 	local armor_inv = minetest.create_detached_inventory(name.."_armor",{
