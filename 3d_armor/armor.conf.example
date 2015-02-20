@@ -3,7 +3,7 @@
 -- You can remove any unwanted armor materials from this table.
 -- Note that existing armor that is removed will show up as an unknown item.
 ARMOR_MATERIALS = {
-	wood = "default:wood",
+	wood = "group:wood",
 	cactus = "default:cactus",
 	steel = "default:steel_ingot",
 	bronze = "default:bronze_ingot",
