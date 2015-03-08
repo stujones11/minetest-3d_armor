@@ -124,7 +124,7 @@ armor.set_player_armor = function(self, player)
 	local textures = {}
 	local physics_o = {speed=1,gravity=1,jump=1}
 	local material = {type=nil, count=1}
-	local preview = armor:get_player_skin(name).."_preview.png"
+	local preview = armor:get_preview(name) or "character_preview.png"
 	for _,v in ipairs(self.elements) do
 		elements[v] = false
 	end
@@ -257,12 +257,18 @@ end
 
 armor.get_player_skin = function(self, name)
 	local skin = nil
-	if skin_mod == "skins" then
+	if skin_mod == "skins" or skin_mod == "simple_skins" then
 		skin = skins.skins[name]
 	elseif skin_mod == "u_skins" then
 		skin = u_skins.u_skins[name]
 	end
 	return skin or armor.default_skin
+end
+
+armor.get_preview = function(self, name)
+	if skin_mod == "skins" or skin_mod == "u_skins" then
+		return armor:get_player_skin(name).."_preview.png"
+	end
 end
 
 armor.get_armor_formspec = function(self, name)
@@ -424,7 +430,7 @@ minetest.register_on_joinplayer(function(player)
 			armor.textures[name].skin = skin..".png"
 		end
 	elseif minetest.get_modpath("simple_skins") then
-		skin_mod = "skins"
+		skin_mod = "simple_skins"
 		local skin = skins.skins[name]
 		if skin then
 		    armor.textures[name].skin = skin..".png"
