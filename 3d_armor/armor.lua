@@ -500,28 +500,28 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 							local owner = meta:get_string("owner")
 							local inv = meta:get_inventory()
 							if name == owner then
-								for _,stack in ipairs(drop) do
+								for i, stack in ipairs(drop) do
 									if inv:room_for_item("main", stack) then
 										inv:add_item("main", stack)
+										table.remove(drop, i)
 									end
 								end
 							end
 						end
 					end)
-				else
-					for _,stack in ipairs(drop) do
-						local obj = minetest.add_item(pos, stack)
-						if obj then
-							local x = math.random(1, 5)
-							if math.random(1,2) == 1 then
-								x = -x
-							end
-							local z = math.random(1, 5)
-							if math.random(1,2) == 1 then
-								z = -z
-							end
-							obj:setvelocity({x=1/x, y=obj:getvelocity().y, z=1/z})
+				end
+				for _,stack in ipairs(drop) do
+					local obj = minetest.add_item(pos, stack)
+					if obj then
+						local x = math.random(1, 5)
+						if math.random(1,2) == 1 then
+							x = -x
 						end
+						local z = math.random(1, 5)
+						if math.random(1,2) == 1 then
+							z = -z
+						end
+						obj:setvelocity({x=1/x, y=obj:getvelocity().y, z=1/z})
 					end
 				end
 			end
