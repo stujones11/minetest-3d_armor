@@ -110,17 +110,8 @@ armor.update_player_visuals = function(self, player)
 end
 
 armor.set_player_armor = function(self, player)
-	if not player then
-		return
-	end
-	local name = player:get_player_name()
+	local name, player_inv = armor:get_valid_player(player, "[set_player_armor]")
 	if not name then
-		minetest.log("error", "3d_armor: Player name is nil [set_player_armor]")
-		return
-	end
-	local player_inv = player:get_inventory()
-	if not player_inv then
-		minetest.log("error", "3d_armor: Player inventory is nil [set_player_armor]")
 		return
 	end
 	local armor_texture = "3d_armor_trans.png"
@@ -204,13 +195,8 @@ armor.set_player_armor = function(self, player)
 end
 
 armor.update_armor = function(self, player)
-	if not player then
-		minetest.log("error", "3d_armor: Player reference is nil [update_armor]")
-		return
-	end
-	local name = player:get_player_name()
+	local name, player_inv, armor_inv = armor:get_valid_player(player, "[update_armor]")
 	if not name then
-		minetest.log("error", "3d_armor: Player name is nil[update_armor]")
 		return
 	end
 	local hp = player:get_hp() or 0
@@ -218,15 +204,6 @@ armor.update_armor = function(self, player)
 		return
 	end
 	if self.player_hp[name] > hp then
-		local player_inv = player:get_inventory()
-		local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
-		if not player_inv then
-			minetest.log("error", "3d_armor: Player inventory is nil [update_armor]")
-			return
-		elseif not armor_inv then
-			minetest.log("error", "3d_armor: Detached inventory is nil [update_armor]")
-			return
-		end
 		local heal_max = 0
 		local state = 0
 		local items = 0
@@ -280,10 +257,6 @@ armor.get_preview = function(self, name)
 end
 
 armor.get_armor_formspec = function(self, name)
-	if not name then
-		minetest.log("error", "3d_armor: Player name is nil [get_armor_formspec]")
-		return ""
-	end
 	if not armor.textures[name] then
 		minetest.log("error", "3d_armor: Player texture["..name.."] is nil [get_armor_formspec]")
 		return ""
@@ -299,13 +272,8 @@ armor.get_armor_formspec = function(self, name)
 end
 
 armor.update_inventory = function(self, player)
-	if not player then
-		minetest.log("error", "3d_armor: Player reference is nil [update_inventory]")
-		return
-	end
-	local name = player:get_player_name()
+	local name = armor:get_valid_player(player, "[set_player_armor]")
 	if not name then
-		minetest.log("error", "3d_armor: Player name is nil [update_inventory]")
 		return
 	end
 	if inv_mod == "unified_inventory" then
@@ -323,6 +291,33 @@ armor.update_inventory = function(self, player)
 			player:set_inventory_formspec(formspec)
 		end
 	end
+end
+
+armor.get_valid_player = function(self, player, msg)
+	msg = msg or ""
+	if not player then
+		minetest.log("error", "3d_armor: Player reference is nil "..msg)
+		return
+	end
+	local name = player:get_player_name()
+	if not name then
+		minetest.log("error", "3d_armor: Player name is nil "..msg)
+		return
+	end
+	local pos = player:getpos()
+	local player_inv = player:get_inventory()
+	local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
+	if not pos then
+		minetest.log("error", "3d_armor: Player position is nil "..msg)
+		return
+	elseif not player_inv then
+		minetest.log("error", "3d_armor: Player inventory is nil "..msg)
+		return
+	elseif not armor_inv then
+		minetest.log("error", "3d_armor: Detached armor inventory is nil "..msg)
+		return
+	end
+	return name, player_inv, armor_inv, pos
 end
 
 -- Register Player Model
@@ -347,7 +342,10 @@ default.player_register_model("3d_armor_character.b3d", {
 -- Register Callbacks
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-	local name = player:get_player_name()
+	local name = armor:get_valid_player(player, "[on_player_receive_fields]")
+	if not name then
+		return
+	end
 	if inv_mod == "inventory_plus" and fields.armor then
 		local formspec = armor:get_armor_formspec(name)
 		inventory_plus.set_inventory_formspec(player, formspec)
@@ -467,62 +465,60 @@ end)
 
 if ARMOR_DROP == true or ARMOR_DESTROY == true then
 	minetest.register_on_dieplayer(function(player)
-		local name = player:get_player_name()
-		local pos = player:getpos()
-		if name and pos then
-			local drop = {}
-			local player_inv = player:get_inventory()
-			local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
-			for i=1, player_inv:get_size("armor") do
-				local stack = armor_inv:get_stack("armor", i)
-				if stack:get_count() > 0 then
-					table.insert(drop, stack)
-					armor_inv:set_stack("armor", i, nil)
-					player_inv:set_stack("armor", i, nil)
-				end
+		local name, player_inv, armor_inv, pos = armor:get_valid_player(player, "[on_dieplayer]")
+		if not name then
+			return
+		end
+		local drop = {}
+		for i=1, player_inv:get_size("armor") do
+			local stack = armor_inv:get_stack("armor", i)
+			if stack:get_count() > 0 then
+				table.insert(drop, stack)
+				armor_inv:set_stack("armor", i, nil)
+				player_inv:set_stack("armor", i, nil)
 			end
-			armor:set_player_armor(player)
-			if inv_mod == "unified_inventory" then
-				unified_inventory.set_inventory_formspec(player, "craft")
-			elseif inv_mod == "inventory_plus" then
-				local formspec = inventory_plus.get_formspec(player,"main")
-				inventory_plus.set_inventory_formspec(player, formspec)
-			else
-				armor:update_inventory(player)
-			end
-			if ARMOR_DESTROY == false then
-				if minetest.get_modpath("bones") then
-					minetest.after(ARMOR_BONES_DELAY, function()
-						pos = vector.round(pos)
-						local node = minetest.get_node(pos)
-						if node.name == "bones:bones" then
-							local meta = minetest.get_meta(pos)
-							local owner = meta:get_string("owner")
-							local inv = meta:get_inventory()
-							if name == owner then
-								for i, stack in ipairs(drop) do
-									if inv:room_for_item("main", stack) then
-										inv:add_item("main", stack)
-										table.remove(drop, i)
-									end
+		end
+		armor:set_player_armor(player)
+		if inv_mod == "unified_inventory" then
+			unified_inventory.set_inventory_formspec(player, "craft")
+		elseif inv_mod == "inventory_plus" then
+			local formspec = inventory_plus.get_formspec(player,"main")
+			inventory_plus.set_inventory_formspec(player, formspec)
+		else
+			armor:update_inventory(player)
+		end
+		if ARMOR_DESTROY == false then
+			if minetest.get_modpath("bones") then
+				minetest.after(ARMOR_BONES_DELAY, function()
+					pos = vector.round(pos)
+					local node = minetest.get_node(pos)
+					if node.name == "bones:bones" then
+						local meta = minetest.get_meta(pos)
+						local owner = meta:get_string("owner")
+						local inv = meta:get_inventory()
+						if name == owner then
+							for i, stack in ipairs(drop) do
+								if inv:room_for_item("main", stack) then
+									inv:add_item("main", stack)
+									table.remove(drop, i)
 								end
 							end
 						end
-					end)
-				end
-				for _,stack in ipairs(drop) do
-					local obj = minetest.add_item(pos, stack)
-					if obj then
-						local x = math.random(1, 5)
-						if math.random(1,2) == 1 then
-							x = -x
-						end
-						local z = math.random(1, 5)
-						if math.random(1,2) == 1 then
-							z = -z
-						end
-						obj:setvelocity({x=1/x, y=obj:getvelocity().y, z=1/z})
 					end
+				end)
+			end
+			for _,stack in ipairs(drop) do
+				local obj = minetest.add_item(pos, stack)
+				if obj then
+					local x = math.random(1, 5)
+					if math.random(1,2) == 1 then
+						x = -x
+					end
+					local z = math.random(1, 5)
+					if math.random(1,2) == 1 then
+						z = -z
+					end
+					obj:setvelocity({x=1/x, y=obj:getvelocity().y, z=1/z})
 				end
 			end
 		end
