@@ -464,6 +464,21 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 if ARMOR_DROP == true or ARMOR_DESTROY == true then
+	armor.drop_armor = function(pos, stack)
+		local obj = minetest.add_item(pos, stack)
+		if obj then
+			local x = math.random(1, 5)
+			if math.random(1,2) == 1 then
+				x = -x
+			end
+			local z = math.random(1, 5)
+			if math.random(1,2) == 1 then
+				z = -z
+			end
+			obj:setvelocity({x=1/x, y=obj:getvelocity().y, z=1/z})
+		end
+	end
+
 	minetest.register_on_dieplayer(function(player)
 		local name, player_inv, armor_inv, pos = armor:get_valid_player(player, "[on_dieplayer]")
 		if not name then
@@ -488,37 +503,26 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 			armor:update_inventory(player)
 		end
 		if ARMOR_DESTROY == false then
-			if minetest.get_modpath("bones") then
-				minetest.after(ARMOR_BONES_DELAY, function()
-					pos = vector.round(pos)
-					local node = minetest.get_node(pos)
-					if node.name == "bones:bones" then
-						local meta = minetest.get_meta(pos)
-						local owner = meta:get_string("owner")
-						local inv = meta:get_inventory()
-						if name == owner then
-							for _,stack in ipairs(drop) do
-								if inv:room_for_item("main", stack) then
-									inv:add_item("main", stack)
-								else
-									local obj = minetest.add_item(pos, stack)
-									if obj then
-										local x = math.random(1, 5)
-										if math.random(1,2) == 1 then
-											x = -x
-										end
-										local z = math.random(1, 5)
-										if math.random(1,2) == 1 then
-											z = -z
-										end
-										obj:setvelocity({x=1/x, y=obj:getvelocity().y, z=1/z})
-									end
-								end
-							end
+			minetest.after(ARMOR_BONES_DELAY, function()
+				pos = vector.round(pos)
+				local node = minetest.get_node(pos)
+				if node and node.name == "bones:bones" then
+					local meta = minetest.get_meta(pos)
+					local owner = meta:get_string("owner")
+					local inv = meta:get_inventory()
+					for _,stack in ipairs(drop) do
+						if name == owner and inv:room_for_item("main", stack) then
+							inv:add_item("main", stack)
+						else
+							armor.drop_armor(pos, stack)
 						end
 					end
-				end)
-			end
+				else
+					for _,stack in ipairs(drop) do
+						armor.drop_armor(pos, stack)
+					end
+				end
+			end)
 		end
 	end)
 end
