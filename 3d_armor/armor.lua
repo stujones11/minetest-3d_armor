@@ -88,6 +88,8 @@ elseif minetest.get_modpath("simple_skins") then
 	skin_mod = "simple_skins"
 elseif minetest.get_modpath("u_skins") then
 	skin_mod = "u_skins"
+elseif minetest.get_modpath("wardrobe") then
+	skin_mod = "wardrobe"
 end
 
 armor.def = {
@@ -246,6 +248,8 @@ armor.get_player_skin = function(self, name)
 		skin = skins.skins[name]
 	elseif skin_mod == "u_skins" then
 		skin = u_skins.u_skins[name]
+	elseif skin_mod == "wardrobe" then
+		skin = string.gsub(wardrobe.playerSkins[name], '\.png$','')
 	end
 	return skin or armor.default_skin
 end
@@ -342,6 +346,7 @@ default.player_register_model("3d_armor_character.b3d", {
 -- Register Callbacks
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
+
 	local name = armor:get_valid_player(player, "[on_player_receive_fields]")
 	if not name then
 		return
@@ -443,6 +448,11 @@ minetest.register_on_joinplayer(function(player)
 		local skin = u_skins.u_skins[name]
 		if skin and u_skins.get_type(skin) == u_skins.type.MODEL then
 			armor.textures[name].skin = skin..".png"
+		end
+	elseif skin_mod == "wardrobe" then
+		local skin = wardrobe.playerSkins[name]
+		if skin then
+			armor.textures[name].skin = skin
 		end
 	end
 	if minetest.get_modpath("player_textures") then
