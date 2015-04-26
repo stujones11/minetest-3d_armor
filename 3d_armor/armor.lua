@@ -80,6 +80,8 @@ elseif minetest.get_modpath("unified_inventory") then
 			return {formspec=formspec}
 		end,
 	})
+elseif minetest.get_modpath("inventory_enhanced") then
+	inv_mod = "inventory_enhanced"
 end
 
 if minetest.get_modpath("skins") then
@@ -277,7 +279,7 @@ end
 
 armor.update_inventory = function(self, player)
 	local name = armor:get_valid_player(player, "[set_player_armor]")
-	if not name then
+	if not name or inv_mod == "inventory_enhanced" then
 		return
 	end
 	if inv_mod == "unified_inventory" then
@@ -348,7 +350,7 @@ default.player_register_model("3d_armor_character.b3d", {
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	local name = armor:get_valid_player(player, "[on_player_receive_fields]")
-	if not name then
+	if not name or inv_mod == "inventory_enhanced" then
 		return
 	end
 	if inv_mod == "inventory_plus" and fields.armor then
