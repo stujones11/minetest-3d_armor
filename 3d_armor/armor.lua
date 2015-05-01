@@ -251,7 +251,7 @@ armor.get_player_skin = function(self, name)
 	elseif skin_mod == "u_skins" then
 		skin = u_skins.u_skins[name]
 	elseif skin_mod == "wardrobe" then
-		skin = string.gsub(wardrobe.playerSkins[name], '\.png$','')
+		skin = string.gsub(wardrobe.playerSkins[name], "%.png$","")
 	end
 	return skin or armor.default_skin
 end
