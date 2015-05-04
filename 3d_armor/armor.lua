@@ -14,6 +14,16 @@ ARMOR_MATERIALS = {
 	diamond = "default:diamond",
 	gold = "default:gold_ingot",
 	mithril = "moreores:mithril_ingot",
+	crystal = "ethereal:crystal_ingot",
+}
+ARMOR_FIRE_PROTECT = minetest.get_modpath("ethereal") ~= nil
+ARMOR_FIRE_NODES = {
+	{"default:lava_source",     5, 4},
+	{"default:lava_flowing",    5, 4},
+	{"fire:basic_flame",        3, 4},
+	{"ethereal:crystal_spike",  2, 1},
+	{"bakedclay:safe_fire",     2, 1},
+	{"default:torch",           1, 1},
 }
 
 local skin_mod = nil
@@ -36,7 +46,20 @@ end
 if not minetest.get_modpath("moreores") then
 	ARMOR_MATERIALS.mithril = nil
 end
+if not minetest.get_modpath("ethereal") then
+	ARMOR_MATERIALS.crystal = nil
+end
 
+-- override hot nodes so they do not hurt player anywhere but mod
+if ARMOR_FIRE_PROTECT == true then
+	minetest.after(2, function()
+		for _, row in ipairs(ARMOR_FIRE_NODES) do
+			if minetest.registered_nodes[row[1]] then
+				minetest.override_item(row[1], {damage_per_second = 0})
+			end
+		end
+	end)
+end
 
 local time = 0
 
@@ -61,6 +84,7 @@ if minetest.get_modpath("inventory_plus") then
 		.."image[2.5,0.75;2,4;armor_preview]"
 		.."label[5,1;Level: armor_level]"
 		.."label[5,1.5;Heal:  armor_heal]"
+		.."label[5,2;Fire:  armor_fire]"
 		.."list[current_player;main;0,4.5;8,4;]"
 elseif minetest.get_modpath("unified_inventory") then
 	inv_mod = "unified_inventory"
@@ -77,6 +101,7 @@ elseif minetest.get_modpath("unified_inventory") then
 				.."image[2.5,0.75;2,4;"..armor.textures[name].preview.."]"
 				.."label[5,1;Level: "..armor.def[name].level.."]"
 				.."label[5,1.5;Heal:  "..armor.def[name].heal.."]"
+				.."label[5,2;Fire:  "..armor.def[name].fire.."]"
 			return {formspec=formspec}
 		end,
 	})
@@ -121,6 +146,7 @@ armor.set_player_armor = function(self, player)
 	local armor_texture = "3d_armor_trans.png"
 	local armor_level = 0
 	local armor_heal = 0
+	local armor_fire = 0
 	local state = 0
 	local items = 0
 	local elements = {}
@@ -148,6 +174,8 @@ armor.set_player_armor = function(self, player)
 						items = items + 1
 						local heal = def.groups["armor_heal"] or 0
 						armor_heal = armor_heal + heal
+						local fire = def.groups["armor_fire"] or 0
+						armor_fire = armor_fire + fire
 						for kk,vv in ipairs(self.physics) do
 							local o_value = def.groups["physics_"..vv]
 							if o_value then
@@ -195,15 +223,32 @@ armor.set_player_armor = function(self, player)
 	self.def[name].jump = physics_o.jump
 	self.def[name].speed = physics_o.speed
 	self.def[name].gravity = physics_o.gravity
+	self.def[name].fire = armor_fire
 	self:update_player_visuals(player)
 end
 
-armor.update_armor = function(self, player)
-	local name, player_inv, armor_inv = armor:get_valid_player(player, "[update_armor]")
+armor.update_armor = function(self, player, dtime)
+	local name, player_inv, armor_inv, pos = armor:get_valid_player(player, "[update_armor]")
 	if not name then
 		return
 	end
 	local hp = player:get_hp() or 0
+	if ARMOR_FIRE_PROTECT == true then
+		pos.y = pos.y + 1.4 -- head level
+		local node_head = minetest.get_node(pos).name
+		pos.y = pos.y - 1.2 -- feet level
+		local node_feet = minetest.get_node(pos).name
+		-- is player inside a hot node?
+		for _, row in ipairs(ARMOR_FIRE_NODES) do
+			-- check for fire protection, if not enough then get hurt
+			if row[1] == node_head or row[1] == node_feet then
+				if hp > 0 and armor.def[name].fire < row[2] then
+					player:set_hp(hp - row[3] * dtime)
+					break
+				end
+			end
+		end
+	end	
 	if hp == 0 or hp == self.player_hp[name] then
 		return
 	end
@@ -274,7 +319,9 @@ armor.get_armor_formspec = function(self, name)
 	local formspec = armor.formspec:gsub("player_name", name)
 	formspec = formspec:gsub("armor_preview", armor.textures[name].preview)
 	formspec = formspec:gsub("armor_level", armor.def[name].level)
-	return formspec:gsub("armor_heal", armor.def[name].heal)
+	formspec = formspec:gsub("armor_heal", armor.def[name].heal)
+	formspec = formspec:gsub("armor_fire", armor.def[name].fire)
+	return formspec
 end
 
 armor.update_inventory = function(self, player)
@@ -348,7 +395,6 @@ default.player_register_model("3d_armor_character.b3d", {
 -- Register Callbacks
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-
 	local name = armor:get_valid_player(player, "[on_player_receive_fields]")
 	if not name or inv_mod == "inventory_enhanced" then
 		return
@@ -373,7 +419,7 @@ minetest.register_on_joinplayer(function(player)
 	default.player_set_model(player, "3d_armor_character.b3d")
 	local name = player:get_player_name()
 	local player_inv = player:get_inventory()
-	local armor_inv = minetest.create_detached_inventory(name.."_armor",{
+	local armor_inv = minetest.create_detached_inventory(name.."_armor", {
 		on_put = function(inv, listname, index, stack, player)
 			player:get_inventory():set_stack(listname, index, stack)
 			armor:set_player_armor(player)
@@ -429,6 +475,7 @@ minetest.register_on_joinplayer(function(player)
 		jump = 1,
 		speed = 1,
 		gravity = 1,
+		fire = 0,
 	}
 	armor.textures[name] = {
 		skin = armor.default_skin..".png",
@@ -490,7 +537,6 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 			obj:setvelocity({x=1/x, y=obj:getvelocity().y, z=1/z})
 		end
 	end
-
 	minetest.register_on_dieplayer(function(player)
 		local name, player_inv, armor_inv, pos = armor:get_valid_player(player, "[on_dieplayer]")
 		if not name then
@@ -545,7 +591,7 @@ minetest.register_globalstep(function(dtime)
 	time = time + dtime
 	if time > ARMOR_UPDATE_TIME then
 		for _,player in ipairs(minetest.get_connected_players()) do
-			armor:update_armor(player)
+			armor:update_armor(player, time)
 		end
 		time = 0
 	end

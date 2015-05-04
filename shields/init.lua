@@ -100,6 +100,15 @@ if ARMOR_MATERIALS.mithril then
 	})
 end
 
+if ARMOR_MATERIALS.crystal then
+	minetest.register_tool("shields:shield_crystal", {
+		description = "Crystal Shield",
+		inventory_image = "shields_inv_shield_crystal.png",
+		groups = {armor_shield=15, armor_heal=12, armor_use=50, armor_fire=1},
+		wear = 0,
+	})
+end
+
 for k, v in pairs(ARMOR_MATERIALS) do
 	minetest.register_craft({
 		output = "shields:shield_"..k,

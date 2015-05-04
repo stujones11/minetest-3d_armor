@@ -11,6 +11,9 @@ a player's armor group level making them less vulnerable to weapons.
 Armor takes damage when a player is hurt but also offers a percentage chance of healing.
 Overall level is boosted by 10% when wearing a full matching set.
 
+Fire protection added by TenPlus1 when using crystal armor if Ethereal mod active, level 1
+protects against torches, level 2 for crystal spike, level 3 for fire, level 5 for lava.
+
 Configuration
 -------------
 

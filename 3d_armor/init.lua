@@ -191,6 +191,33 @@ if ARMOR_MATERIALS.mithril then
 	})
 end
 
+if ARMOR_MATERIALS.crystal then
+	minetest.register_tool("3d_armor:helmet_crystal", {
+		description = "Crystal Helmet",
+		inventory_image = "3d_armor_inv_helmet_crystal.png",
+		groups = {armor_head=15, armor_heal=12, armor_use=50, armor_fire=1},
+		wear = 0,
+	})
+	minetest.register_tool("3d_armor:chestplate_crystal", {
+		description = "Crystal Chestplate",
+		inventory_image = "3d_armor_inv_chestplate_crystal.png",
+		groups = {armor_torso=20, armor_heal=12, armor_use=50, armor_fire=1},
+		wear = 0,
+	})
+	minetest.register_tool("3d_armor:leggings_crystal", {
+		description = "Crystal Leggings",
+		inventory_image = "3d_armor_inv_leggings_crystal.png",
+		groups = {armor_legs=20, armor_heal=12, armor_use=50, armor_fire=1},
+		wear = 0,
+	})
+	minetest.register_tool("3d_armor:boots_crystal", {
+		description = "Crystal Boots",
+		inventory_image = "3d_armor_inv_boots_crystal.png",
+		groups = {armor_feet=15, armor_heal=12, armor_use=50, physics_speed=1, physics_jump=0.5, armor_fire=1},
+		wear = 0,
+	})
+end
+
 for k, v in pairs(ARMOR_MATERIALS) do
 	minetest.register_craft({
 		output = "3d_armor:helmet_"..k,
