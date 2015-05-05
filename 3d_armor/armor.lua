@@ -526,15 +526,7 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 	armor.drop_armor = function(pos, stack)
 		local obj = minetest.add_item(pos, stack)
 		if obj then
-			local x = math.random(1, 5)
-			if math.random(1,2) == 1 then
-				x = -x
-			end
-			local z = math.random(1, 5)
-			if math.random(1,2) == 1 then
-				z = -z
-			end
-			obj:setvelocity({x=1/x, y=obj:getvelocity().y, z=1/z})
+			obj:setvelocity({x=math.random(-1, 1), y=5, z=math.random(-1, 1)})
 		end
 	end
 	minetest.register_on_dieplayer(function(player)
