@@ -555,11 +555,10 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 		end
 		if ARMOR_DESTROY == false then
 			minetest.after(ARMOR_BONES_DELAY, function()
-				pos = vector.round(pos)
-				local node = minetest.get_node(pos)
+				local node = minetest.get_node(vector.round(pos))
 				if node then
 					if node.name == "bones:bones" then
-						local meta = minetest.get_meta(pos)
+						local meta = minetest.get_meta(vector.round(pos))
 						local owner = meta:get_string("owner")
 						local inv = meta:get_inventory()
 						for _,stack in ipairs(drop) do
