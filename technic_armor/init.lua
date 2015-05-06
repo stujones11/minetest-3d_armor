@@ -77,5 +77,25 @@ if minetest.get_modpath("technic") then
 			},
 		})
 	end
+
+	if minetest.get_modpath("shields") then
+		for k, v in pairs(stats) do
+			minetest.register_tool("technic_armor:shield_"..k, {
+				description = v.name.." Shield",
+				inventory_image = "technic_armor_inv_shield_"..k..".png",
+				groups = {armor_shield=math.floor(5*v.armor), armor_heal=v.heal, armor_use=v.use},
+				wear = 0,
+			})
+			local m = mats[k]
+			minetest.register_craft({
+				output = "technic_armor:shield_"..k,
+				recipe = {
+					{m, m, m},
+					{m, m, m},
+					{"", m, ""},
+				},
+			})
+		end
+	end
 end
 
