@@ -243,13 +243,14 @@ armor.update_armor = function(self, player, dtime)
 			-- check for fire protection, if not enough then get hurt
 			if row[1] == node_head or row[1] == node_feet then
 				if hp > 0 and armor.def[name].fire < row[2] then
-					player:set_hp(hp - row[3] * dtime)
+					hp = hp - row[3] * dtime
+					player:set_hp(hp)
 					break
 				end
 			end
 		end
 	end	
-	if hp == 0 or hp == self.player_hp[name] then
+	if hp <= 0 or hp == self.player_hp[name] then
 		return
 	end
 	if self.player_hp[name] > hp then
