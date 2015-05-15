@@ -233,7 +233,7 @@ armor.update_armor = function(self, player, dtime)
 		return
 	end
 	local hp = player:get_hp() or 0
-	if ARMOR_FIRE_PROTECT == true then
+	if ARMOR_FIRE_PROTECT == true and dtime then
 		pos.y = pos.y + 1.4 -- head level
 		local node_head = minetest.get_node(pos).name
 		pos.y = pos.y - 1.2 -- feet level
