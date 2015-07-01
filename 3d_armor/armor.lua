@@ -102,6 +102,15 @@ elseif minetest.get_modpath("unified_inventory") then
 				.."label[5,1;Level: "..armor.def[name].level.."]"
 				.."label[5,1.5;Heal:  "..armor.def[name].heal.."]"
 				.."label[5,2;Fire:  "..armor.def[name].fire.."]"
+			if minetest.setting_getbool("unified_inventory_lite") then
+				formspec = "background[0.06,0.49;7.92,7.52;3d_armor_ui_form.png]"
+					.."label[0,0;Armor]"
+					.."list[detached:"..name.."_armor;armor;0,0.5;2,3;]"
+					.."image[2.5,0.25;2,4;"..armor.textures[name].preview.."]"
+					.."label[5,0.5;Level: "..armor.def[name].level.."]"
+					.."label[5,1;Heal:  "..armor.def[name].heal.."]"
+					.."label[5,1.5;Fire:  "..armor.def[name].fire.."]"
+			end
 			return {formspec=formspec}
 		end,
 	})
