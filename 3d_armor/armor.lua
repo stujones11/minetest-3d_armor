@@ -52,13 +52,11 @@ end
 
 -- override hot nodes so they do not hurt player anywhere but mod
 if ARMOR_FIRE_PROTECT == true then
-	minetest.after(2, function()
-		for _, row in ipairs(ARMOR_FIRE_NODES) do
-			if minetest.registered_nodes[row[1]] then
-				minetest.override_item(row[1], {damage_per_second = 0})
-			end
+	for _, row in ipairs(ARMOR_FIRE_NODES) do
+		if minetest.registered_nodes[row[1]] then
+			minetest.override_item(row[1], {damage_per_second = 0})
 		end
-	end)
+	end
 end
 
 local time = 0
