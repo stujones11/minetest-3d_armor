@@ -72,7 +72,7 @@ armor = {
 		.."list[current_player;craftpreview;7,2;1,1;]",
 	textures = {},
 	default_skin = "character",
-	version = "0.4.3",
+	version = "0.4.4",
 }
 
 if minetest.get_modpath("inventory_plus") then
