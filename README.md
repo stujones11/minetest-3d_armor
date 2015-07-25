@@ -33,10 +33,18 @@ depends: 3d_armor
 Makes hand wielded items visible to other players.
 
 [mod] Shields [shields]
--------------------------------------
+-----------------------
 
 depends: 3d_armor
 
 Originally a part of 3d_armor, shields have been re-included as an optional extra.
 If you do not want shields then simply remove the shields folder from the modpack.
+
+[mod] Technic Armor [technic_armor]
+-----------------------------------
+
+depends: 3d_armor
+
+Adds tin, silver and technic materials to 3d_armor.
+Requires technic mod to be installed for craft registration.
 

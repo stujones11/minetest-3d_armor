@@ -1,3 +1,6 @@
+[mod] Technic Armor [technic_armor]
+===================================
+
 Adds tin, silver and technic materials to 3d_armor.
 Requires technic mod to be installed for craft registration.
 
