@@ -21,9 +21,11 @@ if minetest.get_modpath("moreores") then
 	mats.silver = "moreores:silver_ingot"
 end
 
+local get_radiation_resistance = technic.get_node_radiation_resistance or function() return 0 end
+
 for k, v in pairs(stats) do
 	local mat = mats[k]
-	local rad_resist = technic.get_node_radiation_resistance(mat)
+	local rad_resist = get_radiation_resistance(mat)
 
 	minetest.register_tool("technic_armor:helmet_"..k, {
 		description = v.name.." Helmet",
