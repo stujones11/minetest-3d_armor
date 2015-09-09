@@ -84,6 +84,10 @@ if minetest.get_modpath("inventory_plus") then
 		.."label[5,1.5;Heal:  armor_heal]"
 		.."label[5,2;Fire:  armor_fire]"
 		.."list[current_player;main;0,4.5;8,4;]"
+	if minetest.get_modpath("crafting") then
+		inventory_plus.get_formspec = function(player, page)
+		end
+	end
 elseif minetest.get_modpath("unified_inventory") then
 	inv_mod = "unified_inventory"
 	unified_inventory.register_button("armor", {
