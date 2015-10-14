@@ -65,8 +65,7 @@ armor = {
 	player_hp = {},
 	elements = {"head", "torso", "legs", "feet"},
 	physics = {"jump","speed","gravity"},
-	formspec = "size[8,8.5]list[detached:player_name_armor;armor;0,1;2,3;]"
-		.."image[2,0.75;2,4;armor_preview]"
+	formspec = "size[8,8.5]image[2,0.75;2,4;armor_preview]"
 		.."list[current_player;main;0,4.5;8,4;]"
 		.."list[current_player;craft;4,1;3,3;]"
 		.."list[current_player;craftpreview;7,2;1,1;]",
@@ -78,7 +77,6 @@ armor = {
 if minetest.get_modpath("inventory_plus") then
 	inv_mod = "inventory_plus"
 	armor.formspec = "size[8,8.5]button[0,0;2,0.5;main;Back]"
-		.."list[detached:player_name_armor;armor;0,1;2,3;]"
 		.."image[2.5,0.75;2,4;armor_preview]"
 		.."label[5,1;Level: armor_level]"
 		.."label[5,1.5;Heal:  armor_heal]"
@@ -328,7 +326,7 @@ armor.get_armor_formspec = function(self, name)
 		minetest.log("error", "3d_armor: Armor def["..name.."] is nil [get_armor_formspec]")
 		return ""
 	end
-	local formspec = armor.formspec:gsub("player_name", name)
+	local formspec = armor.formspec.."list[detached:"..name.."_armor;armor;0,1;2,3;]"
 	formspec = formspec:gsub("armor_preview", armor.textures[name].preview)
 	formspec = formspec:gsub("armor_level", armor.def[name].level)
 	formspec = formspec:gsub("armor_heal", armor.def[name].heal)
