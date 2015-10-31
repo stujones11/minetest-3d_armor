@@ -43,7 +43,7 @@ If you do not want shields then simply remove the shields folder from the modpac
 [mod] Technic Armor [technic_armor]
 -----------------------------------
 
-depends: 3d_armor
+depends: 3d_armor, technic
 
 Adds tin, silver and technic materials to 3d_armor.
 Requires technic mod to be installed for craft registration.
