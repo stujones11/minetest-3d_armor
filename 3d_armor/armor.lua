@@ -73,7 +73,7 @@ armor = {
 		.."listring[current_player;craft]",
 	textures = {},
 	default_skin = "character",
-	version = "0.4.4",
+	version = "0.4.5",
 }
 
 if minetest.get_modpath("inventory_plus") then
@@ -465,14 +465,6 @@ minetest.register_on_joinplayer(function(player)
 		local stack = player_inv:get_stack("armor", i)
 		armor_inv:set_stack("armor", i, stack)
 	end	
-
-	-- Legacy support, import player's armor from old inventory format
-	for _,v in pairs(armor.elements) do
-		local list = "armor_"..v
-		armor_inv:add_item("armor", player_inv:get_stack(list, 1))
-		player_inv:set_stack(list, 1, nil)
-	end
-	-- TODO Remove this on the next version upate
 
 	armor.player_hp[name] = 0
 	armor.def[name] = {
