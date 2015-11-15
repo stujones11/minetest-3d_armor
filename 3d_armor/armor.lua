@@ -93,24 +93,16 @@ elseif minetest.get_modpath("unified_inventory") then
 		image = "inventory_plus_armor.png",
 	})
 	unified_inventory.register_page("armor", {
-		get_formspec = function(player)
+		get_formspec = function(player, perplayer_formspec)
+			local fy = perplayer_formspec.formspec_y
 			local name = player:get_player_name()
-			local formspec = "background[0.06,0.99;7.92,7.52;3d_armor_ui_form.png]"
+			local formspec = "background[0.06,"..fy..";7.92,7.52;3d_armor_ui_form.png]"
 				.."label[0,0;Armor]"
-				.."list[detached:"..name.."_armor;armor;0,1;2,3;]"
-				.."image[2.5,0.75;2,4;"..armor.textures[name].preview.."]"
-				.."label[5,1;Level: "..armor.def[name].level.."]"
-				.."label[5,1.5;Heal:  "..armor.def[name].heal.."]"
-				.."label[5,2;Fire:  "..armor.def[name].fire.."]"
-			if minetest.setting_getbool("unified_inventory_lite") then
-				formspec = "background[0.06,0.49;7.92,7.52;3d_armor_ui_form.png]"
-					.."label[0,0;Armor]"
-					.."list[detached:"..name.."_armor;armor;0,0.5;2,3;]"
-					.."image[2.5,0.25;2,4;"..armor.textures[name].preview.."]"
-					.."label[5,0.5;Level: "..armor.def[name].level.."]"
-					.."label[5,1;Heal:  "..armor.def[name].heal.."]"
-					.."label[5,1.5;Fire:  "..armor.def[name].fire.."]"
-			end
+				.."list[detached:"..name.."_armor;armor;0,"..fy..";2,3;]"
+				.."image[2.5,"..(fy - 0.25)..";2,4;"..armor.textures[name].preview.."]"
+				.."label[5.0,"..(fy + 0.0)..";Level: "..armor.def[name].level.."]"
+				.."label[5.0,"..(fy + 0.5)..";Heal:  "..armor.def[name].heal.."]"
+				.."label[5.0,"..(fy + 1.0)..";Fire:  "..armor.def[name].fire.."]"
 			return {formspec=formspec}
 		end,
 	})
