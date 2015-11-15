@@ -68,7 +68,9 @@ armor = {
 	formspec = "size[8,8.5]image[2,0.75;2,4;armor_preview]"
 		.."list[current_player;main;0,4.5;8,4;]"
 		.."list[current_player;craft;4,1;3,3;]"
-		.."list[current_player;craftpreview;7,2;1,1;]",
+		.."list[current_player;craftpreview;7,2;1,1;]"
+		.."listring[current_player;main]"
+		.."listring[current_player;craft]",
 	textures = {},
 	default_skin = "character",
 	version = "0.4.4",
@@ -103,6 +105,8 @@ elseif minetest.get_modpath("unified_inventory") then
 				.."label[5.0,"..(fy + 0.0)..";Level: "..armor.def[name].level.."]"
 				.."label[5.0,"..(fy + 0.5)..";Heal:  "..armor.def[name].heal.."]"
 				.."label[5.0,"..(fy + 1.0)..";Fire:  "..armor.def[name].fire.."]"
+				.."listring[current_player;main]"
+				.."listring[detached:"..name.."_armor;armor]"
 			return {formspec=formspec}
 		end,
 	})
@@ -338,6 +342,8 @@ armor.update_inventory = function(self, player)
 	else
 		local formspec = armor:get_armor_formspec(name)
 		if inv_mod == "inventory_plus" then
+			formspec = formspec.."listring[current_player;main]"
+				.."listring[detached:"..name.."_armor;armor]"
 			local page = player:get_inventory_formspec()
 			if page:find("detached:"..name.."_armor") then
 				inventory_plus.set_inventory_formspec(player, formspec)
