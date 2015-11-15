@@ -22,7 +22,7 @@ ARMOR_FIRE_NODES = {
 	{"default:lava_flowing",    5, 4},
 	{"fire:basic_flame",        3, 4},
 	{"ethereal:crystal_spike",  2, 1},
-	{"bakedclay:safe_fire",     2, 1},
+	{"xanadu:safe_fire",        2, 1},
 	{"default:torch",           1, 1},
 }
 
@@ -84,6 +84,7 @@ if minetest.get_modpath("inventory_plus") then
 		.."label[5,1.5;Heal:  armor_heal]"
 		.."label[5,2;Fire:  armor_fire]"
 		.."list[current_player;main;0,4.5;8,4;]"
+		.."listring[]"
 	if minetest.get_modpath("crafting") then
 		inventory_plus.get_formspec = function(player, page)
 		end
