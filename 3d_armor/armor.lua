@@ -21,8 +21,9 @@ ARMOR_FIRE_NODES = {
 	{"default:lava_source",     5, 4},
 	{"default:lava_flowing",    5, 4},
 	{"fire:basic_flame",        3, 4},
+	{"fire:permanent_flame",    3, 4},
 	{"ethereal:crystal_spike",  2, 1},
-	{"bakedclay:safe_fire",     2, 1},
+	{"ethereal:fire_flower",    2, 1},
 	{"default:torch",           1, 1},
 }
 
@@ -95,8 +96,11 @@ elseif minetest.get_modpath("unified_inventory") then
 		image = "inventory_plus_armor.png",
 	})
 	unified_inventory.register_page("armor", {
-		get_formspec = function(player, perplayer_formspec)
-			local fy = perplayer_formspec.formspec_y
+		get_formspec = function(player)
+			local fy = 1
+			if unified_inventory.lite_mode then
+				fy = 0.5
+			end
 			local name = player:get_player_name()
 			local formspec = "background[0.06,"..fy..";7.92,7.52;3d_armor_ui_form.png]"
 				.."label[0,0;Armor]"
