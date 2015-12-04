@@ -171,10 +171,7 @@ armor.set_player_armor = function(self, player)
 				if v == false then
 					local level = def.groups["armor_"..k]
 					if level then
-						local texture = def.texture
-						if not texture then
-							texture = item:gsub("%:", "_")
-						end
+						local texture = def.texture or item:gsub("%:", "_")
 						table.insert(textures, texture..".png")
 						preview = preview.."^"..texture.."_preview.png"
 						armor_level = armor_level + level
