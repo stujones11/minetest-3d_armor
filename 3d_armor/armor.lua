@@ -50,19 +50,8 @@ if not minetest.get_modpath("ethereal") then
 	ARMOR_MATERIALS.crystal = nil
 end
 
--- override hot nodes so they do not hurt player anywhere but mod
-if ARMOR_FIRE_PROTECT == true then
-	for _, row in ipairs(ARMOR_FIRE_NODES) do
-		if minetest.registered_nodes[row[1]] then
-			minetest.override_item(row[1], {damage_per_second = 0})
-		end
-	end
-end
-
-local time = 0
-
 armor = {
-	player_hp = {},
+	timer = 0,
 	elements = {"head", "torso", "legs", "feet"},
 	physics = {"jump","speed","gravity"},
 	formspec = "size[8,8.5]image[2,0.75;2,4;armor_preview]"
@@ -233,66 +222,8 @@ armor.set_player_armor = function(self, player)
 end
 
 armor.update_armor = function(self, player)
-	local name, player_inv, armor_inv, pos = armor:get_valid_player(player, "[update_armor]")
-	if not name then
-		return
-	end
-	local hp = player:get_hp() or 0
-	if ARMOR_FIRE_PROTECT == true then
-		pos.y = pos.y + 1.4 -- head level
-		local node_head = minetest.get_node(pos).name
-		pos.y = pos.y - 1.2 -- feet level
-		local node_feet = minetest.get_node(pos).name
-		-- is player inside a hot node?
-		for _, row in ipairs(ARMOR_FIRE_NODES) do
-			-- check for fire protection, if not enough then get hurt
-			if row[1] == node_head or row[1] == node_feet then
-				if hp > 0 and armor.def[name].fire < row[2] then
-					hp = hp - row[3] * ARMOR_UPDATE_TIME
-					player:set_hp(hp)
-					break
-				end
-			end
-		end
-	end	
-	if hp <= 0 or hp == self.player_hp[name] then
-		return
-	end
-	if self.player_hp[name] > hp then
-		local heal_max = 0
-		local state = 0
-		local items = 0
-		for i=1, 6 do
-			local stack = player_inv:get_stack("armor", i)
-			if stack:get_count() > 0 then
-				local use = stack:get_definition().groups["armor_use"] or 0
-				local heal = stack:get_definition().groups["armor_heal"] or 0
-				local item = stack:get_name()
-				stack:add_wear(use)
-				armor_inv:set_stack("armor", i, stack)
-				player_inv:set_stack("armor", i, stack)
-				state = state + stack:get_wear()
-				items = items + 1
-				if stack:get_count() == 0 then
-					local desc = minetest.registered_items[item].description
-					if desc then
-						minetest.chat_send_player(name, "Your "..desc.." got destroyed!")
-					end
-					self:set_player_armor(player)
-					armor:update_inventory(player)
-				end
-				heal_max = heal_max + heal
-			end
-		end
-		self.def[name].state = state
-		self.def[name].count = items
-		heal_max = heal_max * ARMOR_HEAL_MULTIPLIER
-		if heal_max > math.random(100) then
-			player:set_hp(self.player_hp[name])
-			return
-		end
-	end
-	self.player_hp[name] = hp
+	-- Legacy support: Called when armor levels are changed
+	-- Other mods can hook on to this function, see hud mod for example 
 end
 
 armor.get_player_skin = function(self, name)
@@ -465,8 +396,6 @@ minetest.register_on_joinplayer(function(player)
 		local stack = player_inv:get_stack("armor", i)
 		armor_inv:set_stack("armor", i, stack)
 	end	
-
-	armor.player_hp[name] = 0
 	armor.def[name] = {
 		state = 0,
 		count = 0,
@@ -491,7 +420,7 @@ minetest.register_on_joinplayer(function(player)
 	elseif skin_mod == "simple_skins" then
 		local skin = skins.skins[name]
 		if skin then
-		    armor.textures[name].skin = skin..".png"
+			armor.textures[name].skin = skin..".png"
 		end
 	elseif skin_mod == "u_skins" then
 		local skin = u_skins.u_skins[name]
@@ -578,13 +507,81 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 	end)
 end
 
-minetest.register_globalstep(function(dtime)
-	time = time + dtime
-	if time > ARMOR_UPDATE_TIME then
-		for _,player in ipairs(minetest.get_connected_players()) do
-			armor:update_armor(player)
+minetest.register_on_player_hpchange(function(player, hp_change)
+	local name, player_inv, armor_inv = armor:get_valid_player(player, "[on_hpchange]")
+	if name and hp_change < 0 then
+		local heal_max = 0
+		local state = 0
+		local items = 0
+		for i=1, 6 do
+			local stack = player_inv:get_stack("armor", i)
+			if stack:get_count() > 0 then
+				local use = stack:get_definition().groups["armor_use"] or 0
+				local heal = stack:get_definition().groups["armor_heal"] or 0
+				local item = stack:get_name()
+				stack:add_wear(use)
+				armor_inv:set_stack("armor", i, stack)
+				player_inv:set_stack("armor", i, stack)
+				state = state + stack:get_wear()
+				items = items + 1
+				if stack:get_count() == 0 then
+					local desc = minetest.registered_items[item].description
+					if desc then
+						minetest.chat_send_player(name, "Your "..desc.." got destroyed!")
+					end
+					armor:set_player_armor(player)
+					armor:update_inventory(player)
+				end
+				heal_max = heal_max + heal
+			end
 		end
-		time = 0
+		armor.def[name].state = state
+		armor.def[name].count = items
+		heal_max = heal_max * ARMOR_HEAL_MULTIPLIER
+		if heal_max > math.random(100) then
+			hp_change = 0
+		end
+		armor:update_armor(player)
 	end
-end)
+	return hp_change
+end, true)
+
+-- Fire Protection, added by TenPlus1
+
+if ARMOR_FIRE_PROTECT == true then
+	-- override hot nodes so they do not hurt player anywhere but mod
+	for _, row in ipairs(ARMOR_FIRE_NODES) do
+		if minetest.registered_nodes[row[1]] then
+			minetest.override_item(row[1], {damage_per_second = 0})
+		end
+	end
+	minetest.register_globalstep(function(dtime)
+		armor.timer = armor.timer + dtime
+		if armor.timer > ARMOR_UPDATE_TIME then
+			for _,player in ipairs(minetest.get_connected_players()) do
+				local name = player:get_player_name()
+				local pos = player:getpos()
+				local hp = player:get_hp()
+				if name and pos and hp then
+					pos.y = pos.y + 1.4 -- head level
+					local node_head = minetest.get_node(pos).name
+					pos.y = pos.y - 1.2 -- feet level
+					local node_feet = minetest.get_node(pos).name
+					-- is player inside a hot node?
+					for _, row in ipairs(ARMOR_FIRE_NODES) do
+						-- check fire protection, if not enough then get hurt
+						if row[1] == node_head or row[1] == node_feet then
+							if hp > 0 and armor.def[name].fire < row[2] then
+								hp = hp - row[3] * ARMOR_UPDATE_TIME
+								player:set_hp(hp)
+								break
+							end
+						end
+					end
+				end
+			end
+			armor.timer = 0
+		end
+	end)
+end
 
