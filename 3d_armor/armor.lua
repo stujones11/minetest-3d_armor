@@ -21,8 +21,9 @@ ARMOR_FIRE_NODES = {
 	{"default:lava_source",     5, 4},
 	{"default:lava_flowing",    5, 4},
 	{"fire:basic_flame",        3, 4},
+	{"fire:permanent_flame",    3, 4},
 	{"ethereal:crystal_spike",  2, 1},
-	{"bakedclay:safe_fire",     2, 1},
+	{"ethereal:fire_flower",    2, 1},
 	{"default:torch",           1, 1},
 }
 
