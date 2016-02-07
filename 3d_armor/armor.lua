@@ -281,7 +281,7 @@ armor.update_inventory = function(self, player)
 			if page:find("detached:"..name.."_armor") then
 				inventory_plus.set_inventory_formspec(player, formspec)
 			end
-		else
+		elseif not core.setting_getbool("creative_mode") then
 			player:set_inventory_formspec(formspec)
 		end
 	end
