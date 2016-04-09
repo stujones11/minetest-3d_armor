@@ -123,10 +123,10 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 	allow_metadata_inventory_move = function(pos)
 		return 0
 	end,
-    on_metadata_inventory_put = function(pos)
+	on_metadata_inventory_put = function(pos)
 		update_entity(pos)
 	end,
-    on_metadata_inventory_take = function(pos)
+	on_metadata_inventory_take = function(pos)
 		update_entity(pos)
 	end,
 	after_destruct = function(pos)
