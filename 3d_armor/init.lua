@@ -7,6 +7,7 @@ ARMOR_DROP = minetest.get_modpath("bones") ~= nil
 ARMOR_DESTROY = false
 ARMOR_LEVEL_MULTIPLIER = 1
 ARMOR_HEAL_MULTIPLIER = 1
+ARMOR_RADIATION_MULTIPLIER = 1
 ARMOR_MATERIALS = {
 	wood = "group:wood",
 	cactus = "default:cactus",
@@ -60,6 +61,7 @@ if minetest.get_modpath("inventory_plus") then
 		"label[3,1.0;Level: armor_level]"..
 		"label[3,1.5;Heal:  armor_heal]"..
 		"label[3,2.0;Fire:  armor_fire]"..
+		"label[3,2.5;Radiation:  armor_radiation]"..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
 		default.get_hotbar_bg(0,4.25)
@@ -84,6 +86,7 @@ elseif minetest.get_modpath("unified_inventory") then
 				"label[3.0,"..(fy + 0.0)..";Level: "..armor.def[name].level.."]"..
 				"label[3.0,"..(fy + 0.5)..";Heal:  "..armor.def[name].heal.."]"..
 				"label[3.0,"..(fy + 1.0)..";Fire:  "..armor.def[name].fire.."]"..
+				"label[3.0,"..(fy + 1.5)..";Radiation:  "..armor.def[name].radiation.."]"..
 				"listring[current_player;main]"..
 				"listring[detached:"..name.."_armor;armor]"
 			return {formspec=formspec}
@@ -236,6 +239,9 @@ minetest.register_on_joinplayer(function(player)
 		fire = 0,
 		water = 0,
 	}
+	for _, attr in pairs(armor.attributes) do
+		armor.def[name][attr] = 0
+	end
 
 	-- Legacy preview support, may be removed from future versions
 	armor.textures[name] = {preview="3d_armor_trans.png"}

@@ -55,3 +55,7 @@ ARMOR_LEVEL_MULTIPLIER = 1
 -- eg: ARMOR_HEAL_MULTIPLIER = 0 will disable healing altogether.
 ARMOR_HEAL_MULTIPLIER = 1
 
+-- You can use this to increase or decrease overall armor radiation protection,
+-- eg: ARMOR_RADIATION_MULTIPLIER = 0 will completely disable radiation protection.
+-- Note: patched technic mod is required
+ARMOR_RADIATION_MULTIPLIER = 1

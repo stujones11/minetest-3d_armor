@@ -55,10 +55,20 @@ If you do not want shields then simply remove the shields folder from the modpac
 [mod] Technic Armor [technic_armor]
 -----------------------------------
 
-Depends: 3d_armor
+Depends: 3d_armor, technic_worldgen
 
-Adds tin, silver and technic materials to 3d_armor.
-Requires technic mod to be installed for craft registration.
+Adds lead, tin, silver and technic materials to 3d_armor.
+Requires technic (technic_worldgen at least) mod.
+
+[mod] Hazmat Suit [hazmat_suit]
+-------------------------------
+
+Depends: 3d_armor, technic
+
+Adds hazmat suit to 3d_armor. It protects from fire (if enabled) and radiation*
+Also features a built-in oxygen supply for underwater breathing.
+
+*Requires patched version of [minetest-technic](https://github.com/minetest-technic/technic/pull/275) to have any effect.
 
 [mod] 3d Armor Stand [3d_armor_stand]
 -------------------------------------
@@ -66,4 +76,3 @@ Requires technic mod to be installed for craft registration.
 Depends: 3d_armor
 
 Adds a chest-like armor stand for armor storage and display.
-

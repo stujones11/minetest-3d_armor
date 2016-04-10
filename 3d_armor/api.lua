@@ -2,7 +2,7 @@ armor = {
 	timer = 0,
 	elements = {"head", "torso", "legs", "feet"},
 	physics = {"jump", "speed", "gravity"},
-	attributes = {"heal", "fire", "water"},
+	attributes = {"heal", "fire", "water", "radiation"},
 	formspec = "size[8,8.5]"..
 		default.gui_bg..
 		default.gui_bg_img..
@@ -36,9 +36,12 @@ armor.set_player_armor = function(self, player)
 	local state = 0
 	local count = 0
 	local level = 0
-	local physics = {speed=1, gravity=1, jump=1}
-	local attributes = {heal=0, fire=0, water=0}
 	local material = {count=1}
+	local physics = {speed=1, gravity=1, jump=1}
+	local attributes = {}
+	for _, attr in pairs(self.attributes) do
+		attributes[attr] = 0
+	end
 	for i=1, 6 do
 		local stack = inv:get_stack("armor", i)
 		local item = stack:get_name()
@@ -82,6 +85,7 @@ armor.set_player_armor = function(self, player)
 	end
 	level = level * ARMOR_LEVEL_MULTIPLIER
 	attributes.heal = attributes.heal * ARMOR_HEAL_MULTIPLIER
+	attributes.radiation = attributes.radiation * ARMOR_RADIATION_MULTIPLIER
 	if #textures > 0 then
 		armor_texture = table.concat(textures, "^")
 	end
