@@ -52,3 +52,10 @@ Depends: 3d_armor, technic_worldgen
 Adds tin, silver and technic materials to 3d_armor.
 Requires technic (technic_worldgen at least) mod.
 
+[mod] Hazmat Suit [hazmat_suit]
+-------------------------------
+
+Depends: 3d_armor, technic
+
+Adds hazmat suit to 3d_armor. It protects rather well from fire (if enabled in configuration) and radiation, and it has built-in oxygen supply.
+Requires technic mod.

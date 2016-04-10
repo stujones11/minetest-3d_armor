@@ -1,0 +1,1 @@
+Adds hazmat suit (protects from water, fire and radiation) to 3d_armor.
