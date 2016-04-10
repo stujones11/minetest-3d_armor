@@ -47,10 +47,18 @@ If you do not want shields then simply remove the shields folder from the modpac
 [mod] Technic Armor [technic_armor]
 -----------------------------------
 
-Depends: 3d_armor
+Depends: 3d_armor, technic_worldgen
 
 Adds tin, silver and technic materials to 3d_armor.
-Requires technic mod to be installed for craft registration.
+Requires technic (technic_worldgen at least) mod.
+
+[mod] Hazmat Suit [hazmat_suit]
+-------------------------------
+
+Depends: 3d_armor, technic
+
+Adds hazmat suit to 3d_armor. It protects rather well from fire (if enabled in configuration) and radiation, and it has built-in oxygen supply.
+Requires technic mod.
 
 [mod] 3d Armor Stand [3d_armor_stand]
 -------------------------------------
@@ -58,4 +66,3 @@ Requires technic mod to be installed for craft registration.
 Depends: 3d_armor
 
 Adds a chest-like armor stand for armor storage and display.
-
