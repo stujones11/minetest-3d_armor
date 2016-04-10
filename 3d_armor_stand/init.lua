@@ -21,14 +21,16 @@ local function update_entity(pos)
 	local node = minetest.get_node(pos)
 	local objects = minetest.get_objects_inside_radius(pos, 1) or {}
 	for _, obj in pairs(objects) do
-		local ent = obj:get_luaentity()
-		if ent then
-			if ent.name == "3d_armor_stand:armor_entity" then
-				-- Remove duplicates
-				if object then
-					obj:remove()
-				else
-					object = obj
+		if vector.equals(obj:getpos(), pos) then
+			local ent = obj:get_luaentity()
+			if ent then
+				if ent.name == "3d_armor_stand:armor_entity" then
+					-- Remove duplicates
+					if object then
+						obj:remove()
+					else
+						object = obj
+					end
 				end
 			end
 		end
