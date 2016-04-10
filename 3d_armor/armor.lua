@@ -6,6 +6,7 @@ ARMOR_DROP = minetest.get_modpath("bones") ~= nil
 ARMOR_DESTROY = false
 ARMOR_LEVEL_MULTIPLIER = 1
 ARMOR_HEAL_MULTIPLIER = 1
+ARMOR_RADIATION_MULTIPLIER = 1
 ARMOR_MATERIALS = {
 	wood = "group:wood",
 	cactus = "default:cactus",
@@ -73,6 +74,7 @@ if minetest.get_modpath("inventory_plus") then
 		.."label[5,1;Level: armor_level]"
 		.."label[5,1.5;Heal:  armor_heal]"
 		.."label[5,2;Fire:  armor_fire]"
+		.."label[5,2.5;Radiation:  armor_radiation]"
 		.."list[current_player;main;0,4.5;8,4;]"
 	if minetest.get_modpath("crafting") then
 		inventory_plus.get_formspec = function(player, page)
@@ -95,6 +97,7 @@ elseif minetest.get_modpath("unified_inventory") then
 				.."label[5.0,"..(fy + 0.0)..";Level: "..armor.def[name].level.."]"
 				.."label[5.0,"..(fy + 0.5)..";Heal:  "..armor.def[name].heal.."]"
 				.."label[5.0,"..(fy + 1.0)..";Fire:  "..armor.def[name].fire.."]"
+				.."label[5.0,"..(fy + 1.5)..";Radiation:  "..armor.def[name].radiation.."]"
 				.."listring[current_player;main]"
 				.."listring[detached:"..name.."_armor;armor]"
 			return {formspec=formspec}
@@ -143,6 +146,7 @@ armor.set_player_armor = function(self, player)
 	local armor_heal = 0
 	local armor_fire = 0
 	local armor_water = 0
+	local armor_radiation = 0
 	local state = 0
 	local items = 0
 	local elements = {}
@@ -171,6 +175,7 @@ armor.set_player_armor = function(self, player)
 						armor_heal = armor_heal + (def.groups["armor_heal"] or 0)
 						armor_fire = armor_fire + (def.groups["armor_fire"] or 0)
 						armor_water = armor_water + (def.groups["armor_water"] or 0)
+						armor_radiation = armor_radiation + (def.groups["armor_radiation"] or 0)
 						for kk,vv in ipairs(self.physics) do
 							local o_value = def.groups["physics_"..vv]
 							if o_value then
@@ -199,6 +204,7 @@ armor.set_player_armor = function(self, player)
 	end
 	armor_level = armor_level * ARMOR_LEVEL_MULTIPLIER
 	armor_heal = armor_heal * ARMOR_HEAL_MULTIPLIER
+	armor_radiation = armor_radiation * ARMOR_RADIATION_MULTIPLIER
 	if #textures > 0 then
 		armor_texture = table.concat(textures, "^")
 	end
@@ -206,6 +212,7 @@ armor.set_player_armor = function(self, player)
 	if armor_level > 0 then
 		armor_groups.level = math.floor(armor_level / 20)
 		armor_groups.fleshy = 100 - armor_level
+		armor_groups.radiation = 100 - armor_radiation
 	end
 	player:set_armor_groups(armor_groups)
 	player:set_physics_override(physics_o)
@@ -220,6 +227,7 @@ armor.set_player_armor = function(self, player)
 	self.def[name].gravity = physics_o.gravity
 	self.def[name].fire = armor_fire
 	self.def[name].water = armor_water
+	self.def[name].radiation = armor_radiation
 	self:update_player_visuals(player)
 end
 
@@ -260,6 +268,7 @@ armor.get_armor_formspec = function(self, name)
 	formspec = formspec:gsub("armor_level", armor.def[name].level)
 	formspec = formspec:gsub("armor_heal", armor.def[name].heal)
 	formspec = formspec:gsub("armor_fire", armor.def[name].fire)
+	formspec = formspec:gsub("armor_radiation", armor.def[name].radiation)
 	return formspec
 end
 
@@ -408,6 +417,7 @@ minetest.register_on_joinplayer(function(player)
 		gravity = 1,
 		fire = 0,
 		water = 0,
+		radiation = 0,
 	}
 	armor.textures[name] = {
 		skin = armor.default_skin..".png",
