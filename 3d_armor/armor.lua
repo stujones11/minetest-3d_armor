@@ -19,8 +19,8 @@ ARMOR_MATERIALS = {
 }
 ARMOR_FIRE_PROTECT = minetest.get_modpath("ethereal") ~= nil
 ARMOR_FIRE_NODES = {
-	{"default:lava_source",     5, 4},
-	{"default:lava_flowing",    5, 4},
+	{"default:lava_source",     5, 8},
+	{"default:lava_flowing",    5, 8},
 	{"fire:basic_flame",        3, 4},
 	{"fire:permanent_flame",    3, 4},
 	{"ethereal:crystal_spike",  2, 1},
