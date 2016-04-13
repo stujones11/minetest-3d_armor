@@ -36,7 +36,7 @@ local function update_entity(pos)
 		end
 	end
 	if object then
-		if node.name ~= "3d_armor_stand:armor_stand" then
+		if node.name ~= "3d_armor_stand:armor_stand" and node.name ~= "3d_armor_stand:locked_armor_stand" then
 			object:remove()
 			return
 		end
@@ -136,6 +136,61 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 	end,
 })
 
+local function has_locked_armor_stand_privilege(meta, player)
+	local name = ""
+	if player then
+		if minetest.check_player_privs(player, "protection_bypass") then
+			return true
+		end
+		name = player:get_player_name()
+	end
+	if name ~= meta:get_string("owner") then
+		return false
+	end
+	return true
+end
+
+local node = {}
+for k,v in pairs(minetest.registered_nodes["3d_armor_stand:armor_stand"]) do node[k] = v end
+node.description = "Locked " .. node.description
+node.allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+	local meta = minetest.get_meta(pos)
+	if not has_locked_armor_stand_privilege(meta, player) then
+		return 0
+	end
+	local def = stack:get_definition() or {}
+	local groups = def.groups or {}
+	if groups[listname] then
+		return 1
+	end
+	return 0
+end
+node.allow_metadata_inventory_take = function(pos, listname, index, stack, player)
+	local meta = minetest.get_meta(pos)
+	if not has_locked_armor_stand_privilege(meta, player) then
+		return 0
+	end
+	return stack:get_count()
+end
+node.on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		meta:set_string("formspec", armor_stand_formspec)
+		meta:set_string("infotext", "Armor Stand")
+		meta:set_string("owner", "")
+		local inv = meta:get_inventory()
+		for _, element in pairs(elements) do
+			inv:set_size("armor_"..element, 1)
+		end
+	end
+node.after_place_node = function(pos, placer)
+	minetest.add_entity(pos, "3d_armor_stand:armor_entity")
+	local meta = minetest.get_meta(pos)
+	meta:set_string("owner", placer:get_player_name() or "")
+	meta:set_string("infotext", "Armor Stand (owned by " ..
+				meta:get_string("owner") .. ")")
+end
+minetest.register_node("3d_armor_stand:locked_armor_stand", node)
+
 minetest.register_entity("3d_armor_stand:armor_entity", {
 	physical = true,
 	visual = "mesh",
@@ -158,3 +213,9 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = "3d_armor_stand:locked_armor_stand",
+	recipe = {
+		{"3d_armor_stand:armor_stand", "default:steel_ingot"},
+	}
+})
