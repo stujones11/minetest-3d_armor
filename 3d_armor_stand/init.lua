@@ -20,8 +20,10 @@ local function update_entity(pos)
 	local object = nil
 	local node = minetest.get_node(pos)
 	local objects = minetest.get_objects_inside_radius(pos, 1) or {}
+	pos = vector.round(pos)
 	for _, obj in pairs(objects) do
-		if vector.equals(obj:getpos(), pos) then
+		local p = vector.round(obj:getpos())
+		if vector.equals(p, pos) then
 			local ent = obj:get_luaentity()
 			if ent then
 				if ent.name == "3d_armor_stand:armor_entity" then
@@ -187,7 +189,7 @@ node.after_place_node = function(pos, placer)
 	local meta = minetest.get_meta(pos)
 	meta:set_string("owner", placer:get_player_name() or "")
 	meta:set_string("infotext", "Armor Stand (owned by " ..
-				meta:get_string("owner") .. ")")
+	meta:get_string("owner") .. ")")
 end
 minetest.register_node("3d_armor_stand:locked_armor_stand", node)
 
