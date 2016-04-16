@@ -4,11 +4,6 @@ if not update_time then
 	update_time = 2
 	minetest.setting_set("wieldview_update_time", tostring(update_time))
 end
-local node_tiles = minetest.setting_getbool("wieldview_node_tiles")
-if not node_tiles then
-	node_tiles = false
-	minetest.setting_set("wieldview_node_tiles", "false")
-end
 
 wieldview = {
 	wielded_item = {},
@@ -18,15 +13,12 @@ wieldview = {
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/transform.lua")
 
 wieldview.get_item_texture = function(self, item)
-	local texture = "3d_armor_trans.png"
+	local texture = "multiskin_trans.png"
 	if item ~= "" then
 		if minetest.registered_items[item] then
-			if minetest.registered_items[item].inventory_image ~= "" then
-				texture = minetest.registered_items[item].inventory_image
-			elseif node_tiles == true and minetest.registered_items[item].tiles
-					and type(minetest.registered_items[item].tiles[1]) == "string"
-					and minetest.registered_items[item].tiles[1] ~= "" then
-				texture = minetest.inventorycube(minetest.registered_items[item].tiles[1])
+			local image = minetest.registered_items[item].inventory_image or ""
+			if image ~= "" then
+				texture = image
 			end
 		end
 		if wieldview.transform[item] then
@@ -50,8 +42,8 @@ wieldview.update_wielded_item = function(self, player)
 		if self.wielded_item[name] == item then
 			return
 		end
-		armor.textures[name].wielditem = self:get_item_texture(item)
-		armor:update_player_visuals(player)
+		multiskin[name].wielditem = self:get_item_texture(item)
+		multiskin:update_player_visuals(player)
 	end
 	self.wielded_item[name] = item
 end

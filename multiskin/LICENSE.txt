@@ -1,0 +1,7 @@
+[mod] Multi-Skin [multiskin]
+=============================
+
+License Models: Stuart Jones 2013 (CC-BY-SA)
+
+License Source Code: Stuart Jones 2013 (LGPL v2.1)
+

@@ -1,0 +1,7 @@
+[mod] Technic Armor [technic_armor]
+===================================
+
+License Textures: poet.nohit (CC-BY-SA)
+
+License Source Code: poet.nohit (LGPL v2.1)
+

@@ -1,6 +1,14 @@
 Modpack - 3d Armor [0.4.5]
 ==========================
 
+[mod] Multi Skins [multiskin]
+-----------------------------
+
+depends: default
+
+Common multi-layer player texturing api used by the modpack.
+
+
 [mod] Visible Player Armor [3d_armor]
 -------------------------------------
 
@@ -8,7 +16,7 @@ Minetest Version: 0.4.13
 
 Game: minetest_game and many derivatives
 
-Depends: default
+Depends: multiskin
 
 Recommends: inventory_plus or unified_inventory (use only one)
 
@@ -32,7 +40,7 @@ see armor.conf.example for all available options.
 [mod] Visible Wielded Items [wieldview]
 ---------------------------------------
 
-Depends: 3d_armor
+Depends: multiskin
 
 Makes hand wielded items visible to other players.
 

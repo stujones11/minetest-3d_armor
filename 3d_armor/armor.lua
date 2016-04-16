@@ -27,9 +27,7 @@ ARMOR_FIRE_NODES = {
 	{"default:torch",           1, 1},
 }
 
-local skin_mod = nil
 local inv_mod = nil
-
 local modpath = minetest.get_modpath(ARMOR_MOD_NAME)
 local worldpath = minetest.get_worldpath()
 local input = io.open(modpath.."/armor.conf", "r")
@@ -54,26 +52,26 @@ end
 armor = {
 	timer = 0,
 	elements = {"head", "torso", "legs", "feet"},
-	physics = {"jump","speed","gravity"},
-	formspec = "size[8,8.5]image[2,0.75;2,4;armor_preview]"
-		.."list[current_player;main;0,4.5;8,4;]"
-		.."list[current_player;craft;4,1;3,3;]"
-		.."list[current_player;craftpreview;7,2;1,1;]"
-		.."listring[current_player;main]"
-		.."listring[current_player;craft]",
+	physics = {"jump", "speed", "gravity"},
+	formspec = "size[8,8.5]"..
+		"list[current_player;main;0,4.5;8,4;]"..
+		"list[current_player;craft;4,1;3,3;]"..
+		"list[current_player;craftpreview;7,2;1,1;]"..
+		"listring[current_player;main]"..
+		"listring[current_player;craft]",
 	textures = {},
 	default_skin = "character",
 	version = "0.4.5",
+	def = {state=0,	count = 0},
 }
 
 if minetest.get_modpath("inventory_plus") then
 	inv_mod = "inventory_plus"
-	armor.formspec = "size[8,8.5]button[0,0;2,0.5;main;Back]"
-		.."image[2.5,0.75;2,4;armor_preview]"
-		.."label[5,1;Level: armor_level]"
-		.."label[5,1.5;Heal:  armor_heal]"
-		.."label[5,2;Fire:  armor_fire]"
-		.."list[current_player;main;0,4.5;8,4;]"
+	armor.formspec = "size[8,8.5]button[0,0;2,0.5;main;Back]"..
+		"label[5,1;Level: armor_level]"..
+		"label[5,1.5;Heal:  armor_heal]"..
+		"label[5,2;Fire:  armor_fire]"..
+		"list[current_player;main;0,4.5;8,4;]"
 	if minetest.get_modpath("crafting") then
 		inventory_plus.get_formspec = function(player, page)
 		end
@@ -88,49 +86,20 @@ elseif minetest.get_modpath("unified_inventory") then
 		get_formspec = function(player, perplayer_formspec)
 			local fy = perplayer_formspec.formspec_y
 			local name = player:get_player_name()
-			local formspec = "background[0.06,"..fy..";7.92,7.52;3d_armor_ui_form.png]"
-				.."label[0,0;Armor]"
-				.."list[detached:"..name.."_armor;armor;0,"..fy..";2,3;]"
-				.."image[2.5,"..(fy - 0.25)..";2,4;"..armor.textures[name].preview.."]"
-				.."label[5.0,"..(fy + 0.0)..";Level: "..armor.def[name].level.."]"
-				.."label[5.0,"..(fy + 0.5)..";Heal:  "..armor.def[name].heal.."]"
-				.."label[5.0,"..(fy + 1.0)..";Fire:  "..armor.def[name].fire.."]"
-				.."listring[current_player;main]"
-				.."listring[detached:"..name.."_armor;armor]"
+			local formspec = "background[0.06,"..fy..
+				";7.92,7.52;3d_armor_ui_form.png]"..
+				"label[0,0;Armor]"..
+				"list[detached:"..name.."_armor;armor;0,"..fy..";2,3;]"..
+				"label[5.0,"..(fy + 0.0)..";Level: "..armor.def[name].level.."]"..
+				"label[5.0,"..(fy + 0.5)..";Heal:  "..armor.def[name].heal.."]"..
+				"label[5.0,"..(fy + 1.0)..";Fire:  "..armor.def[name].fire.."]"..
+				"listring[current_player;main]"..
+				"listring[detached:"..name.."_armor;armor]"
 			return {formspec=formspec}
 		end,
 	})
 elseif minetest.get_modpath("inventory_enhanced") then
 	inv_mod = "inventory_enhanced"
-end
-
-if minetest.get_modpath("skins") then
-	skin_mod = "skins"
-elseif minetest.get_modpath("simple_skins") then
-	skin_mod = "simple_skins"
-elseif minetest.get_modpath("u_skins") then
-	skin_mod = "u_skins"
-elseif minetest.get_modpath("wardrobe") then
-	skin_mod = "wardrobe"
-end
-
-armor.def = {
-	state = 0,
-	count = 0,
-}
-
-armor.update_player_visuals = function(self, player)
-	if not player then
-		return
-	end
-	local name = player:get_player_name()
-	if self.textures[name] then
-		default.player_set_textures(player, {
-			self.textures[name].skin,
-			self.textures[name].armor,
-			self.textures[name].wielditem,
-		})
-	end
 end
 
 armor.set_player_armor = function(self, player)
@@ -147,9 +116,8 @@ armor.set_player_armor = function(self, player)
 	local items = 0
 	local elements = {}
 	local textures = {}
-	local physics_o = {speed=1,gravity=1,jump=1}
-	local material = {type=nil, count=1}
-	local preview = armor:get_preview(name) or "character_preview.png"
+	local physics = {speed=1, gravity=1, jump=1}
+	local material = {count=1}
 	for _,v in ipairs(self.elements) do
 		elements[v] = false
 	end
@@ -164,26 +132,23 @@ armor.set_player_armor = function(self, player)
 					if level then
 						local texture = def.texture or item:gsub("%:", "_")
 						table.insert(textures, texture..".png")
-						preview = preview.."^"..texture.."_preview.png"
 						armor_level = armor_level + level
 						state = state + stack:get_wear()
 						items = items + 1
 						armor_heal = armor_heal + (def.groups["armor_heal"] or 0)
 						armor_fire = armor_fire + (def.groups["armor_fire"] or 0)
 						armor_water = armor_water + (def.groups["armor_water"] or 0)
-						for kk,vv in ipairs(self.physics) do
-							local o_value = def.groups["physics_"..vv]
-							if o_value then
-								physics_o[vv] = physics_o[vv] + o_value
-							end
+						for i, p in pairs(self.physics) do
+							local value = def.groups["physics_"..p] or 0
+							physics[p] = physics[p] + value
 						end
 						local mat = string.match(item, "%:.+_(.+)$")
-						if material.type then
-							if material.type == mat then
+						if material.name then
+							if material.name == mat then
 								material.count = material.count + 1
 							end
 						else
-							material.type = mat
+							material.name = mat
 						end
 						elements[k] = true
 					end
@@ -194,7 +159,7 @@ armor.set_player_armor = function(self, player)
 	if minetest.get_modpath("shields") then
 		armor_level = armor_level * 0.9
 	end
-	if material.type and material.count == #self.elements then
+	if material.name and material.count == #self.elements then
 		armor_level = armor_level * 1.1
 	end
 	armor_level = armor_level * ARMOR_LEVEL_MULTIPLIER
@@ -207,20 +172,19 @@ armor.set_player_armor = function(self, player)
 		armor_groups.level = math.floor(armor_level / 20)
 		armor_groups.fleshy = 100 - armor_level
 	end
-	player:set_armor_groups(armor_groups)
-	player:set_physics_override(physics_o)
-	self.textures[name].armor = armor_texture
-	self.textures[name].preview = preview
 	self.def[name].state = state
 	self.def[name].count = items
 	self.def[name].level = armor_level
 	self.def[name].heal = armor_heal
-	self.def[name].jump = physics_o.jump
-	self.def[name].speed = physics_o.speed
-	self.def[name].gravity = physics_o.gravity
+	self.def[name].jump = physics.jump
+	self.def[name].speed = physics.speed
+	self.def[name].gravity = physics.gravity
 	self.def[name].fire = armor_fire
 	self.def[name].water = armor_water
-	self:update_player_visuals(player)
+	player:set_armor_groups(armor_groups)
+	player:set_physics_override(physics)
+	multiskin[name].armor = armor_texture
+	multiskin:update_player_visuals(player)
 end
 
 armor.update_armor = function(self, player)
@@ -228,35 +192,8 @@ armor.update_armor = function(self, player)
 	-- Other mods can hook on to this function, see hud mod for example 
 end
 
-armor.get_player_skin = function(self, name)
-	local skin = nil
-	if skin_mod == "skins" or skin_mod == "simple_skins" then
-		skin = skins.skins[name]
-	elseif skin_mod == "u_skins" then
-		skin = u_skins.u_skins[name]
-	elseif skin_mod == "wardrobe" then
-		skin = string.gsub(wardrobe.playerSkins[name], "%.png$","")
-	end
-	return skin or armor.default_skin
-end
-
-armor.get_preview = function(self, name)
-	if skin_mod == "skins" then
-		return armor:get_player_skin(name).."_preview.png"
-	end
-end
-
 armor.get_armor_formspec = function(self, name)
-	if not armor.textures[name] then
-		minetest.log("error", "3d_armor: Player texture["..name.."] is nil [get_armor_formspec]")
-		return ""
-	end
-	if not armor.def[name] then
-		minetest.log("error", "3d_armor: Armor def["..name.."] is nil [get_armor_formspec]")
-		return ""
-	end
 	local formspec = armor.formspec.."list[detached:"..name.."_armor;armor;0,1;2,3;]"
-	formspec = formspec:gsub("armor_preview", armor.textures[name].preview)
 	formspec = formspec:gsub("armor_level", armor.def[name].level)
 	formspec = formspec:gsub("armor_heal", armor.def[name].heal)
 	formspec = formspec:gsub("armor_fire", armor.def[name].fire)
@@ -314,25 +251,6 @@ armor.get_valid_player = function(self, player, msg)
 	return name, player_inv, armor_inv, pos
 end
 
--- Register Player Model
-
-default.player_register_model("3d_armor_character.b3d", {
-	animation_speed = 30,
-	textures = {
-		armor.default_skin..".png",
-		"3d_armor_trans.png",
-		"3d_armor_trans.png",
-	},
-	animations = {
-		stand = {x=0, y=79},
-		lay = {x=162, y=166},
-		walk = {x=168, y=187},
-		mine = {x=189, y=198},
-		walk_mine = {x=200, y=219},
-		sit = {x=81, y=160},
-	},
-})
-
 -- Register Callbacks
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
@@ -357,7 +275,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 minetest.register_on_joinplayer(function(player)
-	default.player_set_model(player, "3d_armor_character.b3d")
 	local name = player:get_player_name()
 	local player_inv = player:get_inventory()
 	local armor_inv = minetest.create_detached_inventory(name.."_armor", {
@@ -379,14 +296,14 @@ minetest.register_on_joinplayer(function(player)
 			armor:set_player_armor(player)
 			armor:update_inventory(player)
 		end,
-		allow_put = function(inv, listname, index, stack, player)
+		allow_put = function(inv, listname, index, stack)
 			return 1
 		end,
-		allow_take = function(inv, listname, index, stack, player)
+		allow_take = function(inv, listname, index, stack)
 			return stack:get_count()
 		end,
-		allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
-			return count
+		allow_move = function(inv)
+			return 1
 		end,
 	})
 	if inv_mod == "inventory_plus" then
@@ -409,41 +326,6 @@ minetest.register_on_joinplayer(function(player)
 		fire = 0,
 		water = 0,
 	}
-	armor.textures[name] = {
-		skin = armor.default_skin..".png",
-		armor = "3d_armor_trans.png",
-		wielditem = "3d_armor_trans.png",
-		preview = armor.default_skin.."_preview.png",
-	}
-	if skin_mod == "skins" then
-		local skin = skins.skins[name]
-		if skin and skins.get_type(skin) == skins.type.MODEL then
-			armor.textures[name].skin = skin..".png"
-		end
-	elseif skin_mod == "simple_skins" then
-		local skin = skins.skins[name]
-		if skin then
-			armor.textures[name].skin = skin..".png"
-		end
-	elseif skin_mod == "u_skins" then
-		local skin = u_skins.u_skins[name]
-		if skin and u_skins.get_type(skin) == u_skins.type.MODEL then
-			armor.textures[name].skin = skin..".png"
-		end
-	elseif skin_mod == "wardrobe" then
-		local skin = wardrobe.playerSkins[name]
-		if skin then
-			armor.textures[name].skin = skin
-		end
-	end
-	if minetest.get_modpath("player_textures") then
-		local filename = minetest.get_modpath("player_textures").."/textures/player_"..name
-		local f = io.open(filename..".png")
-		if f then
-			f:close()
-			armor.textures[name].skin = "player_"..name..".png"
-		end
-	end
 	for i=1, ARMOR_INIT_TIMES do
 		minetest.after(ARMOR_INIT_DELAY * i, function(player)
 			armor:set_player_armor(player)
@@ -617,3 +499,4 @@ minetest.register_chatcommand("kill", {
 		end
 	end,
 })
+
