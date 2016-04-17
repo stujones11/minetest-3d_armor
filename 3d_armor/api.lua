@@ -66,8 +66,7 @@ armor = {
 		"listring[current_player;craft]"..
 		default.get_hotbar_bg(0,4.25),
 	textures = {},
-	default_skin = "character",
-	version = "0.4.5",
+	version = "0.5.0",
 	def = {state=0,	count = 0},
 	registered_callbacks = {
 		on_update = {},
