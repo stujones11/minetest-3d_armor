@@ -199,11 +199,6 @@ armor.set_player_armor = function(self, player)
 	multiskin:update_player_visuals(player)
 end
 
-armor.update_armor = function(self, player)
-	-- Legacy support: Called when armor levels are changed
-	-- Other mods can hook on to this function, see hud mod for example 
-end
-
 armor.get_armor_formspec = function(self, name)
 	local formspec = armor.formspec.."list[detached:"..name.."_armor;armor;0,0.5;2,3;]"
 	formspec = formspec:gsub("armor_level", armor.def[name].level)
@@ -261,6 +256,17 @@ armor.get_valid_player = function(self, player, msg)
 		return
 	end
 	return name, player_inv, armor_inv, pos
+end
+
+-- Legacy support
+
+armor.update_player_visuals = function(self, player)
+	multiskin:update_player_visuals(player)
+end
+
+armor.update_armor = function(self, player)
+	-- Called when armor levels are changed
+	-- Other mods can hook on to this function, see hud mod for example 
 end
 
 -- Register Callbacks
