@@ -70,6 +70,7 @@ armor = {
 	version = "0.4.5",
 	def = {state=0,	count = 0},
 	registered_callbacks = {
+		on_update = {},
 		on_equip = {},
 		on_unequip = {},
 		on_destroy = {},
@@ -202,6 +203,10 @@ armor.set_player_armor = function(self, player)
 	player:set_physics_override(physics)
 	multiskin[name].armor = armor_texture
 	multiskin:update_player_visuals(player)
+	armor:update_armor(player)
+	for _, func in pairs(armor.registered_callbacks.on_update) do
+		func(player)
+	end
 end
 
 armor.get_armor_formspec = function(self, name)
@@ -263,7 +268,13 @@ armor.get_valid_player = function(self, player, msg)
 	return name, player_inv, armor_inv, pos
 end
 
--- Register armor callbacks
+-- Armor callbacks
+
+armor.register_on_update = function(func)
+	if type(func) == "function" then
+		table.insert(armor.registered_callbacks.on_update, func)
+	end
+end
 
 armor.register_on_equip = function(func)
 	if type(func) == "function" then
