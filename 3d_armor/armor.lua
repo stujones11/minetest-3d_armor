@@ -54,11 +54,17 @@ armor = {
 	elements = {"head", "torso", "legs", "feet"},
 	physics = {"jump", "speed", "gravity"},
 	formspec = "size[8,8.5]"..
-		"list[current_player;main;0,4.5;8,4;]"..
-		"list[current_player;craft;4,1;3,3;]"..
-		"list[current_player;craftpreview;7,2;1,1;]"..
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+		"list[current_player;main;0,4.25;8,1;]"..
+		"list[current_player;main;0,5.5;8,3;8]"..
+		"list[current_player;craft;3,0.5;3,3;]"..
+		"list[current_player;craftpreview;7,1.5;1,1;]"..
+		"image[6,1.5;1,1;gui_furnace_arrow_bg.png^[transformR270]"..
 		"listring[current_player;main]"..
-		"listring[current_player;craft]",
+		"listring[current_player;craft]"..
+		default.get_hotbar_bg(0,4.25),
 	textures = {},
 	default_skin = "character",
 	version = "0.4.5",
@@ -67,11 +73,17 @@ armor = {
 
 if minetest.get_modpath("inventory_plus") then
 	inv_mod = "inventory_plus"
-	armor.formspec = "size[8,8.5]button[0,0;2,0.5;main;Back]"..
-		"label[5,1;Level: armor_level]"..
-		"label[5,1.5;Heal:  armor_heal]"..
-		"label[5,2;Fire:  armor_fire]"..
-		"list[current_player;main;0,4.5;8,4;]"
+	armor.formspec = "size[8,8.5]"..
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+		"button[6,0;2,0.5;main;Back]"..
+		"label[3,1;Level: armor_level]"..
+		"label[3,1.5;Heal:  armor_heal]"..
+		"label[3,2;Fire:  armor_fire]"..
+		"list[current_player;main;0,4.25;8,1;]"..
+		"list[current_player;main;0,5.5;8,3;8]"..
+		default.get_hotbar_bg(0,4.25)
 	if minetest.get_modpath("crafting") then
 		inventory_plus.get_formspec = function(player, page)
 		end
@@ -193,7 +205,7 @@ armor.update_armor = function(self, player)
 end
 
 armor.get_armor_formspec = function(self, name)
-	local formspec = armor.formspec.."list[detached:"..name.."_armor;armor;0,1;2,3;]"
+	local formspec = armor.formspec.."list[detached:"..name.."_armor;armor;0,0.5;2,3;]"
 	formspec = formspec:gsub("armor_level", armor.def[name].level)
 	formspec = formspec:gsub("armor_heal", armor.def[name].heal)
 	formspec = formspec:gsub("armor_fire", armor.def[name].fire)
