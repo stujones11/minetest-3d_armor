@@ -1,14 +1,52 @@
-minetest.register_on_player_receive_fields(function(player, formname, fields)
-	local name = armor:get_valid_player(player, "[on_player_receive_fields]")
-	if not name or inv_mod == "inventory_enhanced" then
-		return
+minetest.register_on_player_hpchange(function(player, hp_change)
+	local name, player_inv, armor_inv = armor:get_valid_player(player, "[on_hpchange]")
+	if name and hp_change < 0 then
+		-- used for insta kill tools/commands like /kill (doesnt damage armor)
+		if hp_change < -100 then
+			return hp_change
+		end
+		local heal_max = 0
+		local state = 0
+		local items = 0
+		for i=1, 6 do
+			local stack = player_inv:get_stack("armor", i)
+			if stack:get_count() > 0 then
+				local def = stack:get_definition() or {}
+				local use = def.groups["armor_use"] or 0
+				local heal = def.groups["armor_heal"] or 0
+				local item = stack:get_name()
+				stack:add_wear(use)
+				armor_inv:set_stack("armor", i, stack)
+				player_inv:set_stack("armor", i, stack)
+				state = state + stack:get_wear()
+				items = items + 1
+				if stack:get_count() == 0 then
+					if type(def.on_destroy) == "function" then
+						def.on_destroy(player, item)
+					end
+					for _, func in pairs(armor.registered_callbacks.on_destroy) do
+						func(player, item)
+					end
+					local desc = minetest.registered_items[item].description
+					if desc then
+						minetest.chat_send_player(name, "Your "..desc.." got destroyed!")
+					end
+					armor:set_player_armor(player)
+					armor:update_inventory(player)
+				end
+				heal_max = heal_max + heal
+			end
+		end
+		armor.def[name].state = state
+		armor.def[name].count = items
+		heal_max = heal_max * ARMOR_HEAL_MULTIPLIER
+		if heal_max > math.random(100) then
+			hp_change = 0
+		end
+		armor:update_armor(player)
 	end
-	if inv_mod == "inventory_plus" and fields.armor then
-		local formspec = armor:get_armor_formspec(name)
-		inventory_plus.set_inventory_formspec(player, formspec)
-		return
-	end
-end)
+	return hp_change
+end, true)
 
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
@@ -142,57 +180,17 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 	end)
 end
 
-minetest.register_on_player_hpchange(function(player, hp_change)
-	local name, player_inv, armor_inv = armor:get_valid_player(player, "[on_hpchange]")
-	if name and hp_change < 0 then
-
-		-- used for insta kill tools/commands like /kill (doesnt damage armor)
-		if hp_change < -100 then
-			return hp_change
-		end
-
-		local heal_max = 0
-		local state = 0
-		local items = 0
-		for i=1, 6 do
-			local stack = player_inv:get_stack("armor", i)
-			if stack:get_count() > 0 then
-				local def = stack:get_definition() or {}
-				local use = def.groups["armor_use"] or 0
-				local heal = def.groups["armor_heal"] or 0
-				local item = stack:get_name()
-				stack:add_wear(use)
-				armor_inv:set_stack("armor", i, stack)
-				player_inv:set_stack("armor", i, stack)
-				state = state + stack:get_wear()
-				items = items + 1
-				if stack:get_count() == 0 then
-					if type(def.on_destroy) == "function" then
-						def.on_destroy(player, item)
-					end
-					for _, func in pairs(armor.registered_callbacks.on_destroy) do
-						func(player, item)
-					end
-					local desc = minetest.registered_items[item].description
-					if desc then
-						minetest.chat_send_player(name, "Your "..desc.." got destroyed!")
-					end
-					armor:set_player_armor(player)
-					armor:update_inventory(player)
-				end
-				heal_max = heal_max + heal
-			end
-		end
-		armor.def[name].state = state
-		armor.def[name].count = items
-		heal_max = heal_max * ARMOR_HEAL_MULTIPLIER
-		if heal_max > math.random(100) then
-			hp_change = 0
-		end
-		armor:update_armor(player)
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	local name = armor:get_valid_player(player, "[on_player_receive_fields]")
+	if not name or inv_mod == "inventory_enhanced" then
+		return
 	end
-	return hp_change
-end, true)
+	if inv_mod == "inventory_plus" and fields.armor then
+		local formspec = armor:get_armor_formspec(name)
+		inventory_plus.set_inventory_formspec(player, formspec)
+		return
+	end
+end)
 
 -- Fire Protection and water breating, added by TenPlus1
 
