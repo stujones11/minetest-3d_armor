@@ -69,6 +69,11 @@ armor = {
 	default_skin = "character",
 	version = "0.4.5",
 	def = {state=0,	count = 0},
+	registered_callbacks = {
+		on_equip = {},
+		on_unequip = {},
+		on_destroy = {},
+	},
 }
 
 if minetest.get_modpath("inventory_plus") then
@@ -258,6 +263,26 @@ armor.get_valid_player = function(self, player, msg)
 	return name, player_inv, armor_inv, pos
 end
 
+-- Register armor callbacks
+
+armor.register_on_equip = function(func)
+	if type(func) == "function" then
+		table.insert(armor.registered_callbacks.on_equip, func)
+	end
+end
+
+armor.register_on_unequip = function(func)
+	if type(func) == "function" then
+		table.insert(armor.registered_callbacks.on_unequip, func)
+	end
+end
+
+armor.register_on_destroy = function(func)
+	if type(func) == "function" then
+		table.insert(armor.registered_callbacks.on_destroy, func)
+	end
+end
+
 -- Legacy support
 
 armor.update_player_visuals = function(self, player)
@@ -269,7 +294,7 @@ armor.update_armor = function(self, player)
 	-- Other mods can hook on to this function, see hud mod for example 
 end
 
--- Register Callbacks
+-- Register minetest callbacks
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local name = armor:get_valid_player(player, "[on_player_receive_fields]")
@@ -297,11 +322,25 @@ minetest.register_on_joinplayer(function(player)
 	local player_inv = player:get_inventory()
 	local armor_inv = minetest.create_detached_inventory(name.."_armor", {
 		on_put = function(inv, listname, index, stack, player)
+			local def = stack:get_definition() or {}
+			if type(def.on_equip) == "function" then
+				def.on_equip(player, stack)
+			end
+			for _, func in pairs(armor.registered_callbacks.on_equip) do
+				func(player, stack)
+			end
 			player:get_inventory():set_stack(listname, index, stack)
 			armor:set_player_armor(player)
 			armor:update_inventory(player)
 		end,
 		on_take = function(inv, listname, index, stack, player)
+			local def = stack:get_definition() or {}
+			if type(def.on_unequip) == "function" then
+				def.on_equip(player, stack)
+			end
+			for _, func in pairs(armor.registered_callbacks.on_unequip) do
+				func(player, stack)
+			end
 			player:get_inventory():set_stack(listname, index, nil)
 			armor:set_player_armor(player)
 			armor:update_inventory(player)
@@ -425,8 +464,9 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 		for i=1, 6 do
 			local stack = player_inv:get_stack("armor", i)
 			if stack:get_count() > 0 then
-				local use = stack:get_definition().groups["armor_use"] or 0
-				local heal = stack:get_definition().groups["armor_heal"] or 0
+				local def = stack:get_definition() or {}
+				local use = def.groups["armor_use"] or 0
+				local heal = def.groups["armor_heal"] or 0
 				local item = stack:get_name()
 				stack:add_wear(use)
 				armor_inv:set_stack("armor", i, stack)
@@ -434,6 +474,12 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 				state = state + stack:get_wear()
 				items = items + 1
 				if stack:get_count() == 0 then
+					if type(def.on_destroy) == "function" then
+						def.on_destroy(player, item)
+					end
+					for _, func in pairs(armor.registered_callbacks.on_destroy) do
+						func(player, item)
+					end
 					local desc = minetest.registered_items[item].description
 					if desc then
 						minetest.chat_send_player(name, "Your "..desc.." got destroyed!")

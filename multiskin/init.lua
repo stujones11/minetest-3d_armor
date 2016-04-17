@@ -36,12 +36,13 @@ function multiskin:get_player_skin(name)
 	end
 end
 
-function multiskin:update_player_visuals(player)
+function multiskin:update_player_visuals(player, skin)
 	if not player then
 		return
 	end
 	local name = player:get_player_name()
 	if multiskin[name] then
+		multiskin[name].skin = skin or multiskin[name].skin
 		default.player_set_textures(player, {
 			multiskin[name].skin,
 			multiskin[name].clothing,
