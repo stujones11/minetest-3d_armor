@@ -38,7 +38,7 @@ local function update_entity(pos)
 		end
 	end
 	if object then
-		if node.name ~= "3d_armor_stand:armor_stand" and node.name ~= "3d_armor_stand:locked_armor_stand" then
+		if not string.find(node.name, "3d_armor_stand:") then
 			object:remove()
 			return
 		end
@@ -153,7 +153,9 @@ local function has_locked_armor_stand_privilege(meta, player)
 end
 
 local node = {}
-for k,v in pairs(minetest.registered_nodes["3d_armor_stand:armor_stand"]) do node[k] = v end
+for k,v in pairs(minetest.registered_nodes["3d_armor_stand:armor_stand"]) do
+	node[k] = v
+end
 node.description = "Locked " .. node.description
 node.allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 	local meta = minetest.get_meta(pos)
@@ -200,9 +202,23 @@ minetest.register_entity("3d_armor_stand:armor_entity", {
 	visual_size = {x=1, y=1},
 	collisionbox = {-0.1,-0.4,-0.1, 0.1,1.3,0.1},
 	textures = {"3d_armor_trans.png"},
+	timer = 0,
 	on_activate = function(self)
 		local pos = self.object:getpos()
 		update_entity(pos)
+	end,
+	on_step = function(self, dtime)
+		self.timer = self.timer + dtime
+		if self.timer > 4 then
+			local pos = self.object:getpos()
+			if pos then
+				local node = minetest.get_node(vector.round(pos))
+				if not string.find(node.name, "3d_armor_stand:") then
+					self.object:remove()
+				end
+			end
+			timer = 0
+		end
 	end,
 })
 
@@ -221,3 +237,4 @@ minetest.register_craft({
 		{"3d_armor_stand:armor_stand", "default:steel_ingot"},
 	}
 })
+
