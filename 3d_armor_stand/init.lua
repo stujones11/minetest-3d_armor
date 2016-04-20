@@ -203,21 +203,24 @@ minetest.register_entity("3d_armor_stand:armor_entity", {
 	collisionbox = {-0.1,-0.4,-0.1, 0.1,1.3,0.1},
 	textures = {"3d_armor_trans.png"},
 	timer = 0,
+	pos = nil,
 	on_activate = function(self)
-		local pos = self.object:getpos()
-		update_entity(pos)
+		self.pos = self.object:getpos()
+		update_entity(self.pos)
 	end,
 	on_step = function(self, dtime)
 		self.timer = self.timer + dtime
 		if self.timer > 4 then
-			local pos = self.object:getpos()
-			if pos then
-				local node = minetest.get_node(vector.round(pos))
-				if not string.find(node.name, "3d_armor_stand:") then
-					self.object:remove()
+			self.timer = 0
+			if self.pos then
+				self.object:setpos(self.pos)
+				self.object:setvelocity({x=0, y=0, z=0})
+				local node = minetest.get_node(self.pos)
+				if string.find(node.name, "3d_armor_stand:") then
+					return
 				end
 			end
-			timer = 0
+			self.object:remove()
 		end
 	end,
 })
