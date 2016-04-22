@@ -43,7 +43,10 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 		if heal_max > math.random(100) then
 			hp_change = 0
 		end
-		armor:update_armor(player)
+	end
+	armor:update_armor(player)
+	for _, func in pairs(armor.registered_callbacks.on_update) do
+		func(player)
 	end
 	return hp_change
 end, true)

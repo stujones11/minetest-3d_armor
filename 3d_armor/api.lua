@@ -108,10 +108,6 @@ armor.set_player_armor = function(self, player)
 	player:set_physics_override(physics)
 	multiskin[name].armor = armor_texture
 	multiskin:update_player_visuals(player)
-	armor:update_armor(player)
-	for _, func in pairs(armor.registered_callbacks.on_update) do
-		func(player)
-	end
 end
 
 armor.get_armor_formspec = function(self, name)
@@ -175,27 +171,27 @@ end
 
 -- Armor callbacks
 
-armor.register_on_update = function(func)
+armor.register_on_update = function(self, func)
 	if type(func) == "function" then
-		table.insert(armor.registered_callbacks.on_update, func)
+		table.insert(self.registered_callbacks.on_update, func)
 	end
 end
 
-armor.register_on_equip = function(func)
+armor.register_on_equip = function(self, func)
 	if type(func) == "function" then
-		table.insert(armor.registered_callbacks.on_equip, func)
+		table.insert(self.registered_callbacks.on_equip, func)
 	end
 end
 
-armor.register_on_unequip = function(func)
+armor.register_on_unequip = function(self, func)
 	if type(func) == "function" then
-		table.insert(armor.registered_callbacks.on_unequip, func)
+		table.insert(self.registered_callbacks.on_unequip, func)
 	end
 end
 
-armor.register_on_destroy = function(func)
+armor.register_on_destroy = function(self, func)
 	if type(func) == "function" then
-		table.insert(armor.registered_callbacks.on_destroy, func)
+		table.insert(self.registered_callbacks.on_destroy, func)
 	end
 end
 
