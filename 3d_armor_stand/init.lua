@@ -16,27 +16,28 @@ local armor_stand_formspec = "size[8,7]" ..
 
 local elements = {"head", "torso", "legs", "feet"}
 
-local function update_entity(pos)
+local function get_stand_object(pos)
 	local object = nil
-	local node = minetest.get_node(pos)
-	local objects = minetest.get_objects_inside_radius(pos, 1) or {}
-	pos = vector.round(pos)
+	local objects = minetest.get_objects_inside_radius(pos, 0.5) or {}
 	for _, obj in pairs(objects) do
-		local p = vector.round(obj:getpos())
-		if vector.equals(p, pos) then
-			local ent = obj:get_luaentity()
-			if ent then
-				if ent.name == "3d_armor_stand:armor_entity" then
-					-- Remove duplicates
-					if object then
-						obj:remove()
-					else
-						object = obj
-					end
+		local ent = obj:get_luaentity()
+		if ent then
+			if ent.name == "3d_armor_stand:armor_entity" then
+				-- Remove duplicates
+				if object then
+					obj:remove()
+				else
+					object = obj
 				end
 			end
 		end
 	end
+	return object
+end
+
+local function update_entity(pos)
+	local node = minetest.get_node(pos)
+	local object = get_stand_object(pos)
 	if object then
 		if not string.find(node.name, "3d_armor_stand:") then
 			object:remove()
@@ -136,6 +137,15 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 	after_destruct = function(pos)
 		update_entity(pos)
 	end,
+	on_blast = function(pos)
+		local object = get_stand_object(pos)
+		if object then
+			object:remove()
+		end
+		minetest.after(1, function(pos)
+			update_entity(pos)
+		end, pos)
+	end,
 })
 
 local function has_locked_armor_stand_privilege(meta, player)
@@ -202,26 +212,9 @@ minetest.register_entity("3d_armor_stand:armor_entity", {
 	visual_size = {x=1, y=1},
 	collisionbox = {-0.1,-0.4,-0.1, 0.1,1.3,0.1},
 	textures = {"3d_armor_trans.png"},
-	timer = 0,
-	pos = nil,
 	on_activate = function(self)
-		self.pos = self.object:getpos()
-		update_entity(self.pos)
-	end,
-	on_step = function(self, dtime)
-		self.timer = self.timer + dtime
-		if self.timer > 4 then
-			self.timer = 0
-			if self.pos then
-				self.object:setpos(self.pos)
-				self.object:setvelocity({x=0, y=0, z=0})
-				local node = minetest.get_node(self.pos)
-				if string.find(node.name, "3d_armor_stand:") then
-					return
-				end
-			end
-			self.object:remove()
-		end
+		local pos = self.object:getpos()
+		update_entity(pos)
 	end,
 })
 
