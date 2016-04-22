@@ -28,7 +28,6 @@ ARMOR_FIRE_NODES = {
 	{"default:torch",           1, 1},
 }
 
-local inv_mod = nil
 local modpath = minetest.get_modpath(ARMOR_MOD_NAME)
 local worldpath = minetest.get_worldpath()
 local input = io.open(modpath.."/armor.conf", "r")
@@ -55,7 +54,7 @@ dofile(minetest.get_modpath(ARMOR_MOD_NAME).."/register.lua")
 dofile(minetest.get_modpath(ARMOR_MOD_NAME).."/armor.lua")
 
 if minetest.get_modpath("inventory_plus") then
-	inv_mod = "inventory_plus"
+	armor.inv_mod = "inventory_plus"
 	armor.formspec = "size[8,8.5]"..
 		default.gui_bg..
 		default.gui_bg_img..
@@ -72,7 +71,7 @@ if minetest.get_modpath("inventory_plus") then
 		end
 	end
 elseif minetest.get_modpath("unified_inventory") then
-	inv_mod = "unified_inventory"
+	armor.inv_mod = "unified_inventory"
 	unified_inventory.register_button("armor", {
 		type = "image",
 		image = "inventory_plus_armor.png",
@@ -94,6 +93,6 @@ elseif minetest.get_modpath("unified_inventory") then
 		end,
 	})
 elseif minetest.get_modpath("inventory_enhanced") then
-	inv_mod = "inventory_enhanced"
+	armor.inv_mod = "inventory_enhanced"
 end
 

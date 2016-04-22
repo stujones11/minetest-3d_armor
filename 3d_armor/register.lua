@@ -94,7 +94,7 @@ minetest.register_on_joinplayer(function(player)
 			return 1
 		end,
 	})
-	if inv_mod == "inventory_plus" then
+	if armor.inv_mod == "inventory_plus" then
 		inventory_plus.register_button(player,"armor", "Armor")
 	end
 	armor_inv:set_size("armor", 6)
@@ -117,7 +117,7 @@ minetest.register_on_joinplayer(function(player)
 	for i=1, ARMOR_INIT_TIMES do
 		minetest.after(ARMOR_INIT_DELAY * i, function(player)
 			armor:set_player_armor(player)
-			if not inv_mod then
+			if not armor.inv_mod then
 				armor:update_inventory(player)
 			end
 		end, player)
@@ -146,9 +146,9 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 			end
 		end
 		armor:set_player_armor(player)
-		if inv_mod == "unified_inventory" then
+		if armor.inv_mod == "unified_inventory" then
 			unified_inventory.set_inventory_formspec(player, "craft")
-		elseif inv_mod == "inventory_plus" then
+		elseif armor.inv_mod == "inventory_plus" then
 			local formspec = inventory_plus.get_formspec(player,"main")
 			inventory_plus.set_inventory_formspec(player, formspec)
 		else
@@ -182,10 +182,10 @@ end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local name = armor:get_valid_player(player, "[on_player_receive_fields]")
-	if not name or inv_mod == "inventory_enhanced" then
+	if not name or armor.inv_mod == "inventory_enhanced" then
 		return
 	end
-	if inv_mod == "inventory_plus" and fields.armor then
+	if armor.inv_mod == "inventory_plus" and fields.armor then
 		local formspec = armor:get_armor_formspec(name)
 		inventory_plus.set_inventory_formspec(player, formspec)
 		return

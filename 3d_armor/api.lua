@@ -124,16 +124,16 @@ end
 
 armor.update_inventory = function(self, player)
 	local name = armor:get_valid_player(player, "[set_player_armor]")
-	if not name or inv_mod == "inventory_enhanced" then
+	if not name or self.inv_mod == "inventory_enhanced" then
 		return
 	end
-	if inv_mod == "unified_inventory" then
+	if self.inv_mod == "unified_inventory" then
 		if unified_inventory.current_page[name] == "armor" then
 			unified_inventory.set_inventory_formspec(player, "armor")
 		end
 	else
 		local formspec = armor:get_armor_formspec(name)
-		if inv_mod == "inventory_plus" then
+		if self.inv_mod == "inventory_plus" then
 			formspec = formspec.."listring[current_player;main]"
 				.."listring[detached:"..name.."_armor;armor]"
 			local page = player:get_inventory_formspec()
