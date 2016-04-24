@@ -117,6 +117,10 @@ minetest.register_on_joinplayer(function(player)
 		fire = 0,
 		water = 0,
 	}
+
+	-- Legacy preview support, may be removed from future versions
+	armor.textures[name] = {preview="3d_armor_trans.png"}
+
 	for i=1, ARMOR_INIT_TIMES do
 		minetest.after(ARMOR_INIT_DELAY * i, function(player)
 			armor:set_player_armor(player)
@@ -190,7 +194,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 	if armor.inv_mod == "inventory_plus" and fields.armor then
 		local formspec = armor:get_armor_formspec(name)
-		inventory_plus.set_inventory_formspec(player, formspec)
+		inventory_plus.set_inventory_formspec(player, formspec..
+			"listring[current_player;main]"..
+			"listring[detached:"..name.."_armor;armor]")
 		return
 	end
 end)

@@ -14,7 +14,6 @@ armor = {
 		"listring[current_player;main]"..
 		"listring[current_player;craft]"..
 		default.get_hotbar_bg(0,4.25),
-	textures = {},
 	version = "0.5.0",
 	def = {state=0,	count = 0},
 	registered_callbacks = {
@@ -23,6 +22,7 @@ armor = {
 		on_unequip = {},
 		on_destroy = {},
 	},
+	textures = {},
 }
 
 armor.set_player_armor = function(self, player)
@@ -130,11 +130,11 @@ armor.update_inventory = function(self, player)
 	else
 		local formspec = armor:get_armor_formspec(name)
 		if self.inv_mod == "inventory_plus" then
-			formspec = formspec.."listring[current_player;main]"
-				.."listring[detached:"..name.."_armor;armor]"
 			local page = player:get_inventory_formspec()
 			if page:find("detached:"..name.."_armor") then
-				inventory_plus.set_inventory_formspec(player, formspec)
+				inventory_plus.set_inventory_formspec(player, formspec..
+					"listring[current_player;main]"..
+					"listring[detached:"..name.."_armor;armor]")
 			end
 		elseif not core.setting_getbool("creative_mode") then
 			player:set_inventory_formspec(formspec)
