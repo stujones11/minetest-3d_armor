@@ -2,22 +2,22 @@ armor = {
 	timer = 0,
 	elements = {"head", "torso", "legs", "feet"},
 	physics = {"jump", "speed", "gravity"},
+	attributes = {"heal", "fire", "water"},
 	formspec = "size[8,8.5]"..
 		default.gui_bg..
 		default.gui_bg_img..
 		default.gui_slots..
+		default.get_hotbar_bg(0,4.25)..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
 		"list[current_player;craft;3,0.5;3,3;]"..
 		"list[current_player;craftpreview;7,1.5;1,1;]"..
 		"image[6,1.5;1,1;gui_furnace_arrow_bg.png^[transformR270]"..
 		"listring[current_player;main]"..
-		"listring[current_player;craft]"..
-		default.get_hotbar_bg(0,4.25),
+		"listring[current_player;craft]",
 	version = "0.5.0",
-	def = {state=0,	count = 0},
+	def = {state=0, count=0},
 	registered_callbacks = {
-		on_update = {},
 		on_equip = {},
 		on_unequip = {},
 		on_destroy = {},
@@ -26,96 +26,129 @@ armor = {
 }
 
 armor.set_player_armor = function(self, player)
-	local name, player_inv = armor:get_valid_player(player, "[set_player_armor]")
+	local name, inv = armor:get_valid_player(player, "[set_player_armor]")
 	if not name then
 		return
 	end
 	local armor_texture = "3d_armor_trans.png"
-	local armor_level = 0
-	local armor_heal = 0
-	local armor_fire = 0
-	local armor_water = 0
-	local state = 0
-	local items = 0
-	local elements = {}
+	local armor_groups = {fleshy=100}
 	local textures = {}
+	local state = 0
+	local count = 0
+	local level = 0
 	local physics = {speed=1, gravity=1, jump=1}
+	local attributes = {heal=0, fire=0, water=0}
 	local material = {count=1}
-	for _,v in ipairs(self.elements) do
-		elements[v] = false
-	end
 	for i=1, 6 do
-		local stack = player_inv:get_stack("armor", i)
+		local stack = inv:get_stack("armor", i)
 		local item = stack:get_name()
 		if stack:get_count() == 1 then
 			local def = stack:get_definition()
-			for k, v in pairs(elements) do
-				if v == false then
-					local level = def.groups["armor_"..k]
-					if level then
-						local texture = def.texture or item:gsub("%:", "_")
-						table.insert(textures, texture..".png")
-						armor_level = armor_level + level
-						state = state + stack:get_wear()
-						items = items + 1
-						armor_heal = armor_heal + (def.groups["armor_heal"] or 0)
-						armor_fire = armor_fire + (def.groups["armor_fire"] or 0)
-						armor_water = armor_water + (def.groups["armor_water"] or 0)
-						for i, p in pairs(self.physics) do
-							local value = def.groups["physics_"..p] or 0
-							physics[p] = physics[p] + value
-						end
-						local mat = string.match(item, "%:.+_(.+)$")
-						if material.name then
-							if material.name == mat then
-								material.count = material.count + 1
-							end
-						else
-							material.name = mat
-						end
-						elements[k] = true
-					end
+			for _, element in pairs(self.elements) do
+				if def.groups["armor_"..element] then
+					level = level + def.groups["armor_"..element]
 				end
 			end
+			local texture = def.texture or item:gsub("%:", "_")
+			table.insert(textures, texture..".png")
+			state = state + stack:get_wear()
+			count = count + 1
+			for _, attr in pairs(self.attributes) do
+				local value = def.groups["armor_"..attr] or 0
+				attributes[attr] = attributes[attr] or 0
+				attributes[attr] = attributes[attr] + value
+			end
+			for _, phys in pairs(self.physics) do
+				local value = def.groups["physics_"..phys] or 0
+				physics[phys] = physics[phys] or 0
+				physics[phys] = physics[phys] + value
+			end
+			local mat = string.match(item, "%:.+_(.+)$")
+			if material.name then
+				if material.name == mat then
+					material.count = material.count + 1
+				end
+			else
+				material.name = mat
+			end
+
 		end
 	end
 	if minetest.get_modpath("shields") then
-		armor_level = armor_level * 0.9
+		level = level * 0.9
 	end
 	if material.name and material.count == #self.elements then
-		armor_level = armor_level * 1.1
+		level = level * 1.1
 	end
-	armor_level = armor_level * ARMOR_LEVEL_MULTIPLIER
-	armor_heal = armor_heal * ARMOR_HEAL_MULTIPLIER
+	level = level * ARMOR_LEVEL_MULTIPLIER
+	attributes.heal = attributes.heal * ARMOR_HEAL_MULTIPLIER
 	if #textures > 0 then
 		armor_texture = table.concat(textures, "^")
 	end
-	local armor_groups = {fleshy=100}
-	if armor_level > 0 then
-		armor_groups.level = math.floor(armor_level / 20)
-		armor_groups.fleshy = 100 - armor_level
+	if level > 0 then
+		armor_groups.level = math.floor(level / 20)
+		armor_groups.fleshy = 100 - level
 	end
 	self.def[name].state = state
-	self.def[name].count = items
-	self.def[name].level = armor_level
-	self.def[name].heal = armor_heal
-	self.def[name].jump = physics.jump
-	self.def[name].speed = physics.speed
-	self.def[name].gravity = physics.gravity
-	self.def[name].fire = armor_fire
-	self.def[name].water = armor_water
+	self.def[name].count = count
+	self.def[name].level = level
+	for _, attr in pairs(self.attributes) do
+		self.def[name][attr] = attributes[attr]
+	end
+	for _, phys in pairs(self.physics) do
+		self.def[name][phys] = physics[phys]
+	end
 	player:set_armor_groups(armor_groups)
 	player:set_physics_override(physics)
 	multiskin[name].armor = armor_texture
 	multiskin:update_player_visuals(player)
 end
 
+armor.set_inventory_stack = function(self, i, stack)
+	local player_inv = player:get_inventory()
+	local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
+	local msg = "[set_inventory_stack]"
+	if not player_inv then
+		minetest.log("error", "3d_armor: Player inventory is nil "..msg)
+		return
+	elseif not armor_inv then
+		minetest.log("error", "3d_armor: Detached armor inventory is nil "..msg)
+		return
+	end
+	player_inv:set_stack("armor", i, stack)
+	armor_inv:set_stack("armor", i, stack)
+end
+
 armor.get_armor_formspec = function(self, name)
 	local formspec = armor.formspec.."list[detached:"..name.."_armor;armor;0,0.5;2,3;]"
 	formspec = formspec:gsub("armor_level", armor.def[name].level)
-	formspec = formspec:gsub("armor_heal", armor.def[name].heal)
-	formspec = formspec:gsub("armor_fire", armor.def[name].fire)
+	for _, attr in pairs(self.attributes) do
+		formspec = formspec:gsub("armor_"..attr, armor.def[name][attr])
+	end
 	return formspec
+end
+
+armor.get_valid_player = function(self, player, msg)
+	msg = msg or ""
+	if not player then
+		minetest.log("error", "3d_armor: Player reference is nil "..msg)
+		return
+	end
+	local name = player:get_player_name()
+	if not name then
+		minetest.log("error", "3d_armor: Player name is nil "..msg)
+		return
+	end
+	local pos = player:getpos()
+	local inv = player:get_inventory()
+	if not pos then
+		minetest.log("error", "3d_armor: Player position is nil "..msg)
+		return
+	elseif not inv then
+		minetest.log("error", "3d_armor: Player inventory is nil "..msg)
+		return
+	end
+	return name, inv, pos
 end
 
 armor.update_inventory = function(self, player)
@@ -142,31 +175,11 @@ armor.update_inventory = function(self, player)
 	end
 end
 
-armor.get_valid_player = function(self, player, msg)
-	msg = msg or ""
-	if not player then
-		minetest.log("error", "3d_armor: Player reference is nil "..msg)
-		return
+armor.drop_armor = function(self, pos, stack)
+	local obj = minetest.add_item(pos, stack)
+	if obj then
+		obj:setvelocity({x=math.random(-1, 1), y=5, z=math.random(-1, 1)})
 	end
-	local name = player:get_player_name()
-	if not name then
-		minetest.log("error", "3d_armor: Player name is nil "..msg)
-		return
-	end
-	local pos = player:getpos()
-	local player_inv = player:get_inventory()
-	local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
-	if not pos then
-		minetest.log("error", "3d_armor: Player position is nil "..msg)
-		return
-	elseif not player_inv then
-		minetest.log("error", "3d_armor: Player inventory is nil "..msg)
-		return
-	elseif not armor_inv then
-		minetest.log("error", "3d_armor: Detached armor inventory is nil "..msg)
-		return
-	end
-	return name, player_inv, armor_inv, pos
 end
 
 -- Armor callbacks
@@ -203,6 +216,6 @@ end
 
 armor.update_armor = function(self, player)
 	-- Called when armor levels are changed
-	-- Other mods can hook on to this function, see hud mod for example 
+	-- Other mods can hook on to this function, see hud mod for example
 end
 

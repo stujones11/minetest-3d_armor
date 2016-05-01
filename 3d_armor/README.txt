@@ -102,3 +102,47 @@ Boots:
  * Requires moreores mod by Calinou - https://forum.minetest.net/viewtopic.php?id=549
 ** Requires ethereal mod by Chinchow & TenPlus1 - https://github.com/tenplus1/ethereal
 
+API
+---
+
+Armor Registration: See armor.lua, technic and shields mod for example usage.
+
+minetest.register_tool("your_mod_name:speed_boots", {
+	description = "Speed Boots",
+	inventory_image = "your_mod_name_speed_boots_inv.png",
+	texture = "your_mod_name_speed_boots.png",
+	groups = {armor_feet=10, physics_speed=0.5, armor_use=2000},
+	on_destroy = function(player, item_name)
+		minetest.sound_play("your_mod_name_break_sound", {
+			to_player = player:get_player_name(),
+		})
+	end,
+})
+
+Default groups: Can be modified by dependent mods, eg. shields
+
+	elements: armor_head, armor_torso, armor_legs, armor_feet
+	attributes: armor_heal, armor_fire, armor_water
+	physics: physics_jump, physics_speed, physics_gravity
+	durability: armor_use
+
+Note: attributes and physics values are 'stackable', durability is determined
+by the level of armor_use, total uses == approx (65535/armor_use)
+
+Item Callbacks:
+
+on_equip = func(player, stack)
+on_unequip = func(player, stack)
+on_destroy = func(player, item_name)
+
+Global callbacks:
+
+armor:register_on_equip(func(player, stack))
+armor:register_on_unequip(func(player, stack))
+armor:register_on_destroy(func(player, item_name))
+
+Depreciated functions: May be removed from future versions
+
+armor:update_armor(player)
+armor:update_player_visuals(player)
+
