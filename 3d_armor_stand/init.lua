@@ -230,7 +230,7 @@ minetest.register_entity("3d_armor_stand:armor_entity", {
 			self.timer = 0
 			local pos = self.object:getpos()
 			if pos then
-				if vector.equals(self.pos, pos) then
+				if vector.equals(vector.round(pos), self.pos) then
 					return
 				end
 			end
