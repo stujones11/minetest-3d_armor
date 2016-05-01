@@ -1,4 +1,4 @@
-Modpack - 3d Armor [0.4.5]
+Modpack - 3d Armor [0.5.0]
 ==========================
 
 [mod] Multi Skins [multiskin]
@@ -12,7 +12,7 @@ Common multi-layer player texturing api used by the modpack.
 [mod] Visible Player Armor [3d_armor]
 -------------------------------------
 
-Minetest Version: 0.4.13
+Minetest Version: 0.4.14
 
 Game: minetest_game and many derivatives
 
