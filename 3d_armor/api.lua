@@ -18,6 +18,7 @@ armor = {
 	version = "0.5.0",
 	def = {state=0, count=0},
 	registered_callbacks = {
+		on_update = {},
 		on_equip = {},
 		on_unequip = {},
 		on_destroy = {},
@@ -106,6 +107,9 @@ armor.set_player_armor = function(self, player)
 	player:set_physics_override(physics)
 	multiskin[name].armor = armor_texture
 	multiskin:update_player_visuals(player)
+	for _, func in pairs(armor.registered_callbacks.on_update) do
+		func(player)
+	end
 end
 
 armor.set_inventory_stack = function(self, i, stack)
@@ -194,6 +198,12 @@ armor.register_on_update = function(self, func)
 	end
 end
 
+armor.register_on_update = function(self, func)
+	if type(func) == "function" then
+		table.insert(self.registered_callbacks.on_update, func)
+	end
+end
+
 armor.register_on_equip = function(self, func)
 	if type(func) == "function" then
 		table.insert(self.registered_callbacks.on_equip, func)
@@ -219,7 +229,6 @@ armor.update_player_visuals = function(self, player)
 end
 
 armor.update_armor = function(self, player)
-	-- Called when armor levels are changed
-	-- Other mods can hook on to this function, see hud mod for example
+	-- Called when player hp changes
 end
 

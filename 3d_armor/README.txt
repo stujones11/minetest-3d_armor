@@ -137,6 +137,7 @@ on_destroy = func(player, item_name)
 
 Global callbacks:
 
+armor:register_on_update(func(player))
 armor:register_on_equip(func(player, stack))
 armor:register_on_unequip(func(player, stack))
 armor:register_on_destroy(func(player, item_name))
