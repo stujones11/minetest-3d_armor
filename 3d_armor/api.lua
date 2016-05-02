@@ -105,8 +105,7 @@ armor.set_player_armor = function(self, player)
 	end
 	player:set_armor_groups(armor_groups)
 	player:set_physics_override(physics)
-	multiskin[name].armor = armor_texture
-	multiskin:update_player_visuals(player)
+	multiskin:set_player_textures(player, {armor=armor_texture})
 	for _, func in pairs(armor.registered_callbacks.on_update) do
 		func(player)
 	end

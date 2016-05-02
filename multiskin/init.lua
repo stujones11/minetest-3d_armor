@@ -1,12 +1,22 @@
 multiskin = {}
 
-local default_skin = "character.png"
+local default_skin = "multiskin.png"
 local player_model = "multiskin.b3d"
+local skin_format = minetest.setting_get("multiskin_format")
+if not skin_format then
+	skin_format = "1.7"
+	minetest.setting_set("multiskin_format", skin_format)
+end
 if minetest.get_modpath("3d_armor") then
 	player_model = "3d_armor.b3d"
 elseif minetest.get_modpath("wieldview") then
 	player_model = "wieldview.b3d"
 end
+if skin_format == "1.8" then
+	default_skin = default_skin:gsub(".png", "_18.png")
+	player_model = player_model:gsub(".b3d", "_18.b3d")
+end
+print("[Multiskin] Using skin format "..skin_format)
 
 function multiskin:get_player_skin(name)
 	if minetest.get_modpath("player_textures") then
@@ -36,19 +46,34 @@ function multiskin:get_player_skin(name)
 	end
 end
 
-function multiskin:update_player_visuals(player, skin)
+function multiskin:set_player_textures(player, textures)
+	local name = player:get_player_name()
+	if name then
+		for _, layer in pairs({"skin", "clothing", "wielditem", "armor"}) do
+			multiskin[name][layer] = textures[layer] or multiskin[name][layer]
+		end
+	end
+	multiskin:update_player_visuals(player)
+end
+
+function multiskin:update_player_visuals(player)
 	if not player then
 		return
 	end
 	local name = player:get_player_name()
 	if multiskin[name] then
-		multiskin[name].skin = skin or multiskin[name].skin
-		default.player_set_textures(player, {
-			multiskin[name].skin,
-			multiskin[name].clothing,
-			multiskin[name].wielditem,
-			multiskin[name].armor,
-		})
+		local skin = multiskin[name].skin
+		local clothing = multiskin[name].clothing
+		local wielditem = multiskin[name].wielditem
+		local armor = multiskin[name].armor
+		if skin_format == "1.8" then
+			if clothing == "multiskin_trans.png" then
+				clothing = skin
+			else
+				clothing = skin.."^"..clothing
+			end
+		end
+		default.player_set_textures(player, {skin, clothing, wielditem, armor})
 	end
 end
 
@@ -74,8 +99,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			minetest.after(0, function(player)
 				local skin = multiskin:get_player_skin(name)
 				if skin then
-					multiskin[name].skin = skin
-					multiskin:update_player_visuals(player)
+					multiskin:set_player_textures(player, {skin=skin})
 				end
 			end, player)
 		end
