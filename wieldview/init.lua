@@ -42,8 +42,8 @@ wieldview.update_wielded_item = function(self, player)
 		if self.wielded_item[name] == item then
 			return
 		end
-		multiskin[name].wielditem = self:get_item_texture(item)
-		multiskin:update_player_visuals(player)
+		local wielditem = self:get_item_texture(item)
+		multiskin:set_player_textures(player, {wielditem=wielditem})
 	end
 	self.wielded_item[name] = item
 end
