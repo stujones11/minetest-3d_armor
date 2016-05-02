@@ -197,12 +197,6 @@ armor.register_on_update = function(self, func)
 	end
 end
 
-armor.register_on_update = function(self, func)
-	if type(func) == "function" then
-		table.insert(self.registered_callbacks.on_update, func)
-	end
-end
-
 armor.register_on_equip = function(self, func)
 	if type(func) == "function" then
 		table.insert(self.registered_callbacks.on_equip, func)
