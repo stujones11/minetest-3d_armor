@@ -114,7 +114,7 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 				local heal = def.groups["armor_heal"] or 0
 				local item = stack:get_name()
 				stack:add_wear(use)
-				armor:set_inventory_stack(i, stack)
+				armor:set_inventory_stack(player, i, stack)
 				state = state + stack:get_wear()
 				items = items + 1
 				if stack:get_count() == 0 then
@@ -267,7 +267,7 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 			local stack = inv:get_stack("armor", i)
 			if stack:get_count() > 0 then
 				table.insert(drop, stack)
-				armor:set_inventory_stack(i, nil)
+				armor:set_inventory_stack(player, i, nil)
 			end
 		end
 		armor:set_player_armor(player)

@@ -111,10 +111,15 @@ armor.set_player_armor = function(self, player)
 	end
 end
 
-armor.set_inventory_stack = function(self, i, stack)
+armor.set_inventory_stack = function(self, player, i, stack)
+	local msg = "[set_inventory_stack]"
+	local name = player:get_player_name()
+	if not name then
+		minetest.log("error", "3d_armor: Player name is nil "..msg)
+		return
+	end
 	local player_inv = player:get_inventory()
 	local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
-	local msg = "[set_inventory_stack]"
 	if not player_inv then
 		minetest.log("error", "3d_armor: Player inventory is nil "..msg)
 		return
