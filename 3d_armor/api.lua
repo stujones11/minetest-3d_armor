@@ -3,6 +3,7 @@ armor = {
 	elements = {"head", "torso", "legs", "feet"},
 	physics = {"jump", "speed", "gravity"},
 	attributes = {"heal", "fire", "water", "radiation"},
+	groups = {"fleshy", "cracky", "snappy", "choppy", "crumbly"},
 	formspec = "size[8,8.5]"..
 		default.gui_bg..
 		default.gui_bg_img..
@@ -31,17 +32,21 @@ armor.set_player_armor = function(self, player)
 	if not name then
 		return
 	end
-	local armor_texture = "3d_armor_trans.png"
-	local armor_groups = {fleshy=100}
+	local texture = "3d_armor_trans.png"
+	local groups = {level=0}
+	local levels = {}
 	local textures = {}
 	local state = 0
 	local count = 0
-	local level = 0
 	local material = {count=1}
 	local physics = {speed=1, gravity=1, jump=1}
 	local attributes = {}
 	for _, attr in pairs(self.attributes) do
 		attributes[attr] = 0
+	end
+	for _, group in pairs(self.groups) do
+		groups[group] = 100
+		levels[group] = 0
 	end
 	for i=1, 6 do
 		local stack = inv:get_stack("armor", i)
@@ -50,11 +55,23 @@ armor.set_player_armor = function(self, player)
 			local def = stack:get_definition()
 			for _, element in pairs(self.elements) do
 				if def.groups["armor_"..element] then
-					level = level + def.groups["armor_"..element]
+					if def.armor_groups then
+						for group, level in pairs(def.armor_groups) do
+							if levels[group] then
+								levels[group] = levels[group] + level
+							end
+						end
+					elseif levels["fleshy"] then
+						local level = def.groups["armor_"..element]
+						levels["fleshy"] = levels["fleshy"] + level
+					end
 				end
 			end
-			local texture = def.texture or item:gsub("%:", "_")
-			table.insert(textures, texture..".png")
+			local filename = def.texture or item:gsub("%:", "_")
+			if not string.find(filename, ".png$") then
+				filename = filename..".png"
+			end
+			table.insert(textures, filename)
 			state = state + stack:get_wear()
 			count = count + 1
 			for _, attr in pairs(self.attributes) do
@@ -75,37 +92,40 @@ armor.set_player_armor = function(self, player)
 			else
 				material.name = mat
 			end
-
 		end
 	end
-	if minetest.get_modpath("shields") then
-		level = level * 0.9
+	for group, level in pairs(levels) do
+		if level > 0 then
+			if minetest.get_modpath("shields") then
+				level = level * 0.9
+			end
+			if material.name and material.count == #self.elements then
+				level = level * 1.1
+			end
+			groups[group] = 100 - level * ARMOR_LEVEL_MULTIPLIER
+			self.def[name].groups[group] = groups[group]
+		end
 	end
-	if material.name and material.count == #self.elements then
-		level = level * 1.1
+	if levels["fleshy"] then
+		groups.level = math.floor(levels["fleshy"] / 20)
 	end
-	level = level * ARMOR_LEVEL_MULTIPLIER
 	attributes.heal = attributes.heal * ARMOR_HEAL_MULTIPLIER
 	attributes.radiation = attributes.radiation * ARMOR_RADIATION_MULTIPLIER
-	if #textures > 0 then
-		armor_texture = table.concat(textures, "^")
-	end
-	if level > 0 then
-		armor_groups.level = math.floor(level / 20)
-		armor_groups.fleshy = 100 - level
-	end
-	self.def[name].state = state
-	self.def[name].count = count
-	self.def[name].level = level
 	for _, attr in pairs(self.attributes) do
 		self.def[name][attr] = attributes[attr]
 	end
 	for _, phys in pairs(self.physics) do
 		self.def[name][phys] = physics[phys]
 	end
-	player:set_armor_groups(armor_groups)
+	if #textures > 0 then
+		texture = table.concat(textures, "^")
+	end
+	self.def[name].level = levels["fleshy"] or 0
+	self.def[name].state = state
+	self.def[name].count = count
+	player:set_armor_groups(groups)
 	player:set_physics_override(physics)
-	multiskin:set_player_textures(player, {armor=armor_texture})
+	multiskin:set_player_textures(player, {armor=texture})
 	for _, func in pairs(armor.registered_callbacks.on_update) do
 		func(player)
 	end

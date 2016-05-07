@@ -111,7 +111,8 @@ minetest.register_tool("your_mod_name:speed_boots", {
 	description = "Speed Boots",
 	inventory_image = "your_mod_name_speed_boots_inv.png",
 	texture = "your_mod_name_speed_boots.png",
-	groups = {armor_feet=10, physics_speed=0.5, armor_use=2000},
+	groups = {armor_feet=1, physics_speed=0.5, armor_use=2000},
+	armor_groups = {fleshy=10, cracky=10, snappy=10, choppy=10, crumbly=10}
 	on_destroy = function(player, item_name)
 		minetest.sound_play("your_mod_name_break_sound", {
 			to_player = player:get_player_name(),
@@ -124,10 +125,12 @@ Default groups: Can be modified by dependent mods, eg. shields
 	elements: armor_head, armor_torso, armor_legs, armor_feet
 	attributes: armor_heal, armor_fire, armor_water
 	physics: physics_jump, physics_speed, physics_gravity
+	armor_groups: fleshy, cracky, snappy, choppy, crumbly
 	durability: armor_use
 
 Note: attributes and physics values are 'stackable', durability is determined
-by the level of armor_use, total uses == approx (65535/armor_use)
+by the level of armor_use, total uses == approx (65535/armor_use), non-fleshy
+damage groups need to be defined in the tool/weapon used against the player.
 
 Item Callbacks:
 

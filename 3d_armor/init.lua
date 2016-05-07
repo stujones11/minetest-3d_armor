@@ -238,9 +238,13 @@ minetest.register_on_joinplayer(function(player)
 		gravity = 1,
 		fire = 0,
 		water = 0,
+		groups = {},
 	}
 	for _, attr in pairs(armor.attributes) do
 		armor.def[name][attr] = 0
+	end
+	for _, group in pairs(armor.groups) do
+		armor.def[name].groups[group] = 0
 	end
 
 	-- Legacy preview support, may be removed from future versions
