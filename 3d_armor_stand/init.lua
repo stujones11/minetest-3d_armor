@@ -199,7 +199,7 @@ minetest.register_node("3d_armor_stand:locked_armor_stand", {
 		end
 		return true
 	end,
-	after_place_node = function(pos)
+	after_place_node = function(pos, placer)
 		minetest.add_entity(pos, "3d_armor_stand:armor_entity")
 		local meta = minetest.get_meta(pos)
 		meta:set_string("owner", placer:get_player_name() or "")
