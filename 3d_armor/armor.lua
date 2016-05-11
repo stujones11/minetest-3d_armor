@@ -289,5 +289,5 @@ minetest.register_tool("3d_armor:boots_admin", {
 minetest.register_alias("adminboots","3d_armor:boots_admin")
 minetest.register_alias("adminhelmet","3d_armor:helmet_admin")
 minetest.register_alias("adminchestplate","3d_armor:chestplate_admin")
-minetest.register_alias("adminlegginss","3d_armor:leggings_admin")
+minetest.register_alias("adminleggings","3d_armor:leggings_admin")
 
