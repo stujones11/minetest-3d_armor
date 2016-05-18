@@ -11,7 +11,7 @@ if minetest.get_modpath("shields") then
 	level = level / 0.9
 end
 
-if count == #armor.elements then
+if part_count == #armor.elements then
 	level = level / 1.1
 end
 
