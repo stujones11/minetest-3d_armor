@@ -620,10 +620,11 @@ end)
 minetest.register_chatcommand("kill", {
 	params = "<name>",
 	description = "Kills player instantly",
+	privs = {ban=true},
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
 		if player then
-			player:set_hp(-1001)
+			player:set_hp(0)
 		end
 	end,
 })
