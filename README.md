@@ -1,68 +1,93 @@
-Modpack - 3d Armor [0.4.5]
+Modpack - 3d Armor [0.5.0]
 ==========================
+
+**Minetest Version:** 0.4.14
+
+**Games:** Minetest Game and default mod compatible sub-games.
+
+### Table of Contents
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [[mod] Visible Player Armor [3d_armor]](#mod-visible-player-armor-3d_armor)
+- [[mod] Visible Wielded Items [wieldview]](#mod-visible-wielded-items-wieldview)
+- [[mod] Shields [shields]](#mod-shields-shields)
+- [[mod] Technic Armor [technic_armor]](#mod-technic-armor-technic_armor)
+- [[mod] Hazmat Suit [hazmat_suit]](#mod-hazmat-suit-hazmat_suit)
+- [[mod] 3d Armor Stand [3d_armor_stand]](#mod-3d-armor-stand-3d_armor_stand)
+- [[mod] Shield Frame [shield_frame]](#mod-shield-frame-shield_frame)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+---
+[mod] Multi Skins [multiskin]
+-----------------------------
+
+Common multi-layer player texturing api used by the modpack.
+Includes optional support for version 1.8 skins.
+
+**Depends:** default
+
+Supported skin changing mods:
+
+	player_textures (PilzAdam)
+	simple_skins (Tenplus1)
+	skins (Zeg9)
+	u_skins (SmallJoker)
+	wardrobe (prestidigitator)
 
 [mod] Visible Player Armor [3d_armor]
 -------------------------------------
 
-Minetest Version: 0.4.13
+Adds craftable armor that is visible to other players.
 
-Game: minetest_game and many derivatives
+**Depends:** multiskin
 
-Depends: default
-
-Recommends: inventory_plus or unified_inventory (use only one)
-
-Adds craftable armor that is visible to other players. Each armor item worn contributes to
-a player's armor group level making them less vulnerable to attack.
-
-Armor takes damage when a player is hurt, however, many armor items offer a 'stackable'
-percentage chance of restoring the lost health points. Overall armor level is boosted by 10%
-when wearing a full matching set (helmet, chestplate, leggings and boots of the same material)
-
-Fire protection has been added by TenPlus1 and in use when ethereal mod is found and crystal
-armor has been enabled.  each piece of armor offers 1 fire protection, level 1 protects
-against torches, level 2 against crystal spikes, 3 for fire and 5 protects when in lava.
-
-Compatible with player skins [skins] by Zeg9 and Player Textures [player_textures] by PilzAdam
-and [simple_skins] by TenPlus1.
-
-Armor can be configured by adding a file called armor.conf in 3d_armor mod or world directory.
-see armor.conf.example for all available options.
+**Recommends:** inventory_plus or unified_inventory (use only one)
 
 [mod] Visible Wielded Items [wieldview]
 ---------------------------------------
 
-Depends: 3d_armor
-
 Makes hand wielded items visible to other players.
+
+**Depends:** multiskin
 
 [mod] Shields [shields]
 -----------------------
 
-Depends: 3d_armor
+Adds visible shields to 3d_armor.
 
-Originally a part of 3d_armor, shields have been re-included as an optional extra.
-If you do not want shields then simply remove the shields folder from the modpack.
+**Depends:** 3d_armor
 
 [mod] Technic Armor [technic_armor]
 -----------------------------------
 
-Depends: 3d_armor, technic_worldgen
-
-Adds tin, silver and technic materials to 3d_armor.
+Adds lead, tin, silver and technic materials to 3d_armor.
 Requires technic (technic_worldgen at least) mod.
+
+**Depends:** 3d_armor, technic_worldgen
 
 [mod] Hazmat Suit [hazmat_suit]
 -------------------------------
 
-Depends: 3d_armor, technic
+Adds hazmat suit to 3d_armor. It protects from fire (if enabled) and radiation*
+Also features a built-in oxygen supply for underwater breathing.
 
-Adds hazmat suit to 3d_armor. It protects rather well from fire (if enabled in configuration) and radiation, and it has built-in oxygen supply.
-Requires technic mod.
+**Depends:** 3d_armor, technic
+
+*Radiation protection requires patched version of [minetest-technic](https://github.com/minetest-technic/technic/pull/275) to take effect.
 
 [mod] 3d Armor Stand [3d_armor_stand]
 -------------------------------------
 
-Depends: 3d_armor
-
 Adds a chest-like armor stand for armor storage and display.
+
+**Depends:** 3d_armor
+
+[mod] Shield Frame [shield_frame]
+-------------------------------------
+
+Adds a wallmounted frame for shield storage and display.
+
+**Depends:** shields
