@@ -1,3 +1,6 @@
+[mod] 3d Shields [shields]
+==========================
+
 Adds shields to 3d_armor
 
 Depends: 3d_armor

@@ -1,0 +1,10 @@
+[mod] Shield Frame [shield_frame]
+=================================
+
+License Source Code: LGPL v2.1
+
+Lecense Media: CC BY-SA 3.0
+
+shield_frame.png and shield_frame_locked.png based on minetest game
+default chest: Copyright (C) 2010-2012 celeron55, Perttu Ahola CC BY-SA 3.0
+

@@ -1,0 +1,1 @@
+Adds a wallmounted frame for shield storage and display.

@@ -1,0 +1,9 @@
+[mod] 3D Armor [3d_armor]
+=========================
+
+License Textures: Ryan Jones 2013 (CC-BY-SA)
+
+License Models: Stuart Jones 2013 (CC-BY-SA)
+
+License Source Code: Stuart Jones 2013 (LGPL v2.1)
+
