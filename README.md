@@ -5,6 +5,22 @@ Modpack - 3d Armor [0.5.0]
 
 **Games:** Minetest Game and default mod compatible sub-games.
 
+### Table of Contents
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [[mod] Visible Player Armor [3d_armor]](#mod-visible-player-armor-3d_armor)
+- [[mod] Visible Wielded Items [wieldview]](#mod-visible-wielded-items-wieldview)
+- [[mod] Shields [shields]](#mod-shields-shields)
+- [[mod] Technic Armor [technic_armor]](#mod-technic-armor-technic_armor)
+- [[mod] Hazmat Suit [hazmat_suit]](#mod-hazmat-suit-hazmat_suit)
+- [[mod] 3d Armor Stand [3d_armor_stand]](#mod-3d-armor-stand-3d_armor_stand)
+- [[mod] Shield Frame [shield_frame]](#mod-shield-frame-shield_frame)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+---
 [mod] Multi Skins [multiskin]
 -----------------------------
 
@@ -13,7 +29,7 @@ Includes optional support for version 1.8 skins.
 
 **Depends:** default
 
-Supported skin changing mods: 
+Supported skin changing mods:
 
 	player_textures (PilzAdam)
 	simple_skins (Tenplus1)
@@ -75,4 +91,3 @@ Adds a chest-like armor stand for armor storage and display.
 Adds a wallmounted frame for shield storage and display.
 
 **Depends:** shields
-
