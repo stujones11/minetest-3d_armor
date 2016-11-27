@@ -64,7 +64,7 @@ armor = {
 		.."listring[current_player;craft]",
 	textures = {},
 	default_skin = "character",
-	version = "0.4.5",
+	version = "0.4.6",
 }
 
 if minetest.get_modpath("inventory_plus") then
@@ -397,7 +397,7 @@ minetest.register_on_joinplayer(function(player)
 		allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
 			return count
 		end,
-	})
+	}, name)
 	if inv_mod == "inventory_plus" then
 		inventory_plus.register_button(player,"armor", "Armor")
 	end
