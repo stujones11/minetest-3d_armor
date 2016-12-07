@@ -640,7 +640,7 @@ minetest.register_chatcommand("killme", {
 	func = function(name)
 		local player = minetest.get_player_by_name(name)
 		if player then
-			player:set_hp(0)
+			player:set_hp(-1001)
 		end
 	end,
 })
