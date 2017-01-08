@@ -1,11 +1,9 @@
 3D Armor - Visible Player Armor
 ===============================
 
-Default Item Textures (C) Cisoun - WTFPL
+License Source Code: Copyright (C) 2013-2017 Stuart Jones - LGPL v2.1
 
-Armor Textures: Copyright (C) 2013 Ryan Jones - CC-BY-SA
-
-Source Code: Copyright (C) 2013 Stuart Jones - LGPL
+Armor Textures: Copyright (C) 2013-2017 Ryan Jones - CC-BY-SA 3.0
 
 Special credit to Jordach and MirceaKitsune for providing the default 3d character model.
 

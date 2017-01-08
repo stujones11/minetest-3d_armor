@@ -1,0 +1,7 @@
+[mod] Hazmat Suit [hazmat_suit]
+===============================
+
+License Source Code: Copyright (C) 2015-2017 Stuart Jones - LGPL v2.1
+
+License Textures: HybridDog and numberZero - WTFPL
+

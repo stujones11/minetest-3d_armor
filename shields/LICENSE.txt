@@ -1,0 +1,6 @@
+[mod] Shields [shields]
+=======================
+
+License Source Code: Copyright (C) 2013-2017 Stuart Jones - LGPL v2.1
+
+License Textures: Copyright (C) 2013-2017 Ryan Jones - CC-BY-SA 3.0

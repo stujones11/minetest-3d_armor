@@ -1,0 +1,7 @@
+[mod] Technic Armor [technic_armor]
+===================================
+
+License Source Code: Copyright (C) 2013-2017 Stuart Jones - LGPL v2.1
+
+License Textures: poet.nohit and numberZero - WTFPL
+
