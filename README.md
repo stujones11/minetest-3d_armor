@@ -72,8 +72,10 @@ Requires technic (technic_worldgen at least) mod.
 
 Depends: 3d_armor, technic
 
-Adds hazmat suit to 3d_armor. It protects rather well from fire (if enabled in configuration) and radiation, and it has built-in oxygen supply.
+Adds hazmat suit to 3d_armor. It protects rather well from fire (if enabled in configuration) and radiation*, and it has built-in oxygen supply.
+
 Requires technic mod.
+*Requires patched version of [technic mod](https://github.com/minetest-technic/technic/pull/275)
 
 [mod] 3d Armor Stand [3d_armor_stand]
 -------------------------------------
