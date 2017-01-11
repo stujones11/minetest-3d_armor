@@ -3,5 +3,5 @@
 
 License Source Code: Copyright (C) 2013-2017 Stuart Jones - LGPL v2.1
 
-License Textures: poet.nohit and numberZero - WTFPL
+License Textures: poet.nohit and numberZero - 2015-2017 WTFPL
 
