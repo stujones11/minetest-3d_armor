@@ -3,5 +3,20 @@
 
 License Source Code: (C) 2016-2017 Stuart Jones - LGPL v2.1
 
-Lecense Media: (C) 2016-2017 Stuart Jones - CC BY-SA 3.0
+Lecense Models: (C) 2016-2017 Stuart Jones - CC BY-SA 3.0
 
+UV model mapping by tobyplowy(aka toby109tt)
+
+License Textures:
+
+3d_armor_stand.png
+3d_armor_stand_locked.png
+
+(C) 2017 tobyplowy - CC BY-SA 3.0
+
+3d_armor_stand_feet.png
+3d_armor_stand_head.png
+3d_armor_stand_legs.png
+3d_armor_stand_torso.png
+
+(C) 2016-2017 Stuart Jones - CC BY-SA 3.0
