@@ -5,3 +5,5 @@ License Source Code: (C) 2016-2017 Stuart Jones - LGPL v2.1
 
 Lecense Media: (C) 2016-2017 Stuart Jones - CC BY-SA 3.0
 
+new model mapping by tobyplowy(aka toby109tt)
+armor_stand.png made by tobyplowy(aka toby109tt)
