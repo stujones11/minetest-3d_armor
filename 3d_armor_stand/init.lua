@@ -99,18 +99,18 @@ local function has_locked_armor_stand_privilege(meta, player)
 end
 
 local function add_hidden_node(pos)
-	pos.y = pos.y + 1
-	local node = minetest.get_node(pos)
+	local p = {x=pos.x, y=pos.y + 1, z=pos.z}
+	local node = minetest.get_node(p)
 	if node.name == "air" or node.name == "ignore" then
-		minetest.set_node(pos, {name="3d_armor_stand:top"})
+		minetest.set_node(p, {name="3d_armor_stand:top"})
 	end
 end
 
 local function remove_hidden_node(pos)
-	pos.y = pos.y + 1
-	local node = minetest.get_node(pos)
+	local p = {x=pos.x, y=pos.y + 1, z=pos.z}
+	local node = minetest.get_node(p)
 	if node.name == "3d_armor_stand:top" then
-		minetest.remove_node(pos)
+		minetest.remove_node(p)
 	end
 end
 
