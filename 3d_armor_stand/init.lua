@@ -98,6 +98,37 @@ local function has_locked_armor_stand_privilege(meta, player)
 	return true
 end
 
+local function add_hidden_node(pos)
+	pos.y = pos.y + 1
+	local node = minetest.get_node(pos)
+	if node.name == "air" or node.name == "ignore" then
+		minetest.set_node(pos, {name="3d_armor_stand:top"})
+	end
+end
+
+local function remove_hidden_node(pos)
+	pos.y = pos.y + 1
+	local node = minetest.get_node(pos)
+	if node.name == "3d_armor_stand:top" then
+		minetest.remove_node(pos)
+	end
+end
+
+minetest.register_node("3d_armor_stand:top", {
+	description = "Armor stand top",
+	paramtype = "light",
+	drawtype = "plantlike",
+	sunlight_propagates = true,
+	walkable = true,
+	pointable = false,
+	diggable = false,
+	buildable_to = false,
+	drop = "",
+	groups = {not_in_creative_inventory = 1},
+	on_blast = function() end,
+	tiles = {"3d_armor_trans.png"},
+})
+
 minetest.register_node("3d_armor_stand:armor_stand", {
 	description = "Armor stand",
 	drawtype = "mesh",
@@ -133,6 +164,7 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 	end,
 	after_place_node = function(pos)
 		minetest.add_entity(pos, "3d_armor_stand:armor_entity")
+		add_hidden_node(pos)
 	end,
 	allow_metadata_inventory_put = function(pos, listname, index, stack)
 		local def = stack:get_definition() or {}
@@ -153,6 +185,7 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 	end,
 	after_destruct = function(pos)
 		update_entity(pos)
+		remove_hidden_node(pos)
 	end,
 	on_blast = function(pos)
 		local object = get_stand_object(pos)
@@ -205,6 +238,7 @@ minetest.register_node("3d_armor_stand:locked_armor_stand", {
 		meta:set_string("owner", placer:get_player_name() or "")
 		meta:set_string("infotext", "Armor Stand (owned by " ..
 		meta:get_string("owner") .. ")")
+		add_hidden_node(pos)
 	end,
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 		local meta = minetest.get_meta(pos)
@@ -236,6 +270,7 @@ minetest.register_node("3d_armor_stand:locked_armor_stand", {
 	end,
 	after_destruct = function(pos)
 		update_entity(pos)
+		remove_hidden_node(pos)
 	end,
 	on_blast = function(pos)
 		local object = get_stand_object(pos)
