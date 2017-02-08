@@ -98,10 +98,11 @@ local function has_locked_armor_stand_privilege(meta, player)
 	return true
 end
 
-local function add_hidden_node(pos)
+local function add_hidden_node(pos, player)
 	local p = {x=pos.x, y=pos.y + 1, z=pos.z}
+	local name = player:get_player_name()
 	local node = minetest.get_node(p)
-	if node.name == "air" or node.name == "ignore" then
+	if node.name == "air" and not minetest.is_protected(pos, name) then
 		minetest.set_node(p, {name="3d_armor_stand:top"})
 	end
 end
@@ -162,9 +163,9 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 		end
 		return true
 	end,
-	after_place_node = function(pos)
+	after_place_node = function(pos, placer)
 		minetest.add_entity(pos, "3d_armor_stand:armor_entity")
-		add_hidden_node(pos)
+		add_hidden_node(pos, placer)
 	end,
 	allow_metadata_inventory_put = function(pos, listname, index, stack)
 		local def = stack:get_definition() or {}
@@ -238,7 +239,7 @@ minetest.register_node("3d_armor_stand:locked_armor_stand", {
 		meta:set_string("owner", placer:get_player_name() or "")
 		meta:set_string("infotext", "Armor Stand (owned by " ..
 		meta:get_string("owner") .. ")")
-		add_hidden_node(pos)
+		add_hidden_node(pos, placer)
 	end,
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 		local meta = minetest.get_meta(pos)
