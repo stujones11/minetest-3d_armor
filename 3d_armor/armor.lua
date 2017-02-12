@@ -282,7 +282,10 @@ armor.update_inventory = function(self, player)
 	if inv_mod == "smart_inventory" then
 		local state = smart_inventory.smartfs.inv[name]
 		if state then
-			state:get("player_button"):submit()
+			local button = state:get("player_button")
+			if button then
+				button:submit()
+			end
 		end
 		return
 	end
