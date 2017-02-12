@@ -105,6 +105,8 @@ elseif minetest.get_modpath("unified_inventory") then
 	})
 elseif minetest.get_modpath("inventory_enhanced") then
 	inv_mod = "inventory_enhanced"
+elseif minetest.get_modpath("smart_inventory") then
+	inv_mod = "smart_inventory"
 end
 
 if minetest.get_modpath("skins") then
@@ -275,6 +277,16 @@ end
 armor.update_inventory = function(self, player)
 	local name = armor:get_valid_player(player, "[set_player_armor]")
 	if not name or inv_mod == "inventory_enhanced" then
+		return
+	end
+	if inv_mod == "smart_inventory" then
+		local state = smart_inventory.smartfs.inv[name]
+		if state then
+			local button = state:get("player_button")
+			if button then
+				button:submit()
+			end
+		end
 		return
 	end
 	if inv_mod == "unified_inventory" then
