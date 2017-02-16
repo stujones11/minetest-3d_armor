@@ -86,7 +86,7 @@ if minetest.get_modpath("inventory_plus") then
 		inventory_plus.get_formspec = function(player, page)
 		end
 	end
-elseif minetest.get_modpath("unified_inventory") then
+elseif minetest.get_modpath("unified_inventory") and not unified_inventory.sfinv_compat_layer then
 	inv_mod = "unified_inventory"
 	unified_inventory.register_button("armor", {
 		type = "image",
@@ -113,6 +113,17 @@ elseif minetest.get_modpath("inventory_enhanced") then
 	inv_mod = "inventory_enhanced"
 elseif minetest.get_modpath("smart_inventory") then
 	inv_mod = "smart_inventory"
+elseif minetest.get_modpath("sfinv") then
+	inv_mod = "sfinv"
+	armor.formspec = "image[2,0.5;2,4;armor_preview]"
+
+	sfinv.register_page("3d_armor:armor", {
+		title = "Armor",
+		get = function(self, player, context)
+			return sfinv.make_formspec(player, context,
+				armor:get_armor_formspec(player:get_player_name()), true)
+		end
+	})
 end
 
 if minetest.get_modpath("skins") then
@@ -241,7 +252,7 @@ end
 
 armor.update_armor = function(self, player)
 	-- Legacy support: Called when armor levels are changed
-	-- Other mods can hook on to this function, see hud mod for example 
+	-- Other mods can hook on to this function, see hud mod for example
 end
 
 armor.get_player_skin = function(self, name)
@@ -293,9 +304,16 @@ armor.update_inventory = function(self, player)
 				button:submit()
 			end
 		end
-		return
-	end
-	if inv_mod == "unified_inventory" then
+	elseif inv_mod == "sfinv" then
+		if sfinv.set_page then
+			sfinv.set_page(player, "3d_armor:armor")
+		else
+			-- Backwards compat
+			sfinv.set_player_inventory_formspec(player, {
+				page = "3d_armor:armor"
+			})
+		end
+	elseif inv_mod == "unified_inventory" then
 		if unified_inventory.current_page[name] == "armor" then
 			unified_inventory.set_inventory_formspec(player, "armor")
 		end
@@ -424,7 +442,7 @@ minetest.register_on_joinplayer(function(player)
 	for i=1, 6 do
 		local stack = player_inv:get_stack("armor", i)
 		armor_inv:set_stack("armor", i, stack)
-	end	
+	end
 	armor.def[name] = {
 		state = 0,
 		count = 0,

@@ -3,7 +3,7 @@
 
 Depends: default
 
-Recommends: inventory_plus or unified_inventory (use only one)
+Recommends: sfinv, inventory_plus or unified_inventory (use only one to avoid conflicts)
 
 Adds craftable armor that is visible to other players. Each armor item worn contributes to
 a player's armor group level making them less vulnerable to weapons.
@@ -21,4 +21,3 @@ Armor can be configured by adding a file called armor.conf in 3d_armor mod and/o
 see armor.conf.example for all available options.
 
 Note: worldpath config settings override any settings made in the mod's directory.
-
