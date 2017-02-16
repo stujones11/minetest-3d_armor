@@ -1,6 +1,7 @@
 default
 inventory_plus?
 unified_inventory?
+sfinv?
 fire?
 ethereal?
 bakedclay?
