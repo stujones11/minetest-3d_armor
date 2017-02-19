@@ -3,4 +3,6 @@
 
 License Source Code: Copyright (C) 2013-2017 Stuart Jones - LGPL v2.1
 
-License Textures: Copyright (C) 2013-2017 Ryan Jones - CC-BY-SA 3.0
+License Textures: Copyright (C) 2017 davidthecreator - CC-BY-SA 3.0
+
+https://github.com/daviddoesminetest/3d-armors-new-textures
