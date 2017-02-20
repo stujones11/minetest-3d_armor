@@ -286,12 +286,9 @@ armor.update_inventory = function(self, player)
 		return
 	end
 	if inv_mod == "smart_inventory" then
-		local state = smart_inventory.smartfs.inv[name]
+		local state = smart_inventory.get_page_state("player", name)
 		if state then
-			local button = state:get("player_button")
-			if button then
-				button:submit()
-			end
+			state:get("update_hook"):submit()
 		end
 		return
 	end
