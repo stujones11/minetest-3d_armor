@@ -511,21 +511,21 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 		end
 		if ARMOR_DESTROY == false then
 			minetest.after(ARMOR_BONES_DELAY, function()
-				local node = minetest.get_node(vector.round(pos))
-				if node then
-					if node.name ~= "bones:bones" then
-						pos.y = pos.y+1
-						node = minetest.get_node(vector.round(pos))
-						if node.name ~= "bones:bones" then
-							minetest.log("warning", "Failed to add armor to bones node.")
-							return
-						end
+				local node, meta = nil, nil
+				local maxp = vector.add(pos, 8)
+				local minp = vector.subtract(pos, 8)
+				local bones = minetest.find_nodes_in_area(minp, maxp, {"bones:bones"})
+				for _, p in pairs(bones) do
+					meta = minetest.get_meta(p)
+					if meta:get_string("owner") == name then
+						node = minetest.get_node(p)
+						break
 					end
-					local meta = minetest.get_meta(vector.round(pos))
-					local owner = meta:get_string("owner")
+				end
+				if node and meta then
 					local inv = meta:get_inventory()
 					for _,stack in ipairs(drop) do
-						if name == owner and inv:room_for_item("main", stack) then
+						if inv:room_for_item("main", stack) then
 							inv:add_item("main", stack)
 						else
 							armor.drop_armor(pos, stack)
