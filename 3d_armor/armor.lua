@@ -516,8 +516,9 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 				local minp = vector.subtract(pos, 8)
 				local bones = minetest.find_nodes_in_area(minp, maxp, {"bones:bones"})
 				for _, p in pairs(bones) do
-					meta = minetest.get_meta(p)
-					if meta:get_string("owner") == name then
+					local m = minetest.get_meta(p)
+					if m:get_string("owner") == name then
+						meta = m
 						break
 					end
 				end
