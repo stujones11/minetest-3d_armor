@@ -75,13 +75,18 @@ armor = {
 
 if minetest.get_modpath("inventory_plus") then
 	inv_mod = "inventory_plus"
-	armor.formspec = "size[8,8.5]button[0,0;2,0.5;main;Back]"
-		.."image[2.5,0.75;2,4;armor_preview]"
-		.."label[5,1;Level: armor_level]"
-		.."label[5,1.5;Heal:  armor_heal]"
-		.."label[5,2;Fire:  armor_fire]"
-		.."label[5,2.5;Radiation:  armor_radiation]"
-		.."list[current_player;main;0,4.5;8,4;]"
+	armor.formspec = "size[8,8.5]button[6,0;2,0.5;main;Back]"..
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+		default.get_hotbar_bg(0,4.25)..
+		"image[2.5,0;2,4;armor_preview]"..
+		"label[5,1;Level: armor_level]"..
+		"label[5,1.5;Heal:  armor_heal]"..
+		"label[5,2;Fire:  armor_fire]"..
+		"label[5,2.5;Radiation:  armor_radiation]"..
+		"list[current_player;main;0,4.25;8,1;]"..
+		"list[current_player;main;0,5.5;8,3;8]"
 	if minetest.get_modpath("crafting") then
 		inventory_plus.get_formspec = function(player, page)
 		end
