@@ -26,6 +26,8 @@ ARMOR_FIRE_NODES = {
 	{"ethereal:crystal_spike",  2, 1},
 	{"ethereal:fire_flower",    2, 1},
 	{"default:torch",           1, 1},
+	{"default:torch_ceiling",   1, 1},
+	{"default:torch_wall",      1, 1},
 }
 
 local skin_mod = nil
