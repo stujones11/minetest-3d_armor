@@ -363,6 +363,13 @@ armor.get_valid_player = function(self, player, msg)
 	return name, player_inv, armor_inv, pos
 end
 
+armor.drop_armor = function(pos, stack)
+	local obj = minetest.add_item(pos, stack)
+	if obj then
+		obj:setvelocity({x=math.random(-1, 1), y=5, z=math.random(-1, 1)})
+	end
+end
+
 -- Register Player Model
 
 default.player_register_model("3d_armor_character.b3d", {
@@ -505,12 +512,6 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 if ARMOR_DROP == true or ARMOR_DESTROY == true then
-	armor.drop_armor = function(pos, stack)
-		local obj = minetest.add_item(pos, stack)
-		if obj then
-			obj:setvelocity({x=math.random(-1, 1), y=5, z=math.random(-1, 1)})
-		end
-	end
 	minetest.register_on_dieplayer(function(player)
 		local name, player_inv, armor_inv, pos = armor:get_valid_player(player, "[on_dieplayer]")
 		if not name then

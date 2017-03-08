@@ -16,6 +16,18 @@ local armor_stand_formspec = "size[8,7]" ..
 
 local elements = {"head", "torso", "legs", "feet"}
 
+local function drop_armor(pos)
+	local meta = minetest.get_meta(pos)
+	local inv = meta:get_inventory()
+	for _, element in pairs(elements) do
+		local stack = inv:get_stack("armor_"..element, 1)
+		if stack and stack:get_count() > 0 then
+			armor.drop_armor(pos, stack)
+			inv:set_stack("armor_"..element, 1, nil)
+		end
+	end
+end
+
 local function get_stand_object(pos)
 	local object = nil
 	local objects = minetest.get_objects_inside_radius(pos, 0.5) or {}
@@ -192,13 +204,9 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 		remove_hidden_node(pos)
 	end,
 	on_blast = function(pos)
-		local object = get_stand_object(pos)
-		if object then
-			object:remove()
-		end
-		minetest.after(1, function(pos)
-			update_entity(pos)
-		end, pos)
+		drop_armor(pos)
+		armor.drop_armor(pos, "3d_armor_stand:armor_stand")
+		minetest.remove_node(pos)
 	end,
 })
 
@@ -280,13 +288,7 @@ minetest.register_node("3d_armor_stand:locked_armor_stand", {
 		remove_hidden_node(pos)
 	end,
 	on_blast = function(pos)
-		local object = get_stand_object(pos)
-		if object then
-			object:remove()
-		end
-		minetest.after(1, function(pos)
-			update_entity(pos)
-		end, pos)
+		-- Not affected by TNT
 	end,
 })
 
@@ -306,22 +308,14 @@ minetest.register_entity("3d_armor_stand:armor_entity", {
 			update_entity(pos)
 		end
 	end,
-	on_step = function(self, dtime)
-		if not self.pos then
-			return
-		end
-		self.timer = self.timer + dtime
-		if self.timer > 1 then
-			self.timer = 0
-			local pos = self.object:getpos()
-			if pos then
-				if vector.equals(vector.round(pos), self.pos) then
-					return
-				end
-			end
-			update_entity(self.pos)
+	on_blast = function(self, damage)
+		local drops = {}
+		local node = minetest.get_node(self.pos)
+		if node.name == "3d_armor_stand:armor_stand" then
+			drop_armor(self.pos)
 			self.object:remove()
 		end
+		return false, false, drops
 	end,
 })
 
