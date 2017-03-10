@@ -51,7 +51,7 @@ if ARMOR_MATERIALS.cactus then
 	minetest.register_tool("3d_armor:boots_cactus", {
 		description = "Cactus Boots",
 		inventory_image = "3d_armor_inv_boots_cactus.png",
-		groups = {armor_feet=5, armor_heal=0, armor_use=2000},
+		groups = {armor_feet=5, armor_heal=0, armor_use=1000},
 		wear = 0,
 	})
 end
