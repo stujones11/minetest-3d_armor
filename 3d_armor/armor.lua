@@ -32,6 +32,8 @@ ARMOR_FIRE_NODES = {
 
 local skin_mod = nil
 local inv_mod = nil
+local use_player_monoids = minetest.global_exists("player_monoids")
+local use_armor_monoid = minetest.global_exists("armor_monoid")
 
 local modpath = minetest.get_modpath(ARMOR_MOD_NAME)
 local worldpath = minetest.get_worldpath()
@@ -240,8 +242,23 @@ armor.set_player_armor = function(self, player)
 		armor_groups.fleshy = 100 - armor_level
 		armor_groups.radiation = 100 - armor_radiation
 	end
-	player:set_armor_groups(armor_groups)
-	player:set_physics_override(physics_o)
+	if use_armor_monoid then
+		armor_monoid.monoid:add_change(player, {
+			fleshy = armor_groups.fleshy / 100
+		}, "3d_armor:armor")
+	else
+		player:set_armor_groups(armor_groups)
+	end
+	if use_player_monoids then
+		player_monoids.speed:add_change(player, physics_o.speed,
+			"3d_armor:physics")
+		player_monoids.jump:add_change(player, physics_o.jump,
+			"3d_armor:physics")
+		player_monoids.gravity:add_change(player, physics_o.gravity,
+			"3d_armor:physics")
+	else
+		player:set_physics_override(physics_o)
+	end
 	self.textures[name].armor = armor_texture
 	self.textures[name].preview = preview
 	self.def[name].state = state
