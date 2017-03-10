@@ -1,5 +1,9 @@
 local use_moreores = minetest.get_modpath("moreores")
 
+if minetest.global_exists("armor") and armor.elements then
+	table.insert(armor.elements, "shield")
+end
+
 -- Regisiter Shields
 
 minetest.register_tool("shields:shield_admin", {
@@ -119,8 +123,3 @@ for k, v in pairs(ARMOR_MATERIALS) do
 		},
 	})
 end
-
-minetest.after(0, function()
-	table.insert(armor.elements, "shield")
-end)
-
