@@ -293,7 +293,7 @@ armor.get_player_skin = function(self, name)
 end
 
 armor.get_preview = function(self, name)
-	if skin_mod == "skins" then
+	if skin_mod == "u_skins" then
 		return armor:get_player_skin(name).."_preview.png"
 	end
 end
