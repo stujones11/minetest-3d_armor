@@ -1,0 +1,11 @@
+shields/textures/shields_shield_wood.png:shield
+shields/textures/shields_shield_enhanced_wood.png:shield
+shields/textures/shields_shield_cactus.png:shield
+shields/textures/shields_shield_enhanced_cactus.png:shield
+shields/textures/shields_shield_steel.png:shield
+shields/textures/shields_shield_bronze.png:shield
+shields/textures/shields_shield_gold.png:shield
+shields/textures/shields_shield_diamond.png:shield
+shields/textures/shields_shield_mithril.png:shield
+shields/textures/shields_shield_crystal.png:shield
+shields/textures/shields_shield_admin.png:shield
