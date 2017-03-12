@@ -75,7 +75,7 @@ armor = {
 		"listring[current_player;craft]",
 	textures = {},
 	default_skin = "character",
-	version = "0.4.7",
+	version = "0.4.8",
 }
 
 local armor_formpage = "image[2.5,0;2,4;armor_preview]"..
