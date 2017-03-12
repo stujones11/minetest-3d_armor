@@ -34,6 +34,7 @@ local skin_mod = nil
 local inv_mod = nil
 local use_player_monoids = minetest.global_exists("player_monoids")
 local use_armor_monoid = minetest.global_exists("armor_monoid")
+local preview_textures = {}
 
 local modpath = minetest.get_modpath(ARMOR_MOD_NAME)
 local worldpath = minetest.get_worldpath()
@@ -136,16 +137,19 @@ elseif minetest.get_modpath("sfinv") then
 	})
 end
 
-if minetest.get_modpath("skins") then
-	skin_mod = "skins"
-elseif minetest.get_modpath("simple_skins") then
-	skin_mod = "simple_skins"
-elseif minetest.get_modpath("u_skins") then
-	skin_mod = "u_skins"
-elseif minetest.get_modpath("wardrobe") then
-	skin_mod = "wardrobe"
+local skin_mods = {"skins", "u_skins", "simple_skins", "wardrobe"}
+for _, mod in pairs(skin_mods) do
+	local path = minetest.get_modpath(mod)
+	if path then
+		local dir_list = minetest.get_dir_list(path.."/textures")
+		for _, fn in pairs(dir_list) do
+			if fn:find("_preview.png$") then
+				preview_textures[fn] = true
+			end
+		end
+		skin_mod = mod
+	end
 end
-
 
 armor.def = {
 	state = 0,
@@ -183,7 +187,7 @@ armor.set_player_armor = function(self, player)
 	local textures = {}
 	local physics_o = {speed=1,gravity=1,jump=1}
 	local material = {type=nil, count=1}
-	local preview = armor:get_preview(name) or "character_preview.png"
+	local preview = armor:get_preview(name)
 	for _,v in ipairs(self.elements) do
 		elements[v] = false
 	end
@@ -294,9 +298,11 @@ armor.get_player_skin = function(self, name)
 end
 
 armor.get_preview = function(self, name)
-	if skin_mod == "u_skins" then
-		return armor:get_player_skin(name).."_preview.png"
+	local preview = armor:get_player_skin(name).."_preview.png"
+	if preview_textures[preview] then
+		return preview
 	end
+	return "character_preview.png"
 end
 
 armor.get_armor_formspec = function(self, name, listring)
