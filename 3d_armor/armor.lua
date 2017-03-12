@@ -146,6 +146,7 @@ elseif minetest.get_modpath("wardrobe") then
 	skin_mod = "wardrobe"
 end
 
+
 armor.def = {
 	state = 0,
 	count = 0,
@@ -515,12 +516,14 @@ minetest.register_on_joinplayer(function(player)
 			armor.textures[name].skin = skin
 		end
 	end
-	if minetest.get_modpath("player_textures") then
-		local filename = minetest.get_modpath("player_textures").."/textures/player_"..name
-		local f = io.open(filename..".png")
-		if f then
-			f:close()
-			armor.textures[name].skin = "player_"..name..".png"
+	local texture_path = minetest.get_modpath("player_textures")
+	if texture_path then
+		local dir_list = minetest.get_dir_list(texture_path.."/textures")
+		for _, fn in pairs(dir_list) do
+			if fn == "player_"..name..".png" then
+				armor.textures[name].skin = fn
+				break
+			end
 		end
 	end
 	for i=1, ARMOR_INIT_TIMES do
