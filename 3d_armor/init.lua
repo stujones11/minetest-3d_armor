@@ -31,7 +31,7 @@ end
 
 if ARMOR_MATERIALS.cactus then
 	minetest.register_tool("3d_armor:helmet_cactus", {
-		description = "Cactuc Helmet",
+		description = "Cactus Helmet",
 		inventory_image = "3d_armor_inv_helmet_cactus.png",
 		groups = {armor_head=5, armor_heal=0, armor_use=1000},
 		wear = 0,
