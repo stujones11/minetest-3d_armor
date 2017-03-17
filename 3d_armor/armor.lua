@@ -135,13 +135,23 @@ elseif minetest.get_modpath("smart_inventory") then
 	inv_mod = "smart_inventory"
 elseif minetest.get_modpath("sfinv") then
 	inv_mod = "sfinv"
-	armor.formspec = armor_formpage
 	sfinv.register_page("3d_armor:armor", {
 		title = "Armor",
 		get = function(self, player, context)
 			local name = player:get_player_name()
-			local formspec = armor:get_armor_formspec(name, true)
-			return sfinv.make_formspec(player, context, formspec, false)
+			local fy = 0.6 -- General y-offset
+			local fys = fy + 0.5 -- Statistics y-offset
+			local formspec = (
+				"list[detached:"..name.."_armor;armor;0,"..fy..";2,3;]"
+				.."image[2.5,"..(fy - 0.25)..";2,4;"..armor.textures[name].preview.."]"
+				.."label[5.0,"..(fys + 0.0)..";Level: "..armor.def[name].level.."]"
+				.."label[5.0,"..(fys + 0.5)..";Heal:  "..armor.def[name].heal.."]"
+				.."label[5.0,"..(fys + 1.0)..";Fire:  "..armor.def[name].fire.."]"
+				.."label[5.0,"..(fys + 1.5)..";Radiation:  "..armor.def[name].radiation.."]"
+				.."listring[current_player;main]"
+				.."listring[detached:"..name.."_armor;armor]"
+			)
+			return sfinv.make_formspec(player, context, formspec, true)
 		end
 	})
 end
