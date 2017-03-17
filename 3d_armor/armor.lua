@@ -85,10 +85,14 @@ local armor_formpage = "image[2.5,0;2,4;armor_preview]"..
 	default.get_hotbar_bg(0, 4.7)..
 	"label[5,1;Level: armor_level]"..
 	"label[5,1.5;Heal:  armor_heal]"..
-	"label[5,2;Fire:  armor_fire]"..
-	"label[5,2.5;Radiation:  armor_radiation]"..
 	"list[current_player;main;0,4.7;8,1;]"..
 	"list[current_player;main;0,5.85;8,3;8]"
+if ARMOR_FIRE_PROTECT then
+	armor_formpage = armor_formpage.."label[5,2;Fire:  armor_fire]"
+end
+if minetest.global_exists("technic") then
+	armor_formpage = armor_formpage.."label[5,2.5;Radiation:  armor_radiation]"
+end
 if minetest.get_modpath("inventory_plus") then
 	inv_mod = "inventory_plus"
 	armor.formspec = "size[8,8.5]button[6,0;2,0.5;main;Back]"..armor_formpage
@@ -112,10 +116,16 @@ elseif minetest.get_modpath("unified_inventory") and not unified_inventory.sfinv
 				"image[2.5,"..(fy - 0.25)..";2,4;"..armor.textures[name].preview.."]"..
 				"label[5.0,"..(fy + 0.0)..";Level: "..armor.def[name].level.."]"..
 				"label[5.0,"..(fy + 0.5)..";Heal:  "..armor.def[name].heal.."]"..
-				"label[5.0,"..(fy + 1.0)..";Fire:  "..armor.def[name].fire.."]"..
-				"label[5.0,"..(fy + 1.5)..";Radiation:  "..armor.def[name].radiation.."]"..
 				"listring[current_player;main]"..
 				"listring[detached:"..name.."_armor;armor]"
+			if ARMOR_FIRE_PROTECT then
+				formspec = formspec.."label[5.0,"..(fy + 1.0)..
+					";Fire:  "..armor.def[name].fire.."]"
+			end
+			if minetest.global_exists("technic") then
+				formspec = formspec.."label[5.0,"..(fy + 1.5)..
+					";Radiation:  "..armor.def[name].radiation.."]"
+			end
 			return {formspec=formspec}
 		end,
 	})
