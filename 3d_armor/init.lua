@@ -338,12 +338,6 @@ end
 minetest.register_on_player_hpchange(function(player, hp_change)
 	local name, player_inv, armor_inv = armor:get_valid_player(player, "[on_hpchange]")
 	if name and hp_change < 0 then
-
-		-- used for insta kill tools/commands like /kill (doesnt damage armor)
-		if hp_change < -100 then
-			return hp_change
-		end
-
 		local heal_max = 0
 		local state = 0
 		local items = 0
@@ -429,27 +423,3 @@ minetest.register_globalstep(function(dtime)
 	end
 	armor.timer = 0
 end)
-
--- kill player when command issued
-
-minetest.register_chatcommand("kill", {
-	params = "<name>",
-	description = "Kills player instantly",
-	privs = {ban=true},
-	func = function(name, param)
-		local player = minetest.get_player_by_name(param)
-		if player then
-			player:set_hp(0)
-		end
-	end,
-})
-
-minetest.register_chatcommand("killme", {
-	description = "Kill yourself instantly",
-	func = function(name)
-		local player = minetest.get_player_by_name(name)
-		if player then
-			player:set_hp(-1001)
-		end
-	end,
-})
