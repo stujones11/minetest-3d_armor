@@ -107,8 +107,11 @@ elseif minetest.get_modpath("unified_inventory") and not unified_inventory.sfinv
 		image = "inventory_plus_armor.png",
 	})
 	unified_inventory.register_page("armor", {
-		get_formspec = function(player, perplayer_formspec)
-			local fy = perplayer_formspec.formspec_y
+		get_formspec = function(player)
+			local fy = 1
+			if unified_inventory.lite_mode then
+				fy = 0.5
+			end
 			local name = player:get_player_name()
 			local formspec = "background[0.06,"..fy..";7.92,7.52;3d_armor_ui_form.png]"..
 				"label[0,0;Armor]"..
