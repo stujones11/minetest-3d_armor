@@ -18,20 +18,20 @@ if input then
 	input:close()
 	input = nil
 end
-
 for name, _ in pairs(armor.config) do
 	local global = "ARMOR_"..name:upper()
 	if minetest.global_exists(global) then
 		armor.config[name] = _G[global]
 	end
 end
-
 if minetest.global_exists("ARMOR_MATERIALS") then
 	armor.materials = table.copy(ARMOR_MATERIALS)
 end
 if minetest.global_exists("ARMOR_FIRE_NODES") then
 	armor.fire_nodes = table.copy(ARMOR_FIRE_NODES)
 end
+
+-- Load Configuration
 
 for name, config in pairs(armor.config) do
 	local setting = minetest.setting_get("armor_"..name)
@@ -44,7 +44,6 @@ for name, config in pairs(armor.config) do
 		armor.config[name] = setting
 	end
 end
-
 for material, _ in pairs(armor.materials) do
 	local key = "material_"..material
 	if armor.config[key] == false then
