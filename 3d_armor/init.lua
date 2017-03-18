@@ -191,11 +191,13 @@ minetest.register_on_joinplayer(function(player)
 			player:get_inventory():set_stack(listname, index, stack)
 			armor:set_player_armor(player)
 			armor:update_inventory(player)
+			armor:run_callbacks("on_equip", player, stack)
 		end,
 		on_take = function(inv, listname, index, stack, player)
 			player:get_inventory():set_stack(listname, index, nil)
 			armor:set_player_armor(player)
 			armor:update_inventory(player)
+			armor:run_callbacks("on_unequip", player, stack)
 		end,
 		on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
 			local plaver_inv = player:get_inventory()
@@ -223,6 +225,7 @@ minetest.register_on_joinplayer(function(player)
 	for i=1, 6 do
 		local stack = player_inv:get_stack("armor", i)
 		armor_inv:set_stack("armor", i, stack)
+		armor:run_callbacks("on_equip", player, stack)
 	end
 	armor.def[name] = {
 		state = 0,
@@ -296,6 +299,7 @@ if armor.config.drop == true or armor.config.destroy == true then
 				table.insert(drop, stack)
 				armor_inv:set_stack("armor", i, nil)
 				player_inv:set_stack("armor", i, nil)
+				armor:run_callbacks("on_unequip", player, stack)
 			end
 		end
 		armor:set_player_armor(player)
@@ -348,8 +352,9 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 		for i=1, 6 do
 			local stack = player_inv:get_stack("armor", i)
 			if stack:get_count() > 0 then
-				local use = stack:get_definition().groups["armor_use"] or 0
-				local heal = stack:get_definition().groups["armor_heal"] or 0
+				local def = stack:get_definition() or {}
+				local use = def.groups["armor_use"] or 0
+				local heal = def.groups["armor_heal"] or 0
 				local item = stack:get_name()
 				stack:add_wear(use)
 				armor_inv:set_stack("armor", i, stack)
@@ -363,6 +368,8 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 					end
 					armor:set_player_armor(player)
 					armor:update_inventory(player)
+					armor:run_callbacks("on_unequip", player, stack)
+					armor:run_callbacks("on_destroy", player, stack)
 				end
 				heal_max = heal_max + heal
 			end

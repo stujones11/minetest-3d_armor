@@ -5,7 +5,7 @@ local use_armor_monoid = minetest.global_exists("armor_monoid")
 armor = {
 	timer = 0,
 	elements = {"head", "torso", "legs", "feet"},
-	physics = {"jump","speed","gravity"},
+	physics = {"jump", "speed", "gravity"},
 	formspec = "size[8,8.5]"..
 		default.gui_bg..
 		default.gui_bg_img..
@@ -42,6 +42,12 @@ armor = {
 		{"default:torch_ceiling",   1, 1},
 		{"default:torch_wall",      1, 1},
 	},
+	registered_callbacks = {
+		on_update = {},
+		on_equip = {},
+		on_unequip = {},
+		on_destroy = {},
+	},
 	version = "0.4.8",
 }
 
@@ -65,6 +71,47 @@ armor.config = {
 	material_crystal = true,
 	fire_protect = minetest.get_modpath("ethereal") ~= nil
 }
+
+-- Armor callbacks
+
+armor.register_on_update = function(self, func)
+	if type(func) == "function" then
+		table.insert(self.registered_callbacks.on_update, func)
+	end
+end
+
+armor.register_on_equip = function(self, func)
+	if type(func) == "function" then
+		table.insert(self.registered_callbacks.on_equip, func)
+	end
+end
+
+armor.register_on_unequip = function(self, func)
+	if type(func) == "function" then
+		table.insert(self.registered_callbacks.on_unequip, func)
+	end
+end
+
+armor.register_on_destroy = function(self, func)
+	if type(func) == "function" then
+		table.insert(self.registered_callbacks.on_destroy, func)
+	end
+end
+
+armor.run_callbacks = function(self, callback, player, stack)
+	if stack then
+		local def = stack:get_definition() or {}
+		if type(def[callback]) == "function" then
+			def[callback](player, stack)
+		end
+	end
+	local callbacks = self.registered_callbacks[callback]
+	if callbacks then
+		for _, func in pairs(callbacks) do
+			func(player, stack)
+		end
+	end
+end
 
 armor.update_player_visuals = function(self, player)
 	if not player then
@@ -188,6 +235,7 @@ armor.set_player_armor = function(self, player)
 	self.def[name].water = armor_water
 	self.def[name].radiation = armor_radiation
 	self:update_player_visuals(player)
+	self:run_callbacks("on_update", player)
 end
 
 armor.get_player_skin = function(self, name)

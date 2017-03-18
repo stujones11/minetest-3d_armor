@@ -64,3 +64,54 @@ armor_radiation_multiplier = 1
 -- Enable fire protection (defaults true if using ethereal mod)
 armor_fire_protect = false
 
+API
+---
+
+Armor Registration:
+
+minetest.register_tool("your_mod_name:speed_boots", {
+	description = "Speed Boots",
+	inventory_image = "your_mod_name_speed_boots_inv.png",
+	texture = "your_mod_name_speed_boots.png",
+	groups = {armor_feet=10, physics_speed=0.5, armor_use=2000},
+	on_destroy = function(player, item_name)
+		minetest.sound_play("your_mod_name_break_sound", {
+			to_player = player:get_player_name(),
+		})
+	end,
+})
+
+See armor.lua, technic_armor and shields mods for more examples.
+
+Default groups:
+
+Elements: armor_head, armor_torso, armor_legs, armor_feet
+Physics: physics_jump, physics_speed, physics_gravity
+Durability: armor_use
+
+Notes:
+
+Elements may be modified by dependent mods, eg shields adds armor_shield.
+
+Physics values are 'stackable', durability is determined
+by the level of armor_use. total uses == approx (65535/armor_use)
+
+Item Callbacks:
+
+on_equip = func(player, stack)
+on_unequip = func(player, stack)
+on_destroy = func(player, item_name)
+
+Global Callbacks:
+
+armor:register_on_update(func(player))
+armor:register_on_equip(ifunc(player, stack))
+armor:register_on_unequip(func(player, stack))
+armor:register_on_destroy(func(player, stack))
+
+Global Callback Example:
+
+armor:register_on_update(function(player)
+	print(player:get_player_name().." armor updated!")
+end)
+
