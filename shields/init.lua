@@ -13,7 +13,7 @@ minetest.register_tool("shields:shield_admin", {
 	wear = 0,
 })
 
-if ARMOR_MATERIALS.wood then
+if armor.materials.wood then
 	minetest.register_tool("shields:shield_wood", {
 		description = "Wooden Shield",
 		inventory_image = "shields_inv_shield_wood.png",
@@ -36,7 +36,7 @@ if ARMOR_MATERIALS.wood then
 	})
 end
 
-if ARMOR_MATERIALS.cactus then
+if armor.materials.cactus then
 	minetest.register_tool("shields:shield_cactus", {
 		description = "Cactus Shield",
 		inventory_image = "shields_inv_shield_cactus.png",
@@ -59,7 +59,7 @@ if ARMOR_MATERIALS.cactus then
 	})
 end
 
-if ARMOR_MATERIALS.steel then
+if armor.materials.steel then
 	minetest.register_tool("shields:shield_steel", {
 		description = "Steel Shield",
 		inventory_image = "shields_inv_shield_steel.png",
@@ -68,7 +68,7 @@ if ARMOR_MATERIALS.steel then
 	})
 end
 
-if ARMOR_MATERIALS.bronze then
+if armor.materials.bronze then
 	minetest.register_tool("shields:shield_bronze", {
 		description = "Bronze Shield",
 		inventory_image = "shields_inv_shield_bronze.png",
@@ -77,7 +77,7 @@ if ARMOR_MATERIALS.bronze then
 	})
 end
 
-if ARMOR_MATERIALS.diamond then
+if armor.materials.diamond then
 	minetest.register_tool("shields:shield_diamond", {
 		description = "Diamond Shield",
 		inventory_image = "shields_inv_shield_diamond.png",
@@ -86,7 +86,7 @@ if ARMOR_MATERIALS.diamond then
 	})
 end
 
-if ARMOR_MATERIALS.gold then
+if armor.materials.gold then
 	minetest.register_tool("shields:shield_gold", {
 		description = "Gold Shield",
 		inventory_image = "shields_inv_shield_gold.png",
@@ -95,7 +95,7 @@ if ARMOR_MATERIALS.gold then
 	})
 end
 
-if ARMOR_MATERIALS.mithril then
+if armor.materials.mithril then
 	minetest.register_tool("shields:shield_mithril", {
 		description = "Mithril Shield",
 		inventory_image = "shields_inv_shield_mithril.png",
@@ -104,7 +104,7 @@ if ARMOR_MATERIALS.mithril then
 	})
 end
 
-if ARMOR_MATERIALS.crystal then
+if armor.materials.crystal then
 	minetest.register_tool("shields:shield_crystal", {
 		description = "Crystal Shield",
 		inventory_image = "shields_inv_shield_crystal.png",
@@ -113,7 +113,7 @@ if ARMOR_MATERIALS.crystal then
 	})
 end
 
-for k, v in pairs(ARMOR_MATERIALS) do
+for k, v in pairs(armor.materials) do
 	minetest.register_craft({
 		output = "shields:shield_"..k,
 		recipe = {

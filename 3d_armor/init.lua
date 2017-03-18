@@ -1,38 +1,11 @@
-ARMOR_MOD_NAME = minetest.get_current_modname()
-ARMOR_INIT_DELAY = 1
-ARMOR_INIT_TIMES = 1
-ARMOR_BONES_DELAY = 1
-ARMOR_UPDATE_TIME = 1
-ARMOR_DROP = minetest.get_modpath("bones") ~= nil
-ARMOR_DESTROY = false
-ARMOR_LEVEL_MULTIPLIER = 1
-ARMOR_HEAL_MULTIPLIER = 1
-ARMOR_RADIATION_MULTIPLIER = 1
-ARMOR_MATERIALS = {
-	wood = "group:wood",
-	cactus = "default:cactus",
-	steel = "default:steel_ingot",
-	bronze = "default:bronze_ingot",
-	diamond = "default:diamond",
-	gold = "default:gold_ingot",
-	mithril = "moreores:mithril_ingot",
-	crystal = "ethereal:crystal_ingot",
-}
-ARMOR_FIRE_PROTECT = minetest.get_modpath("ethereal") ~= nil
-ARMOR_FIRE_NODES = {
-	{"default:lava_source",     5, 8},
-	{"default:lava_flowing",    5, 8},
-	{"fire:basic_flame",        3, 4},
-	{"fire:permanent_flame",    3, 4},
-	{"ethereal:crystal_spike",  2, 1},
-	{"ethereal:fire_flower",    2, 1},
-	{"default:torch",           1, 1},
-	{"default:torch_ceiling",   1, 1},
-	{"default:torch_wall",      1, 1},
-}
-
-local modpath = minetest.get_modpath(ARMOR_MOD_NAME)
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
 local worldpath = minetest.get_worldpath()
+
+dofile(modpath.."/api.lua")
+
+-- Legacy Config Support
+
 local input = io.open(modpath.."/armor.conf", "r")
 if input then
 	dofile(modpath.."/armor.conf")
@@ -46,8 +19,40 @@ if input then
 	input = nil
 end
 
-dofile(minetest.get_modpath(ARMOR_MOD_NAME).."/api.lua")
-dofile(minetest.get_modpath(ARMOR_MOD_NAME).."/armor.lua")
+for name, _ in pairs(armor.config) do
+	local global = "ARMOR_"..name:upper()
+	if minetest.global_exists(global) then
+		armor.config[name] = _G[global]
+	end
+end
+
+if minetest.global_exists("ARMOR_MATERIALS") then
+	armor.materials = table.copy(ARMOR_MATERIALS)
+end
+if minetest.global_exists("ARMOR_FIRE_NODES") then
+	armor.fire_nodes = table.copy(ARMOR_FIRE_NODES)
+end
+
+for name, config in pairs(armor.config) do
+	local setting = minetest.setting_get("armor_"..name)
+	if type(config) == "number" then
+		setting = tonumber(setting)
+	elseif type(config) == "boolean" then
+		setting = minetest.setting_getbool("armor_"..name)
+	end
+	if setting then
+		armor.config[name] = setting
+	end
+end
+
+for material, _ in pairs(armor.materials) do
+	local key = "material_"..material
+	if armor.config[key] == false then
+		armor.materials[material] = nil
+	end
+end
+
+dofile(modpath.."/armor.lua")
 
 -- Mod Compatibility
 
@@ -60,7 +65,7 @@ local armor_formpage = "image[2.5,0;2,4;armor_preview]"..
 	"label[5,1.5;Heal:  armor_heal]"..
 	"list[current_player;main;0,4.7;8,1;]"..
 	"list[current_player;main;0,5.85;8,3;8]"
-if ARMOR_FIRE_PROTECT then
+if armor.config.fire_protect then
 	armor_formpage = armor_formpage.."label[5,2;Fire:  armor_fire]"
 end
 if minetest.global_exists("technic") then
@@ -91,7 +96,7 @@ elseif minetest.get_modpath("unified_inventory") and not unified_inventory.sfinv
 				"label[5.0,"..(fy + 0.5)..";Heal:  "..armor.def[name].heal.."]"..
 				"listring[current_player;main]"..
 				"listring[detached:"..name.."_armor;armor]"
-			if ARMOR_FIRE_PROTECT then
+			if armor.config.fire_protect then
 				formspec = formspec.."label[5.0,"..(fy + 1.0)..
 					";Fire:  "..armor.def[name].fire.."]"
 			end
@@ -132,10 +137,10 @@ for _, mod in pairs(skin_mods) do
 	end
 end
 if not minetest.get_modpath("moreores") then
-	ARMOR_MATERIALS.mithril = nil
+	armor.materials.mithril = nil
 end
 if not minetest.get_modpath("ethereal") then
-	ARMOR_MATERIALS.crystal = nil
+	armor.materials.crystal = nil
 end
 
 -- Armor Player Model
@@ -269,8 +274,8 @@ minetest.register_on_joinplayer(function(player)
 			end
 		end
 	end
-	for i=1, ARMOR_INIT_TIMES do
-		minetest.after(ARMOR_INIT_DELAY * i, function(player)
+	for i=1, armor.config.init_times do
+		minetest.after(armor.config.init_delay * i, function(player)
 			armor:set_player_armor(player)
 			if not armor.inv_mod then
 				armor:update_inventory(player)
@@ -279,7 +284,7 @@ minetest.register_on_joinplayer(function(player)
 	end
 end)
 
-if ARMOR_DROP == true or ARMOR_DESTROY == true then
+if armor.config.drop == true or armor.config.destroy == true then
 	minetest.register_on_dieplayer(function(player)
 		local name, player_inv, armor_inv, pos = armor:get_valid_player(player, "[on_dieplayer]")
 		if not name then
@@ -303,8 +308,8 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 		else
 			armor:update_inventory(player)
 		end
-		if ARMOR_DESTROY == false then
-			minetest.after(ARMOR_BONES_DELAY, function()
+		if armor.config.destroy == false then
+			minetest.after(armor.config.bones_delay, function()
 				local meta = nil
 				local maxp = vector.add(pos, 8)
 				local minp = vector.subtract(pos, 8)
@@ -375,9 +380,9 @@ end, true)
 
 -- Fire Protection and water breating, added by TenPlus1
 
-if ARMOR_FIRE_PROTECT == true then
+if armor.config.fire_protect == true then
 	-- override hot nodes so they do not hurt player anywhere but mod
-	for _, row in pairs(ARMOR_FIRE_NODES) do
+	for _, row in pairs(armor.fire_nodes) do
 		if minetest.registered_nodes[row[1]] then
 			minetest.override_item(row[1], {damage_per_second = 0})
 		end
@@ -388,7 +393,7 @@ end
 
 minetest.register_globalstep(function(dtime)
 	armor.timer = armor.timer + dtime
-	if armor.timer < ARMOR_UPDATE_TIME then
+	if armor.timer < armor.config.update_time then
 		return
 	end
 	for _,player in pairs(minetest.get_connected_players()) do
@@ -402,18 +407,18 @@ minetest.register_globalstep(function(dtime)
 			end
 		end
 		-- fire protection
-		if ARMOR_FIRE_PROTECT == true
+		if armor.config.fire_protect == true
 		and name and pos and hp then
 			pos.y = pos.y + 1.4 -- head level
 			local node_head = minetest.get_node(pos).name
 			pos.y = pos.y - 1.2 -- feet level
 			local node_feet = minetest.get_node(pos).name
 			-- is player inside a hot node?
-			for _, row in pairs(ARMOR_FIRE_NODES) do
+			for _, row in pairs(armor.fire_nodes) do
 				-- check fire protection, if not enough then get hurt
 				if row[1] == node_head or row[1] == node_feet then
 					if hp > 0 and armor.def[name].fire < row[2] then
-						hp = hp - row[3] * ARMOR_UPDATE_TIME
+						hp = hp - row[3] * armor.config.update_time
 						player:set_hp(hp)
 						break
 					end

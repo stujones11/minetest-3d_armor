@@ -21,7 +21,49 @@ armor = {
 	def = {},
 	textures = {},
 	default_skin = "character",
+	materials = {
+		wood = "group:wood",
+		cactus = "default:cactus",
+		steel = "default:steel_ingot",
+		bronze = "default:bronze_ingot",
+		diamond = "default:diamond",
+		gold = "default:gold_ingot",
+		mithril = "moreores:mithril_ingot",
+		crystal = "ethereal:crystal_ingot",
+	},
+	fire_nodes = {
+		{"default:lava_source",     5, 8},
+		{"default:lava_flowing",    5, 8},
+		{"fire:basic_flame",        3, 4},
+		{"fire:permanent_flame",    3, 4},
+		{"ethereal:crystal_spike",  2, 1},
+		{"ethereal:fire_flower",    2, 1},
+		{"default:torch",           1, 1},
+		{"default:torch_ceiling",   1, 1},
+		{"default:torch_wall",      1, 1},
+	},
 	version = "0.4.8",
+}
+
+armor.config = {
+	init_delay = 1,
+	init_times = 1,
+	bones_delay = 1,
+	update_time = 1,
+	drop = minetest.get_modpath("bones") ~= nil,
+	destroy = false,
+	level_multiplier = 1,
+	heal_multiplier = 1,
+	radiation_multiplier = 1,
+	material_wood = true,
+	material_cactus = true,
+	material_steel = true,
+	material_bronze = true,
+	material_diamond = true,
+	material_gold = true,
+	material_mithril = true,
+	material_crystal = true,
+	fire_protect = minetest.get_modpath("ethereal") ~= nil
 }
 
 armor.update_player_visuals = function(self, player)
@@ -104,9 +146,9 @@ armor.set_player_armor = function(self, player)
 	if material.type and material.count == #self.elements then
 		armor_level = armor_level * 1.1
 	end
-	armor_level = armor_level * ARMOR_LEVEL_MULTIPLIER
-	armor_heal = armor_heal * ARMOR_HEAL_MULTIPLIER
-	armor_radiation = armor_radiation * ARMOR_RADIATION_MULTIPLIER
+	armor_level = armor_level * self.config.level_multiplier
+	armor_heal = armor_heal * self.config.heal_multiplier
+	armor_radiation = armor_radiation * self.config.radiation_multiplier
 	if #textures > 0 then
 		armor_texture = table.concat(textures, "^")
 	end

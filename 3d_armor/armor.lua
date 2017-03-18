@@ -47,7 +47,7 @@ minetest.register_tool("3d_armor:boots_admin", {
 	end,
 })
 
-if ARMOR_MATERIALS.wood then
+if armor.materials.wood then
 	minetest.register_tool("3d_armor:helmet_wood", {
 		description = "Wood Helmet",
 		inventory_image = "3d_armor_inv_helmet_wood.png",
@@ -74,7 +74,7 @@ if ARMOR_MATERIALS.wood then
 	})
 end
 
-if ARMOR_MATERIALS.cactus then
+if armor.materials.cactus then
 	minetest.register_tool("3d_armor:helmet_cactus", {
 		description = "Cactus Helmet",
 		inventory_image = "3d_armor_inv_helmet_cactus.png",
@@ -101,7 +101,7 @@ if ARMOR_MATERIALS.cactus then
 	})
 end
 
-if ARMOR_MATERIALS.steel then
+if armor.materials.steel then
 	minetest.register_tool("3d_armor:helmet_steel", {
 		description = "Steel Helmet",
 		inventory_image = "3d_armor_inv_helmet_steel.png",
@@ -128,7 +128,7 @@ if ARMOR_MATERIALS.steel then
 	})
 end
 
-if ARMOR_MATERIALS.bronze then
+if armor.materials.bronze then
 	minetest.register_tool("3d_armor:helmet_bronze", {
 		description = "Bronze Helmet",
 		inventory_image = "3d_armor_inv_helmet_bronze.png",
@@ -155,7 +155,7 @@ if ARMOR_MATERIALS.bronze then
 	})
 end
 
-if ARMOR_MATERIALS.diamond then
+if armor.materials.diamond then
 	minetest.register_tool("3d_armor:helmet_diamond", {
 		description = "Diamond Helmet",
 		inventory_image = "3d_armor_inv_helmet_diamond.png",
@@ -182,7 +182,7 @@ if ARMOR_MATERIALS.diamond then
 	})
 end
 
-if ARMOR_MATERIALS.gold then
+if armor.materials.gold then
 	minetest.register_tool("3d_armor:helmet_gold", {
 		description = "Gold Helmet",
 		inventory_image = "3d_armor_inv_helmet_gold.png",
@@ -209,7 +209,7 @@ if ARMOR_MATERIALS.gold then
 	})
 end
 
-if ARMOR_MATERIALS.mithril then
+if armor.materials.mithril then
 	minetest.register_tool("3d_armor:helmet_mithril", {
 		description = "Mithril Helmet",
 		inventory_image = "3d_armor_inv_helmet_mithril.png",
@@ -236,7 +236,7 @@ if ARMOR_MATERIALS.mithril then
 	})
 end
 
-if ARMOR_MATERIALS.crystal then
+if armor.materials.crystal then
 	minetest.register_tool("3d_armor:helmet_crystal", {
 		description = "Crystal Helmet",
 		inventory_image = "3d_armor_inv_helmet_crystal.png",
@@ -263,7 +263,7 @@ if ARMOR_MATERIALS.crystal then
 	})
 end
 
-for k, v in pairs(ARMOR_MATERIALS) do
+for k, v in pairs(armor.materials) do
 	minetest.register_craft({
 		output = "3d_armor:helmet_"..k,
 		recipe = {

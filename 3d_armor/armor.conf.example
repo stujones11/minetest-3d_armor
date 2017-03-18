@@ -1,3 +1,7 @@
+-- DEPRECIATED, will not be supported in future versions
+
+-- See README.txt for new configuration options.
+
 -- Armor Configuration (defaults)
 
 -- You can remove any unwanted armor materials from this table.
