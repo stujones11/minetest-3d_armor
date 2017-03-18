@@ -281,7 +281,6 @@ armor.get_armor_formspec = function(self, name, listring)
 	formspec = formspec:gsub("armor_heal", armor.def[name].heal)
 	formspec = formspec:gsub("armor_fire", armor.def[name].fire)
 	formspec = formspec:gsub("armor_radiation", armor.def[name].radiation)
-	formspec = formspec:gsub("player_name", armor.def[name].radiation)
 	return formspec
 end
 
