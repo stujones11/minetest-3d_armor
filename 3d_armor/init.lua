@@ -208,6 +208,17 @@ minetest.register_on_joinplayer(function(player)
 			armor:update_inventory(player)
 		end,
 		allow_put = function(inv, listname, index, stack, player)
+			local def = stack:get_definition() or {}
+			for _, element in pairs(armor.elements) do
+				if def.groups["armor_"..element] then
+					for i = 1, 6 do
+						local item = inv:get_stack("armor", i):get_name()
+						if minetest.get_item_group(item, "armor_"..element) > 0 then
+							return 0
+						end
+					end
+				end
+			end
 			return 1
 		end,
 		allow_take = function(inv, listname, index, stack, player)
