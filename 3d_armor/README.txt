@@ -33,7 +33,7 @@ armor_material_crystal = true
 armor_init_delay = 1
 
 -- Number of initialization attempts.
--- Use in conjunction with ARMOR_INIT_DELAY if initialization problems persist.
+-- Use in conjunction with armor_init_delay if initialization problems persist.
 armor_init_times = 1
 
 -- Increase this if armor is not getting into bones due to server lag.
