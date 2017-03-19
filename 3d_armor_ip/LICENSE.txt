@@ -1,0 +1,5 @@
+[mod] 3d Armor integration to inventory plus [3d_armor_ip]
+==========================================================
+
+License Source Code: (C) 2012-2017 Stuart Jones - LGPL v2.1
+

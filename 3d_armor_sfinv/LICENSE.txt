@@ -1,0 +1,5 @@
+[mod] 3d Armor sfinv integration [3d_armor_sfinv]
+=================================================
+
+License Source Code: (C) 2012-2017 Stuart Jones - LGPL v2.1
+
