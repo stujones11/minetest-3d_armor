@@ -76,10 +76,7 @@ if minetest.get_modpath("inventory_plus") then
 	armor:register_on_update(function(player)
 		local name = player:get_player_name()
 		local formspec = armor:get_armor_formspec(name, true)
-		local page = player:get_inventory_formspec()
-		if page:find("detached:"..name.."_armor") then
-			inventory_plus.set_inventory_formspec(player, formspec)
-		end
+		inventory_plus.set_inventory_formspec(player, formspec)
 	end)
 	if minetest.get_modpath("crafting") then
 		inventory_plus.get_formspec = function(player, page)

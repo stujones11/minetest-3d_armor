@@ -289,7 +289,6 @@ end
 
 armor.update_inventory = function(self, player)
 	-- DEPRECIATED: Legacy inventory support
-	self:run_callbacks("on_update", player)
 end
 
 armor.get_valid_player = function(self, player, msg)
