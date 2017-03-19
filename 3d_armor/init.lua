@@ -271,33 +271,13 @@ minetest.register_on_joinplayer(function(player)
 		water = 0,
 		radiation = 0,
 	}
+	local skin = armor:get_player_skin(name)
 	armor.textures[name] = {
-		skin = armor.default_skin..".png",
+		skin = skin..".png",
 		armor = "3d_armor_trans.png",
 		wielditem = "3d_armor_trans.png",
 		preview = armor.default_skin.."_preview.png",
 	}
-	if armor.skin_mod == "skins" then
-		local skin = skins.skins[name]
-		if skin and skins.get_type(skin) == skins.type.MODEL then
-			armor.textures[name].skin = skin..".png"
-		end
-	elseif armor.skin_mod == "simple_skins" then
-		local skin = skins.skins[name]
-		if skin then
-			armor.textures[name].skin = skin..".png"
-		end
-	elseif armor.skin_mod == "u_skins" then
-		local skin = u_skins.u_skins[name]
-		if skin and u_skins.get_type(skin) == u_skins.type.MODEL then
-			armor.textures[name].skin = skin..".png"
-		end
-	elseif armor.skin_mod == "wardrobe" then
-		local skin = wardrobe.playerSkins[name]
-		if skin then
-			armor.textures[name].skin = skin
-		end
-	end
 	local texture_path = minetest.get_modpath("player_textures")
 	if texture_path then
 		local dir_list = minetest.get_dir_list(texture_path.."/textures")
