@@ -73,12 +73,26 @@ end
 if minetest.get_modpath("inventory_plus") then
 	armor.inv_mod = "inventory_plus"
 	armor.formspec = "size[8,8.5]button[6,0;2,0.5;main;Back]"..armor_formpage
+	armor:register_on_update(function(player)
+		local name = player:get_player_name()
+		local formspec = armor:get_armor_formspec(name, true)
+		local page = player:get_inventory_formspec()
+		if page:find("detached:"..name.."_armor") then
+			inventory_plus.set_inventory_formspec(player, formspec)
+		end
+	end)
 	if minetest.get_modpath("crafting") then
 		inventory_plus.get_formspec = function(player, page)
 		end
 	end
 elseif minetest.get_modpath("unified_inventory") and not unified_inventory.sfinv_compat_layer then
 	armor.inv_mod = "unified_inventory"
+	armor:register_on_update(function(player)
+		local name = player:get_player_name()
+		if unified_inventory.current_page[name] == "armor" then
+			unified_inventory.set_inventory_formspec(player, "armor")
+		end
+	end)
 	unified_inventory.register_button("armor", {
 		type = "image",
 		image = "inventory_plus_armor.png",
@@ -110,9 +124,26 @@ elseif minetest.get_modpath("inventory_enhanced") then
 	armor.inv_mod = "inventory_enhanced"
 elseif minetest.get_modpath("smart_inventory") then
 	armor.inv_mod = "smart_inventory"
+	armor:register_on_update(function(player)
+		local name = player:get_player_name()
+		local state = smart_inventory.get_page_state("player", name)
+		if state then
+			state:get("update_hook"):submit()
+		end
+	end)
 elseif minetest.get_modpath("sfinv") then
 	armor.inv_mod = "sfinv"
 	armor.formspec = armor_formpage
+	armor:register_on_update(function(player)
+		if sfinv.set_page then
+			sfinv.set_page(player, "3d_armor:armor")
+		else
+			-- Backwards compat
+			sfinv.set_player_inventory_formspec(player, {
+				page = "3d_armor:armor"
+			})
+		end
+	end)
 	sfinv.register_page("3d_armor:armor", {
 		title = "Armor",
 		get = function(self, player, context)
@@ -163,7 +194,7 @@ default.player_register_model("3d_armor_character.b3d", {
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local name = armor:get_valid_player(player, "[on_player_receive_fields]")
-	if not name or armor.inv_mod == "inventory_enhanced" then
+	if not name then
 		return
 	end
 	if armor.inv_mod == "inventory_plus" and fields.armor then
@@ -190,13 +221,11 @@ minetest.register_on_joinplayer(function(player)
 		on_put = function(inv, listname, index, stack, player)
 			player:get_inventory():set_stack(listname, index, stack)
 			armor:set_player_armor(player)
-			armor:update_inventory(player)
 			armor:run_callbacks("on_equip", player, stack)
 		end,
 		on_take = function(inv, listname, index, stack, player)
 			player:get_inventory():set_stack(listname, index, nil)
 			armor:set_player_armor(player)
-			armor:update_inventory(player)
 			armor:run_callbacks("on_unequip", player, stack)
 		end,
 		on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
@@ -205,7 +234,6 @@ minetest.register_on_joinplayer(function(player)
 			player_inv:set_stack(to_list, to_index, stack)
 			player_inv:set_stack(from_list, from_index, nil)
 			armor:set_player_armor(player)
-			armor:update_inventory(player)
 		end,
 		allow_put = function(inv, listname, index, stack, player)
 			local def = stack:get_definition() or {}
@@ -290,9 +318,6 @@ minetest.register_on_joinplayer(function(player)
 	for i=1, armor.config.init_times do
 		minetest.after(armor.config.init_delay * i, function(player)
 			armor:set_player_armor(player)
-			if not armor.inv_mod then
-				armor:update_inventory(player)
-			end
 		end, player)
 	end
 end)
@@ -317,10 +342,8 @@ if armor.config.drop == true or armor.config.destroy == true then
 		if armor.inv_mod == "unified_inventory" then
 			unified_inventory.set_inventory_formspec(player, "craft")
 		elseif armor.inv_mod == "inventory_plus" then
-			local formspec = inventory_plus.get_formspec(player,"main")
+			local formspec = inventory_plus.get_formspec(player, "main")
 			inventory_plus.set_inventory_formspec(player, formspec)
-		else
-			armor:update_inventory(player)
 		end
 		if armor.config.destroy == false then
 			minetest.after(armor.config.bones_delay, function()
@@ -378,7 +401,6 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 						minetest.chat_send_player(name, "Your "..desc.." got destroyed!")
 					end
 					armor:set_player_armor(player)
-					armor:update_inventory(player)
 					armor:run_callbacks("on_unequip", player, stack)
 					armor:run_callbacks("on_destroy", player, stack)
 				end

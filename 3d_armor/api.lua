@@ -288,40 +288,8 @@ armor.get_armor_formspec = function(self, name, listring)
 end
 
 armor.update_inventory = function(self, player)
-	local name = armor:get_valid_player(player, "[set_player_armor]")
-	if not name or self.inv_mod == "inventory_enhanced" then
-		return
-	end
-	if self.inv_mod == "smart_inventory" then
-		local state = smart_inventory.get_page_state("player", name)
-		if state then
-			state:get("update_hook"):submit()
-		end
-	elseif self.inv_mod == "sfinv" then
-		if sfinv.set_page then
-			sfinv.set_page(player, "3d_armor:armor")
-		else
-			-- Backwards compat
-			sfinv.set_player_inventory_formspec(player, {
-				page = "3d_armor:armor"
-			})
-		end
-	elseif self.inv_mod == "unified_inventory" then
-		if unified_inventory.current_page[name] == "armor" then
-			unified_inventory.set_inventory_formspec(player, "armor")
-		end
-	else
-		if self.inv_mod == "inventory_plus" then
-			local formspec = armor:get_armor_formspec(name, true)
-			local page = player:get_inventory_formspec()
-			if page:find("detached:"..name.."_armor") then
-				inventory_plus.set_inventory_formspec(player, formspec)
-			end
-		elseif not core.setting_getbool("creative_mode") then
-			local formspec = armor:get_armor_formspec(name)
-			player:set_inventory_formspec(formspec)
-		end
-	end
+	-- DEPRECIATED: Legacy inventory support
+	self:run_callbacks("on_update", player)
 end
 
 armor.get_valid_player = function(self, player, msg)
