@@ -76,7 +76,10 @@ if minetest.get_modpath("inventory_plus") then
 	armor:register_on_update(function(player)
 		local name = player:get_player_name()
 		local formspec = armor:get_armor_formspec(name, true)
-		inventory_plus.set_inventory_formspec(player, formspec)
+		local page = player:get_inventory_formspec()
+		if page:find("detached:"..name.."_armor") then
+			inventory_plus.set_inventory_formspec(player, formspec)
+		end
 	end)
 	if minetest.get_modpath("crafting") then
 		inventory_plus.get_formspec = function(player, page)
@@ -132,14 +135,7 @@ elseif minetest.get_modpath("sfinv") then
 	armor.inv_mod = "sfinv"
 	armor.formspec = armor_formpage
 	armor:register_on_update(function(player)
-		if sfinv.set_page then
-			sfinv.set_page(player, "3d_armor:armor")
-		else
-			-- Backwards compat
-			sfinv.set_player_inventory_formspec(player, {
-				page = "3d_armor:armor"
-			})
-		end
+		sfinv.set_player_inventory_formspec(player)
 	end)
 	sfinv.register_page("3d_armor:armor", {
 		title = "Armor",
