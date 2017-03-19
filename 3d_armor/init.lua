@@ -71,7 +71,6 @@ if minetest.global_exists("technic") then
 	armor_formpage = armor_formpage.."label[5,2.5;Radiation:  armor_radiation]"
 end
 if minetest.get_modpath("inventory_plus") then
-	armor.inv_mod = "inventory_plus"
 	armor.formspec = "size[8,8.5]button[6,0;2,0.5;main;Back]"..armor_formpage
 	armor:register_on_update(function(player)
 		local name = player:get_player_name()
@@ -85,8 +84,10 @@ if minetest.get_modpath("inventory_plus") then
 		inventory_plus.get_formspec = function(player, page)
 		end
 	end
+	minetest.register_on_joinplayer(function(player)
+		inventory_plus.register_button(player,"armor", "Armor")
+	end)
 elseif minetest.get_modpath("unified_inventory") and not unified_inventory.sfinv_compat_layer then
-	armor.inv_mod = "unified_inventory"
 	armor:register_on_update(function(player)
 		local name = player:get_player_name()
 		if unified_inventory.current_page[name] == "armor" then
@@ -120,10 +121,7 @@ elseif minetest.get_modpath("unified_inventory") and not unified_inventory.sfinv
 			return {formspec=formspec}
 		end,
 	})
-elseif minetest.get_modpath("inventory_enhanced") then
-	armor.inv_mod = "inventory_enhanced"
 elseif minetest.get_modpath("smart_inventory") then
-	armor.inv_mod = "smart_inventory"
 	armor:register_on_update(function(player)
 		local name = player:get_player_name()
 		local state = smart_inventory.get_page_state("player", name)
@@ -132,7 +130,6 @@ elseif minetest.get_modpath("smart_inventory") then
 		end
 	end)
 elseif minetest.get_modpath("sfinv") then
-	armor.inv_mod = "sfinv"
 	armor.formspec = armor_formpage
 	armor:register_on_update(function(player)
 		sfinv.set_player_inventory_formspec(player)
@@ -190,11 +187,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if not name then
 		return
 	end
-	if armor.inv_mod == "inventory_plus" and fields.armor then
-		local formspec = armor:get_armor_formspec(name, true)
-		inventory_plus.set_inventory_formspec(player, formspec)
-		return
-	end
 	for field, _ in pairs(fields) do
 		if string.find(field, "skins_set") then
 			minetest.after(0, function(player)
@@ -249,9 +241,6 @@ minetest.register_on_joinplayer(function(player)
 			return count
 		end,
 	}, name)
-	if armor.inv_mod == "inventory_plus" then
-		inventory_plus.register_button(player,"armor", "Armor")
-	end
 	armor_inv:set_size("armor", 6)
 	player_inv:set_size("armor", 6)
 	for i=1, 6 do
@@ -312,12 +301,6 @@ if armor.config.drop == true or armor.config.destroy == true then
 			end
 		end
 		armor:set_player_armor(player)
-		if armor.inv_mod == "unified_inventory" then
-			unified_inventory.set_inventory_formspec(player, "craft")
-		elseif armor.inv_mod == "inventory_plus" then
-			local formspec = inventory_plus.get_formspec(player, "main")
-			inventory_plus.set_inventory_formspec(player, formspec)
-		end
 		if armor.config.destroy == false then
 			minetest.after(armor.config.bones_delay, function()
 				local meta = nil
