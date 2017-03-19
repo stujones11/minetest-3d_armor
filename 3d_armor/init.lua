@@ -87,6 +87,15 @@ if minetest.get_modpath("inventory_plus") then
 	minetest.register_on_joinplayer(function(player)
 		inventory_plus.register_button(player,"armor", "Armor")
 	end)
+	minetest.register_on_player_receive_fields(function(player, formname, fields)
+		local name = armor:get_valid_player(player, "[on_player_receive_fields]")
+		if not name then
+			return
+		end
+		local formspec = armor:get_armor_formspec(name, true)
+		inventory_plus.set_inventory_formspec(player, formspec)
+	end)
+
 elseif minetest.get_modpath("unified_inventory") and not unified_inventory.sfinv_compat_layer then
 	armor:register_on_update(function(player)
 		local name = player:get_player_name()
