@@ -387,7 +387,7 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 		end
 		armor.def[name].state = state
 		armor.def[name].count = items
-		heal_max = heal_max * ARMOR_HEAL_MULTIPLIER
+		heal_max = heal_max * armor.config.heal_multiplier
 		if heal_max > math.random(100) then
 			hp_change = 0
 		end
