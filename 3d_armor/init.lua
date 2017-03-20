@@ -130,21 +130,6 @@ elseif minetest.get_modpath("unified_inventory") and not unified_inventory.sfinv
 			return {formspec=formspec}
 		end,
 	})
-elseif minetest.get_modpath("sfinv") then
-	armor.formspec = armor_formpage
-	armor:register_on_update(function(player)
-		if sfinv.enabled then
-			sfinv.set_player_inventory_formspec(player)
-		end
-	end)
-	sfinv.register_page("3d_armor:armor", {
-		title = "Armor",
-		get = function(self, player, context)
-			local name = player:get_player_name()
-			local formspec = armor:get_armor_formspec(name, true)
-			return sfinv.make_formspec(player, context, formspec, false)
-		end
-	})
 end
 local skin_mods = {"skins", "u_skins", "simple_skins", "wardrobe"}
 for _, mod in pairs(skin_mods) do
