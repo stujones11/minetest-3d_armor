@@ -2,7 +2,6 @@ default
 player_monoids?
 armor_monoid?
 inventory_plus?
-unified_inventory?
 fire?
 ethereal?
 bakedclay?
