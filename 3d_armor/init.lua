@@ -130,18 +130,12 @@ elseif minetest.get_modpath("unified_inventory") and not unified_inventory.sfinv
 			return {formspec=formspec}
 		end,
 	})
-elseif minetest.get_modpath("smart_inventory") then
-	armor:register_on_update(function(player)
-		local name = player:get_player_name()
-		local state = smart_inventory.get_page_state("player", name)
-		if state then
-			state:get("update_hook"):submit()
-		end
-	end)
 elseif minetest.get_modpath("sfinv") then
 	armor.formspec = armor_formpage
 	armor:register_on_update(function(player)
-		sfinv.set_player_inventory_formspec(player)
+		if sfinv.enabled then
+			sfinv.set_player_inventory_formspec(player)
+		end
 	end)
 	sfinv.register_page("3d_armor:armor", {
 		title = "Armor",
