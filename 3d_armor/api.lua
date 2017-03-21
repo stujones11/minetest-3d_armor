@@ -6,18 +6,15 @@ armor = {
 	timer = 0,
 	elements = {"head", "torso", "legs", "feet"},
 	physics = {"jump", "speed", "gravity"},
-	formspec = "size[8,8.5]"..
+	formspec = "image[2.5,0;2,4;armor_preview]"..
 		default.gui_bg..
 		default.gui_bg_img..
 		default.gui_slots..
-		default.get_hotbar_bg(0,4.25)..
-		"image[2,0.5;2,4;armor_preview]"..
-		"list[current_player;main;0,4.25;8,1;]"..
-		"list[current_player;main;0,5.5;8,3;8]"..
-		"list[current_player;craft;4,0.5;3,3;]"..
-		"list[current_player;craftpreview;7,1.5;1,1;]"..
-		"listring[current_player;main]"..
-		"listring[current_player;craft]",
+		default.get_hotbar_bg(0, 4.7)..
+		"label[5,1;Level: armor_level]"..
+		"label[5,1.5;Heal:  armor_heal]"..
+		"list[current_player;main;0,4.7;8,1;]"..
+		"list[current_player;main;0,5.85;8,3;8]",
 	def = {},
 	textures = {},
 	default_skin = "character",

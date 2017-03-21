@@ -55,96 +55,11 @@ dofile(modpath.."/armor.lua")
 
 -- Mod Compatibility
 
-local armor_formpage = "image[2.5,0;2,4;armor_preview]"..
-	default.gui_bg..
-	default.gui_bg_img..
-	default.gui_slots..
-	default.get_hotbar_bg(0, 4.7)..
-	"label[5,1;Level: armor_level]"..
-	"label[5,1.5;Heal:  armor_heal]"..
-	"list[current_player;main;0,4.7;8,1;]"..
-	"list[current_player;main;0,5.85;8,3;8]"
 if armor.config.fire_protect then
-	armor_formpage = armor_formpage.."label[5,2;Fire:  armor_fire]"
+	armor.formspec = armor.formspec.."label[5,2;Fire:  armor_fire]"
 end
-if minetest.global_exists("technic") then
-	armor_formpage = armor_formpage.."label[5,2.5;Radiation:  armor_radiation]"
-end
-if minetest.get_modpath("inventory_plus") then
-	armor.inv_mod = "inventory_plus"
-	armor.formspec = "size[8,8.5]button[6,0;2,0.5;main;Back]"..armor_formpage
-	armor:register_on_update(function(player)
-		local name = player:get_player_name()
-		local formspec = armor:get_armor_formspec(name, true)
-		local page = player:get_inventory_formspec()
-		if page:find("detached:"..name.."_armor") then
-			inventory_plus.set_inventory_formspec(player, formspec)
-		end
-	end)
-	if minetest.get_modpath("crafting") then
-		inventory_plus.get_formspec = function(player, page)
-		end
-	end
-elseif minetest.get_modpath("unified_inventory") and not unified_inventory.sfinv_compat_layer then
-	armor.inv_mod = "unified_inventory"
-	armor:register_on_update(function(player)
-		local name = player:get_player_name()
-		if unified_inventory.current_page[name] == "armor" then
-			unified_inventory.set_inventory_formspec(player, "armor")
-		end
-	end)
-	unified_inventory.register_button("armor", {
-		type = "image",
-		image = "inventory_plus_armor.png",
-	})
-	unified_inventory.register_page("armor", {
-		get_formspec = function(player, perplayer_formspec)
-			local fy = perplayer_formspec.formspec_y
-			local name = player:get_player_name()
-			local formspec = "background[0.06,"..fy..";7.92,7.52;3d_armor_ui_form.png]"..
-				"label[0,0;Armor]"..
-				"list[detached:"..name.."_armor;armor;0,"..fy..";2,3;]"..
-				"image[2.5,"..(fy - 0.25)..";2,4;"..armor.textures[name].preview.."]"..
-				"label[5.0,"..(fy + 0.0)..";Level: "..armor.def[name].level.."]"..
-				"label[5.0,"..(fy + 0.5)..";Heal:  "..armor.def[name].heal.."]"..
-				"listring[current_player;main]"..
-				"listring[detached:"..name.."_armor;armor]"
-			if armor.config.fire_protect then
-				formspec = formspec.."label[5.0,"..(fy + 1.0)..
-					";Fire:  "..armor.def[name].fire.."]"
-			end
-			if minetest.global_exists("technic") then
-				formspec = formspec.."label[5.0,"..(fy + 1.5)..
-					";Radiation:  "..armor.def[name].radiation.."]"
-			end
-			return {formspec=formspec}
-		end,
-	})
-elseif minetest.get_modpath("inventory_enhanced") then
-	armor.inv_mod = "inventory_enhanced"
-elseif minetest.get_modpath("smart_inventory") then
-	armor.inv_mod = "smart_inventory"
-	armor:register_on_update(function(player)
-		local name = player:get_player_name()
-		local state = smart_inventory.get_page_state("player", name)
-		if state then
-			state:get("update_hook"):submit()
-		end
-	end)
-elseif minetest.get_modpath("sfinv") then
-	armor.inv_mod = "sfinv"
-	armor.formspec = armor_formpage
-	armor:register_on_update(function(player)
-		sfinv.set_player_inventory_formspec(player)
-	end)
-	sfinv.register_page("3d_armor:armor", {
-		title = "Armor",
-		get = function(self, player, context)
-			local name = player:get_player_name()
-			local formspec = armor:get_armor_formspec(name, true)
-			return sfinv.make_formspec(player, context, formspec, false)
-		end
-	})
+if minetest.get_modpath("technic") then
+	armor.formspec = armor.formspec.."label[5,2.5;Radiation:  armor_radiation]"
 end
 local skin_mods = {"skins", "u_skins", "simple_skins", "wardrobe"}
 for _, mod in pairs(skin_mods) do
@@ -188,11 +103,6 @@ default.player_register_model("3d_armor_character.b3d", {
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local name = armor:get_valid_player(player, "[on_player_receive_fields]")
 	if not name then
-		return
-	end
-	if armor.inv_mod == "inventory_plus" and fields.armor then
-		local formspec = armor:get_armor_formspec(name, true)
-		inventory_plus.set_inventory_formspec(player, formspec)
 		return
 	end
 	for field, _ in pairs(fields) do
@@ -249,9 +159,6 @@ minetest.register_on_joinplayer(function(player)
 			return count
 		end,
 	}, name)
-	if armor.inv_mod == "inventory_plus" then
-		inventory_plus.register_button(player,"armor", "Armor")
-	end
 	armor_inv:set_size("armor", 6)
 	player_inv:set_size("armor", 6)
 	for i=1, 6 do
@@ -312,12 +219,6 @@ if armor.config.drop == true or armor.config.destroy == true then
 			end
 		end
 		armor:set_player_armor(player)
-		if armor.inv_mod == "unified_inventory" then
-			unified_inventory.set_inventory_formspec(player, "craft")
-		elseif armor.inv_mod == "inventory_plus" then
-			local formspec = inventory_plus.get_formspec(player, "main")
-			inventory_plus.set_inventory_formspec(player, formspec)
-		end
 		if armor.config.destroy == false then
 			minetest.after(armor.config.bones_delay, function()
 				local meta = nil
