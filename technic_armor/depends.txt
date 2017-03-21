@@ -1,3 +1,3 @@
 3d_armor
-technic_worldgen
+technic_worldgen?
 moreores?

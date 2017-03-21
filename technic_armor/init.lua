@@ -1,3 +1,8 @@
+if not minetest.get_modpath("technic_worldgen") then
+	minetest.log("warning", "technic_armor: Mod loaded but unused.")
+	return
+end
+
 local stats = {
 	lead = { name="Lead", material="technic:lead_ingot", armor=1.6, heal=0, use=500, radiation=80*1.1 },
 	brass = { name="Brass", material="technic:brass_ingot", armor=1.8, heal=0, use=650, radiation=43 },

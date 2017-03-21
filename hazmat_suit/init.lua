@@ -1,3 +1,8 @@
+if not minetest.get_modpath("technic") then
+	minetest.log("warning", "hazmat_suit: Mod loaded but unused.")
+	return
+end
+
 local part_count = 4
 
 local level = 35
