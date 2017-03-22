@@ -288,31 +288,50 @@ armor.update_inventory = function(self, player)
 	-- DEPRECIATED: Legacy inventory support
 end
 
+armor.set_inventory_stack = function(self, player, i, stack)
+	local msg = "[set_inventory_stack]"
+	local name = player:get_player_name()
+	if not name then
+		minetest.log("warning", "3d_armor: Player name is nil "..msg)
+		return
+	end
+	local player_inv = player:get_inventory()
+	local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
+	if not player_inv then
+		minetest.log("warning", "3d_armor: Player inventory is nil "..msg)
+		return
+	elseif not armor_inv then
+		minetest.log("warning", "3d_armor: Detached armor inventory is nil "..msg)
+		return
+	end
+	player_inv:set_stack("armor", i, stack)
+	armor_inv:set_stack("armor", i, stack)
+end
+
 armor.get_valid_player = function(self, player, msg)
 	msg = msg or ""
 	if not player then
-		minetest.log("error", "3d_armor: Player reference is nil "..msg)
+		minetest.log("warning", "3d_armor: Player reference is nil "..msg)
 		return
 	end
 	local name = player:get_player_name()
 	if not name then
-		minetest.log("error", "3d_armor: Player name is nil "..msg)
+		minetest.log("warning", "3d_armor: Player name is nil "..msg)
 		return
 	end
 	local pos = player:getpos()
-	local player_inv = player:get_inventory()
-	local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
+	local inv = player:get_inventory()
 	if not pos then
-		minetest.log("error", "3d_armor: Player position is nil "..msg)
+		minetest.log("warning", "3d_armor: Player position is nil "..msg)
 		return
-	elseif not player_inv then
-		minetest.log("error", "3d_armor: Player inventory is nil "..msg)
+	elseif not inv then
+		minetest.log("warning", "3d_armor: Player inventory is nil "..msg)
 		return
-	elseif not armor_inv then
-		minetest.log("error", "3d_armor: Detached armor inventory is nil "..msg)
+	elseif not minetest.get_inventory({type="detached", name=name.."_armor"}) then
+		minetest.log("warning", "3d_armor: Detached armor inventory is nil "..msg)
 		return
 	end
-	return name, player_inv, armor_inv, pos
+	return name, inv, pos
 end
 
 armor.drop_armor = function(pos, stack)

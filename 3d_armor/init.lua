@@ -204,17 +204,16 @@ end)
 
 if armor.config.drop == true or armor.config.destroy == true then
 	minetest.register_on_dieplayer(function(player)
-		local name, player_inv, armor_inv, pos = armor:get_valid_player(player, "[on_dieplayer]")
+		local name, player_inv, pos = armor:get_valid_player(player, "[on_dieplayer]")
 		if not name then
 			return
 		end
 		local drop = {}
 		for i=1, player_inv:get_size("armor") do
-			local stack = armor_inv:get_stack("armor", i)
+			local stack = player_inv:get_stack("armor", i)
 			if stack:get_count() > 0 then
 				table.insert(drop, stack)
-				armor_inv:set_stack("armor", i, nil)
-				player_inv:set_stack("armor", i, nil)
+				armor:set_inventory_stack(player, i, nil)
 				armor:run_callbacks("on_unequip", player, stack)
 			end
 		end
@@ -252,7 +251,7 @@ if armor.config.drop == true or armor.config.destroy == true then
 end
 
 minetest.register_on_player_hpchange(function(player, hp_change)
-	local name, player_inv, armor_inv = armor:get_valid_player(player, "[on_hpchange]")
+	local name, player_inv = armor:get_valid_player(player, "[on_hpchange]")
 	if name and hp_change < 0 then
 		local heal_max = 0
 		local state = 0
@@ -265,8 +264,7 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 				local heal = def.groups["armor_heal"] or 0
 				local item = stack:get_name()
 				stack:add_wear(use)
-				armor_inv:set_stack("armor", i, stack)
-				player_inv:set_stack("armor", i, stack)
+				armor:set_inventory_stack("armor", i, stack)
 				state = state + stack:get_wear()
 				items = items + 1
 				if stack:get_count() == 0 then
