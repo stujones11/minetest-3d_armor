@@ -50,16 +50,17 @@ for material, _ in pairs(armor.materials) do
 		armor.materials[material] = nil
 	end
 end
+if armor.config.fire_protect then
+	armor.formspec = armor.formspec.."label[5,2;Fire:  armor_fire]"
+end
 
 dofile(modpath.."/armor.lua")
 
 -- Mod Compatibility
 
-if armor.config.fire_protect then
-	armor.formspec = armor.formspec.."label[5,2;Fire:  armor_fire]"
-end
 if minetest.get_modpath("technic") then
-	armor.formspec = armor.formspec.."label[5,2.5;Radiation:  armor_radiation]"
+	armor.formspec = armor.formspec.."label[5,2.5;Radiation:  armor_group_radiation]"
+	armor:register_armor_group("radiation")
 end
 local skin_mods = {"skins", "u_skins", "simple_skins", "wardrobe"}
 for _, mod in pairs(skin_mods) do
@@ -167,17 +168,20 @@ minetest.register_on_joinplayer(function(player)
 		armor:run_callbacks("on_equip", player, stack)
 	end
 	armor.def[name] = {
+		level = 0,
 		state = 0,
 		count = 0,
-		level = 0,
-		heal = 0,
-		jump = 1,
-		speed = 1,
-		gravity = 1,
-		fire = 0,
-		water = 0,
-		radiation = 0,
+		groups = {},
 	}
+	for _, phys in pairs(armor.physics) do
+		armor.def[name][phys] = 1
+	end
+	for _, attr in pairs(armor.attributes) do
+		armor.def[name][attr] = 0
+	end
+	for group, _ in pairs(armor.registered_groups) do
+		armor.def[name].groups[group] = 0
+	end
 	local skin = armor:get_player_skin(name)
 	armor.textures[name] = {
 		skin = skin..".png",
@@ -199,6 +203,14 @@ minetest.register_on_joinplayer(function(player)
 		minetest.after(armor.config.init_delay * i, function(player)
 			armor:set_player_armor(player)
 		end, player)
+	end
+end)
+
+minetest.register_on_leaveplayer(function(player)
+	local name = player:get_player_name()
+	if name then
+		armor.def[name] = nil
+		armor.textures[name] = nil
 	end
 end)
 
@@ -282,7 +294,7 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 		armor.def[name].state = state
 		armor.def[name].count = items
 		heal_max = heal_max * armor.config.heal_multiplier
-		if heal_max > math.random(100) then
+		if heal_max >= math.random(100) then
 			hp_change = 0
 		end
 	end

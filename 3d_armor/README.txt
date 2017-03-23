@@ -3,7 +3,9 @@
 
 Depends: default
 
-Recommends: sfinv, inventory_plus or unified_inventory (use only one to avoid conflicts)
+Recommends: sfinv, unified_inventory or smart_inventory (use only one to avoid conflicts)
+
+Supports: player_monoids and armor_monoid
 
 Adds craftable armor that is visible to other players. Each armor item worn contributes to
 a player's armor group level making them less vulnerable to weapons.
@@ -69,13 +71,22 @@ API
 
 Armor Registration:
 
-minetest.register_tool("your_mod_name:speed_boots", {
+armor:register_armor(name, def)
+armor:register_armor_group(group, base)
+
+Example:
+
+armor:register_armor_group("radiation", 100)
+
+armor:register_armor("mod_name:speed_boots", {
 	description = "Speed Boots",
-	inventory_image = "your_mod_name_speed_boots_inv.png",
-	texture = "your_mod_name_speed_boots.png",
-	groups = {armor_feet=10, physics_speed=0.5, armor_use=2000},
+	inventory_image = "mod_name_speed_boots_inv.png",
+	texture = "mod_name_speed_boots.png",
+	preview = "mod_name_speed_boots_preview.png",
+	armor_groups = {fleshy=10, radiation=10},
+	groups = {armor_feet=1, physics_speed=0.5, armor_use=2000},
 	on_destroy = function(player, item_name)
-		minetest.sound_play("your_mod_name_break_sound", {
+		minetest.sound_play("mod_name_break_sound", {
 			to_player = player:get_player_name(),
 		})
 	end,
@@ -92,15 +103,15 @@ Durability: armor_use
 Notes:
 
 Elements may be modified by dependent mods, eg shields adds armor_shield.
-
-Physics values are 'stackable', durability is determined
-by the level of armor_use. total uses == approx (65535/armor_use)
+Attributes and physics values are 'stackable', durability is determined
+by the level of armor_use, total uses == approx (65535/armor_use), non-fleshy
+damage groups need to be defined in the tool/weapon used against the player
 
 Item Callbacks:
 
 on_equip = func(player, stack)
 on_unequip = func(player, stack)
-on_destroy = func(player, item_name)
+on_destroy = func(player, stack)
 
 Global Callbacks:
 

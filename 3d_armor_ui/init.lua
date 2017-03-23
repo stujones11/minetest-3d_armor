@@ -37,7 +37,7 @@ unified_inventory.register_page("armor", {
 		end
 		if minetest.global_exists("technic") then
 			formspec = formspec.."label[5.0,"..(fy + 1.5)..
-				";Radiation:  "..armor.def[name].radiation.."]"
+				";Radiation:  "..armor.def[name].groups["radiation"].."]"
 		end
 		return {formspec=formspec}
 	end,
