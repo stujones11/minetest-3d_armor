@@ -191,8 +191,8 @@ armor.set_player_armor = function(self, player)
 			end
 			local item = stack:get_name()
 			local tex = def.texture or item:gsub("%:", "_")
-			local prev = def.preview or tex.."_preview"
 			tex = tex:gsub(".png$", "")
+			local prev = def.preview or tex.."_preview"
 			prev = prev:gsub(".png$", "")
 			texture = texture.."^"..tex..".png"
 			preview = preview.."^"..prev..".png"
