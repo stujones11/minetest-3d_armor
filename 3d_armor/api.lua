@@ -288,14 +288,14 @@ armor.get_preview = function(self, name)
 end
 
 armor.get_armor_formspec = function(self, name, listring)
-	if not armor.def[name] or not armor.textures[name] then
-		return ""
-	end
 	local formspec = armor.formspec..
 		"list[detached:"..name.."_armor;armor;0,0.5;2,3;]"
 	if listring == true then
 		formspec = formspec.."listring[current_player;main]"..
 			"listring[detached:"..name.."_armor;armor]"
+	end
+	if not armor.def[name] or not armor.textures[name] then
+		return formspec
 	end
 	formspec = formspec:gsub("armor_preview", armor.textures[name].preview)
 	formspec = formspec:gsub("armor_level", armor.def[name].level)
