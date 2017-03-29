@@ -157,13 +157,12 @@ armor.set_player_armor = function(self, player)
 	local groups = {}
 	local change = {}
 	for _, phys in pairs(self.physics) do
-		physics[phys] = 0
+		physics[phys] = 1
 	end
 	for _, attr in pairs(self.attributes) do
 		attributes[attr] = 0
 	end
-	for group, base in pairs(self.registered_groups) do
-		groups[group] = base
+	for group, _ in pairs(self.registered_groups) do
 		change[group] = 1
 		levels[group] = 0
 	end
@@ -218,7 +217,6 @@ armor.set_player_armor = function(self, player)
 	end
 	for group, level in pairs(levels) do
 		if level > 0 then
-			local base = self.registered_groups[group]
 			if minetest.get_modpath("shields") then
 				level = level * 0.9
 			end
@@ -226,13 +224,14 @@ armor.set_player_armor = function(self, player)
 				level = level * 1.1
 			end
 			level = level * armor.config.level_multiplier
-			self.def[name].groups[group] = level
-			if level > base then
-				level = base
-			end
-			groups[group] = base - level
-			change[group] = groups[group] / base
 		end
+		local base = self.registered_groups[group]
+		self.def[name].groups[group] = level
+		if level > base then
+			level = base
+		end
+		groups[group] = base - level
+		change[group] = groups[group] / base
 	end
 	for _, attr in pairs(self.attributes) do
 		self.def[name][attr] = attributes[attr]
