@@ -2,6 +2,8 @@ local use_moreores = minetest.get_modpath("moreores")
 
 if minetest.global_exists("armor") and armor.elements then
 	table.insert(armor.elements, "shield")
+	local mult = armor.config.level_multiplier or 1
+	armor.config.level_multiplier = mult * 0.9
 end
 
 -- Regisiter Shields

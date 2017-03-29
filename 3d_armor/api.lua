@@ -217,13 +217,10 @@ armor.set_player_armor = function(self, player)
 	end
 	for group, level in pairs(levels) do
 		if level > 0 then
-			if minetest.get_modpath("shields") then
-				level = level * 0.9
-			end
+			level = level * armor.config.level_multiplier
 			if material.name and material.count == #self.elements then
 				level = level * 1.1
 			end
-			level = level * armor.config.level_multiplier
 		end
 		local base = self.registered_groups[group]
 		self.def[name].groups[group] = level
