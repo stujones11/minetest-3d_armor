@@ -1,3 +1,7 @@
+local S = function(s) return s end
+if minetest.global_exists("intllib") then
+	S = intllib.Getter()
+end
 local armor_stand_formspec = "size[8,7]" ..
 	default.gui_bg ..
 	default.gui_bg_img ..
@@ -128,7 +132,7 @@ local function remove_hidden_node(pos)
 end
 
 minetest.register_node("3d_armor_stand:top", {
-	description = "Armor stand top",
+	description = S("Armor stand top"),
 	paramtype = "light",
 	drawtype = "plantlike",
 	sunlight_propagates = true,
@@ -143,7 +147,7 @@ minetest.register_node("3d_armor_stand:top", {
 })
 
 minetest.register_node("3d_armor_stand:armor_stand", {
-	description = "Armor stand",
+	description = S("Armor stand"),
 	drawtype = "mesh",
 	mesh = "3d_armor_stand.obj",
 	tiles = {"3d_armor_stand.png"},
@@ -211,7 +215,7 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 })
 
 minetest.register_node("3d_armor_stand:locked_armor_stand", {
-	description = "Locked Armor stand",
+	description = S("Locked Armor stand"),
 	drawtype = "mesh",
 	mesh = "3d_armor_stand.obj",
 	tiles = {"3d_armor_stand_locked.png"},
