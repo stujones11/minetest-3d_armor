@@ -63,6 +63,9 @@ armor_heal_multiplier = 1
 -- eg: armor_radiation_multiplier = 0 will completely disable radiation protection.
 armor_radiation_multiplier = 1
 
+-- Enable water protection (periodically restores breath when activated)
+armor_water_protect = true
+
 -- Enable fire protection (defaults true if using ethereal mod)
 armor_fire_protect = false
 
@@ -97,6 +100,7 @@ See armor.lua, technic_armor and shields mods for more examples.
 Default groups:
 
 Elements: armor_head, armor_torso, armor_legs, armor_feet
+attributes: armor_heal, armor_fire, armor_water
 Physics: physics_jump, physics_speed, physics_gravity
 Durability: armor_use
 

@@ -323,40 +323,44 @@ else
 	print ("[3d_armor] Fire Nodes disabled")
 end
 
-minetest.register_globalstep(function(dtime)
-	armor.timer = armor.timer + dtime
-	if armor.timer < armor.config.update_time then
-		return
-	end
-	for _,player in pairs(minetest.get_connected_players()) do
-		local name = player:get_player_name()
-		local pos = player:getpos()
-		local hp = player:get_hp()
-		-- water breathing
-		if name and armor.def[name].water > 0 then
-			if player:get_breath() < 10 then
-				player:set_breath(10)
-			end
+if armor.config.water_protect == true or armor.config.fire_protect == true then
+	minetest.register_globalstep(function(dtime)
+		armor.timer = armor.timer + dtime
+		if armor.timer < armor.config.update_time then
+			return
 		end
-		-- fire protection
-		if armor.config.fire_protect == true
-		and name and pos and hp then
-			pos.y = pos.y + 1.4 -- head level
-			local node_head = minetest.get_node(pos).name
-			pos.y = pos.y - 1.2 -- feet level
-			local node_feet = minetest.get_node(pos).name
-			-- is player inside a hot node?
-			for _, row in pairs(armor.fire_nodes) do
-				-- check fire protection, if not enough then get hurt
-				if row[1] == node_head or row[1] == node_feet then
-					if hp > 0 and armor.def[name].fire < row[2] then
-						hp = hp - row[3] * armor.config.update_time
-						player:set_hp(hp)
-						break
+		for _,player in pairs(minetest.get_connected_players()) do
+			local name = player:get_player_name()
+			local pos = player:getpos()
+			local hp = player:get_hp()
+			if not name or not pos or not hp then
+				return
+			end
+			-- water breathing
+			if armor.config.water_protect == true then
+				if armor.def[name].water > 0 and player:get_breath() < 10 then
+					player:set_breath(10)
+				end
+			end
+			-- fire protection
+			if armor.config.fire_protect == true then
+				pos.y = pos.y + 1.4 -- head level
+				local node_head = minetest.get_node(pos).name
+				pos.y = pos.y - 1.2 -- feet level
+				local node_feet = minetest.get_node(pos).name
+				-- is player inside a hot node?
+				for _, row in pairs(armor.fire_nodes) do
+					-- check fire protection, if not enough then get hurt
+					if row[1] == node_head or row[1] == node_feet then
+						if hp > 0 and armor.def[name].fire < row[2] then
+							hp = hp - row[3] * armor.config.update_time
+							player:set_hp(hp)
+							break
+						end
 					end
 				end
 			end
 		end
-	end
-	armor.timer = 0
-end)
+		armor.timer = 0
+	end)
+end

@@ -66,6 +66,7 @@ armor.config = {
 	material_gold = true,
 	material_mithril = true,
 	material_crystal = true,
+	water_protect = true,
 	fire_protect = minetest.get_modpath("ethereal") ~= nil
 }
 
