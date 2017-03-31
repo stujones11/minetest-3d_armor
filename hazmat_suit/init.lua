@@ -2,6 +2,10 @@ if not minetest.get_modpath("technic") then
 	minetest.log("warning", "hazmat_suit: Mod loaded but unused.")
 	return
 end
+local S = function(s) return s end
+if minetest.global_exists("intllib") then
+	S = intllib.Getter()
+end
 
 local part_count = 4
 
@@ -26,37 +30,37 @@ fire = math.floor(fire / part_count)
 radiation = math.floor(radiation / part_count)
 
 minetest.register_craftitem("hazmat_suit:helmet_hazmat", {
-		description = "Hazmat Helmet",
+		description = S("Hazmat Helmet"),
 		inventory_image = "hazmat_suit_inv_helmet_hazmat.png",
 		stack_max = 1,
 })
 
 minetest.register_craftitem("hazmat_suit:chestplate_hazmat", {
-		description = "Hazmat Chestplate",
+		description = S("Hazmat Chestplate"),
 		inventory_image = "hazmat_suit_inv_chestplate_hazmat.png",
 		stack_max = 1,
 })
 
 minetest.register_craftitem("hazmat_suit:sleeve_hazmat", {
-		description = "Hazmat Sleeve",
+		description = S("Hazmat Sleeve"),
 		inventory_image = "hazmat_suit_inv_sleeve_hazmat.png",
 		stack_max = 1,
 })
 
 minetest.register_craftitem("hazmat_suit:leggings_hazmat", {
-		description = "Hazmat Leggins",
+		description = S("Hazmat Leggins"),
 		inventory_image = "hazmat_suit_inv_leggings_hazmat.png",
 		stack_max = 1,
 })
 
 minetest.register_craftitem("hazmat_suit:boots_hazmat", {
-		description = "Hazmat Boots",
+		description = S("Hazmat Boots"),
 		inventory_image = "hazmat_suit_inv_boots_hazmat.png",
 		stack_max = 1,
 })
 
 minetest.register_tool("hazmat_suit:suit_hazmat", {
-	description = "Hazmat Suit",
+	description = S("Hazmat Suit"),
 	inventory_image = "hazmat_suit_inv_suit_hazmat.png",
 	groups = {
 		armor_head = level,

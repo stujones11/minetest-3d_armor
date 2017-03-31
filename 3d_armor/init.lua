@@ -1,3 +1,7 @@
+local S = function(s) return s end
+if minetest.global_exists("intllib") then
+	S = intllib.Getter()
+end
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local worldpath = minetest.get_worldpath()
@@ -50,8 +54,11 @@ for material, _ in pairs(armor.materials) do
 		armor.materials[material] = nil
 	end
 end
+armor.formspec = armor.formspec..
+	"label[5,1;"..S("Level")..": armor_level]"..
+	"label[5,1.5;"..S("Heal")..":  armor_attr_heal]"
 if armor.config.fire_protect then
-	armor.formspec = armor.formspec.."label[5,2;Fire:  armor_fire]"
+	armor.formspec = armor.formspec.."label[5,2;"..S("Fire")..":  armor_fire]"
 end
 
 dofile(modpath.."/armor.lua")
@@ -59,7 +66,8 @@ dofile(modpath.."/armor.lua")
 -- Mod Compatibility
 
 if minetest.get_modpath("technic") then
-	armor.formspec = armor.formspec.."label[5,2.5;Radiation:  armor_group_radiation]"
+	armor.formspec = armor.formspec..
+		"label[5,2.5;"..S("Radiation")..":  armor_group_radiation]"
 	armor:register_armor_group("radiation")
 end
 local skin_mods = {"skins", "u_skins", "simple_skins", "wardrobe"}
@@ -282,7 +290,8 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 				if stack:get_count() == 0 then
 					local desc = minetest.registered_items[item].description
 					if desc then
-						minetest.chat_send_player(name, "Your "..desc.." got destroyed!")
+						minetest.chat_send_player(name,
+							S("Your")..desc.." "..S("got destroyed").."!")
 					end
 					armor:set_player_armor(player)
 					armor:run_callbacks("on_unequip", player, stack)

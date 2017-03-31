@@ -2,27 +2,31 @@ if not minetest.get_modpath("technic_worldgen") then
 	minetest.log("warning", "technic_armor: Mod loaded but unused.")
 	return
 end
+local S = function(s) return s end
+if minetest.global_exists("intllib") then
+	S = intllib.Getter()
+end
 
 local stats = {
-	lead = { name="Lead", material="technic:lead_ingot", armor=1.6, heal=0, use=500, radiation=80*1.1 },
-	brass = { name="Brass", material="technic:brass_ingot", armor=1.8, heal=0, use=650, radiation=43 },
-	cast = { name="Cast Iron", material="technic:cast_iron_ingot", armor=2.5, heal=8, use=200, radiation=40 },
-	carbon = { name="Carbon Steel", material="technic:carbon_steel_ingot", armor=2.7, heal=10, use=100, radiation=40 },
-	stainless = { name="Stainless Steel", material="technic:stainless_steel_ingot", armor=2.7, heal=10, use=75, radiation=40 },
+	lead = { name=S("Lead"), material="technic:lead_ingot", armor=1.6, heal=0, use=500, radiation=80*1.1 },
+	brass = { name=S("Brass"), material="technic:brass_ingot", armor=1.8, heal=0, use=650, radiation=43 },
+	cast = { name=S("Cast Iron"), material="technic:cast_iron_ingot", armor=2.5, heal=8, use=200, radiation=40 },
+	carbon = { name=S("Carbon Steel"), material="technic:carbon_steel_ingot", armor=2.7, heal=10, use=100, radiation=40 },
+	stainless = { name=S("Stainless Steel"), material="technic:stainless_steel_ingot", armor=2.7, heal=10, use=75, radiation=40 },
 }
 if minetest.get_modpath("moreores") then
-	stats.tin = { name="Tin", material="moreores:tin_ingot", armor=1.6, heal=0, use=750, radiation=37 }
-	stats.silver = { name="Silver", material="moreores:silver_ingot", armor=1.8, heal=6, use=650, radiation=53 }
+	stats.tin = { name=S("Tin"), material="moreores:tin_ingot", armor=1.6, heal=0, use=750, radiation=37 }
+	stats.silver = { name=S("Silver"), material="moreores:silver_ingot", armor=1.8, heal=6, use=650, radiation=53 }
 end
 
 local parts = {
-	helmet = { place="head", name="Helmet", level=5, radlevel = 0.10, craft={{1,1,1},{1,0,1}} },
-	chestplate = { place="torso", name="Chestplate", level=8, radlevel = 0.35, craft={{1,0,1},{1,1,1},{1,1,1}} },
-	leggings = { place="legs", name="Leggings", level=7, radlevel = 0.15, craft={{1,1,1},{1,0,1},{1,0,1}} },
-	boots = { place="feet", name="Boots", level=4, radlevel = 0.10, craft={{1,0,1},{1,0,1}} },
+	helmet = { place="head", name=S("Helmet"), level=5, radlevel = 0.10, craft={{1,1,1},{1,0,1}} },
+	chestplate = { place="torso", name=S("Chestplate"), level=8, radlevel = 0.35, craft={{1,0,1},{1,1,1},{1,1,1}} },
+	leggings = { place="legs", name=S("Leggings"), level=7, radlevel = 0.15, craft={{1,1,1},{1,0,1},{1,0,1}} },
+	boots = { place="feet", name=S("Boots"), level=4, radlevel = 0.10, craft={{1,0,1},{1,0,1}} },
 }
 if minetest.get_modpath("shields") then
-	parts.shield = { place="shield", name="Shield", level=5, radlevel=0.00, craft={{1,1,1},{1,1,1},{0,1,0}} }
+	parts.shield = { place="shield", name=S("Shield"), level=5, radlevel=0.00, craft={{1,1,1},{1,1,1},{0,1,0}} }
 end
 
 -- Makes a craft recipe based on a template

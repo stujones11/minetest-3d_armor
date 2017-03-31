@@ -12,8 +12,6 @@ armor = {
 		default.gui_bg_img..
 		default.gui_slots..
 		default.get_hotbar_bg(0, 4.7)..
-		"label[5,1;Level: armor_level]"..
-		"label[5,1.5;Heal:  armor_attr_heal]"..
 		"list[current_player;main;0,4.7;8,1;]"..
 		"list[current_player;main;0,5.85;8,3;8]",
 	def = {},
