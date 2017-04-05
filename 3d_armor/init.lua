@@ -44,7 +44,7 @@ for name, config in pairs(armor.config) do
 	elseif type(config) == "boolean" then
 		setting = minetest.setting_getbool("armor_"..name)
 	end
-	if setting then
+	if setting ~= nil then
 		armor.config[name] = setting
 	end
 end
