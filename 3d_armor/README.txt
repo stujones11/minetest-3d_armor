@@ -69,12 +69,33 @@ armor_water_protect = true
 -- Enable fire protection (defaults true if using ethereal mod)
 armor_fire_protect = false
 
+-- Enable punch damage effects (only works for armor with `damage_groups` table)
+armor_punch_damage = true
+
 API
 ---
 
 Armor Registration:
 
 armor:register_armor(name, def)
+
+Wrapper function for `minetest.register_tool`, while registering armor as
+a tool item is still supported, this may be deprecated in future so new code
+should use this method.
+
+Additional fields supported by 3d_armor:
+
+	texture = <filename>
+	preview = <filename>
+	armor_groups = <table>
+	damage_groups = <table>
+	reciprocate_damage = <bool>
+	on_equip = <function>
+	on_unequip = <function>
+	on_destroy = <function>
+	on_damage = <function>
+	on_punch = <function>
+
 armor:register_armor_group(group, base)
 
 Example:
@@ -86,12 +107,19 @@ armor:register_armor("mod_name:speed_boots", {
 	inventory_image = "mod_name_speed_boots_inv.png",
 	texture = "mod_name_speed_boots.png",
 	preview = "mod_name_speed_boots_preview.png",
+	groups = {armor_feet=1, armor_use=500},
 	armor_groups = {fleshy=10, radiation=10},
-	groups = {armor_feet=1, physics_speed=0.5, armor_use=2000},
+	damage_groups = {cracky=3, snappy=3, choppy=3, crumbly=3, level=1},
+	reciprocate_damage = true,
 	on_destroy = function(player, item_name)
-		minetest.sound_play("mod_name_break_sound", {
-			to_player = player:get_player_name(),
-		})
+		local pos = player:get_pos()
+		if pos then
+			minetest.sound_play({
+				name = "mod_name_break_sound",
+				pos = pos,
+				gain = 0.5,
+			})
+		end
 	end,
 })
 
@@ -109,13 +137,23 @@ Notes:
 Elements may be modified by dependent mods, eg shields adds armor_shield.
 Attributes and physics values are 'stackable', durability is determined
 by the level of armor_use, total uses == approx (65535/armor_use), non-fleshy
-damage groups need to be defined in the tool/weapon used against the player
+damage groups need to be defined in the tool/weapon used against the player.
+
+Reciprocal tool damage will be done only by the first armor inventory item
+ with `reciprocate_damage = true`
 
 Item Callbacks:
 
 on_equip = func(player, stack)
 on_unequip = func(player, stack)
 on_destroy = func(player, stack)
+on_damage = func(player, stack)
+on_punch = func(player, hitter, time_from_last_punch, tool_capabilities)
+
+Notes: on_punch is called every time the player takes damage, `hitter`,
+`time_from_last_punch` and `tool_capabilities` can be `nil` and will be in the
+case of fall damage, etc. Return `false` to override armor damage effects.
+When armor is destroyed `stack` will contain a copy of the previous stack.
 
 Global Callbacks:
 

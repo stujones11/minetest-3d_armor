@@ -43,6 +43,7 @@ armor = {
 		on_update = {},
 		on_equip = {},
 		on_unequip = {},
+		on_damage = {},
 		on_destroy = {},
 	},
 	version = "0.4.8",
@@ -67,7 +68,8 @@ armor.config = {
 	material_mithril = true,
 	material_crystal = true,
 	water_protect = true,
-	fire_protect = minetest.get_modpath("ethereal") ~= nil
+	fire_protect = minetest.get_modpath("ethereal") ~= nil,
+	punch_damage = true,
 }
 
 -- Armor Registration
@@ -101,6 +103,12 @@ end
 armor.register_on_unequip = function(self, func)
 	if type(func) == "function" then
 		table.insert(self.registered_callbacks.on_unequip, func)
+	end
+end
+
+armor.register_on_damage = function(self, func)
+	if type(func) == "function" then
+		table.insert(self.registered_callbacks.on_damage, func)
 	end
 end
 
@@ -259,6 +267,84 @@ armor.set_player_armor = function(self, player)
 	self:run_callbacks("on_update", player)
 end
 
+armor.punch = function(self, player, hitter, time_from_last_punch, tool_capabilities)
+	local name, player_inv = self:get_valid_player(player, "[punch]")
+	if not name then
+		return
+	end
+	local state = 0
+	local count = 0
+	local recip = true
+	local default_groups = {cracky=3, snappy=3, choppy=3, crumbly=3, level=1}
+	local list = player_inv:get_list("armor")
+	for i, stack in pairs(list) do
+		if stack:get_count() == 1 then
+			local name = stack:get_name()
+			local use = minetest.get_item_group(name, "armor_use") or 0
+			local damage = use > 0
+			local def = stack:get_definition() or {}
+			if type(def.on_punch) == "function" then
+				damage = def.on_punch(player, hitter, time_from_last_punch,
+					tool_capabilities) ~= false
+			end
+			if damage == true and tool_capabilities then
+				local damage_groups = def.damage_groups or default_groups
+				local level = damage_groups.level or 0
+				local groupcaps = tool_capabilities.groupcaps or {}
+				local uses = 0
+				damage = false
+				for group, caps in pairs(groupcaps) do
+					local maxlevel = caps.maxlevel or 0
+					local diff = maxlevel - level
+					if diff == 0 then
+						diff = 1
+					end
+					if diff > 0 and caps.times then
+						local group_level = damage_groups[group]
+						if group_level then
+							local time = caps.times[group_level]
+							if time then
+								local dt = time_from_last_punch or 0
+								if dt > time / diff then
+									if caps.uses then
+										uses = caps.uses * math.pow(3, diff)
+									end
+									damage = true
+									break
+								end
+							end
+						end
+					end
+				end
+				if damage == true and recip == true and hitter and
+						def.reciprocate_damage == true and uses > 0 then
+					local item = hitter:get_wielded_item()
+					local wear = 65535 / uses
+					item:add_wear(wear)
+					hitter:set_wielded_item(item)
+					-- reciprocate tool damage only once
+					recip = false
+				end
+			end
+			if damage == true then
+				local old_stack = ItemStack(stack)
+				stack:add_wear(use)
+				self:set_inventory_stack(player, i, stack)
+				self:run_callbacks("on_damage", player, stack)
+				if stack:get_count() == 0 then
+					self:run_callbacks("on_unequip", player, old_stack)
+					self:run_callbacks("on_destroy", player, old_stack)
+					self:set_player_armor(player)
+				end
+			end
+			state = state + stack:get_wear()
+			count = count + 1
+		end
+	end
+	self.def[name].state = state
+	self.def[name].count = items
+end
+
 armor.get_player_skin = function(self, name)
 	local skin = nil
 	if self.skin_mod == "skins" or self.skin_mod == "simple_skins" then
@@ -363,3 +449,4 @@ armor.drop_armor = function(pos, stack)
 		obj:setvelocity({x=math.random(-1, 1), y=5, z=math.random(-1, 1)})
 	end
 end
+

@@ -5,6 +5,7 @@ end
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local worldpath = minetest.get_worldpath()
+local last_punch_time = {}
 
 dofile(modpath.."/api.lua")
 
@@ -60,6 +61,14 @@ armor.formspec = armor.formspec..
 if armor.config.fire_protect then
 	armor.formspec = armor.formspec.."label[5,2;"..S("Fire")..":  armor_fire]"
 end
+armor:register_on_destroy(function(player, stack)
+	local name = player:get_player_name()
+	local def = stack:get_definition()
+	if name and def and def.description then
+		minetest.chat_send_player(name, S("Your").." "..def.description.." "..
+			S("got destroyed").."!")
+	end
+end)
 
 dofile(modpath.."/armor.lua")
 
@@ -270,41 +279,30 @@ if armor.config.drop == true or armor.config.destroy == true then
 	end)
 end
 
+if armor.config.punch_damage == true then
+	minetest.register_on_punchplayer(function(player, hitter,
+			time_from_last_punch, tool_capabilities)
+		armor:punch(player, hitter, time_from_last_punch, tool_capabilities)
+		local name = player:get_player_name()
+		if name then
+			last_punch_time[name] = minetest.get_gametime()
+		end
+	end)
+end
+
 minetest.register_on_player_hpchange(function(player, hp_change)
-	local name, player_inv = armor:get_valid_player(player, "[on_hpchange]")
-	if name and hp_change < 0 then
-		local heal_max = 0
-		local state = 0
-		local items = 0
-		for i=1, 6 do
-			local stack = player_inv:get_stack("armor", i)
-			if stack:get_count() > 0 then
-				local def = stack:get_definition() or {}
-				local use = def.groups["armor_use"] or 0
-				local heal = def.groups["armor_heal"] or 0
-				local item = stack:get_name()
-				stack:add_wear(use)
-				armor:set_inventory_stack(player, i, stack)
-				state = state + stack:get_wear()
-				items = items + 1
-				if stack:get_count() == 0 then
-					local desc = minetest.registered_items[item].description
-					if desc then
-						minetest.chat_send_player(name,
-							S("Your")..desc.." "..S("got destroyed").."!")
-					end
-					armor:set_player_armor(player)
-					armor:run_callbacks("on_unequip", player, stack)
-					armor:run_callbacks("on_destroy", player, stack)
-				end
-				heal_max = heal_max + heal
+	if player and hp_change < 0 then
+		local name = player:get_player_name()
+		if name and armor.def[name] then
+			local heal = armor.def[name].heal or 0
+			if heal >= math.random(100) then
+				hp_change = 0
 			end
 		end
-		armor.def[name].state = state
-		armor.def[name].count = items
-		heal_max = heal_max * armor.config.heal_multiplier
-		if heal_max >= math.random(100) then
-			hp_change = 0
+		-- check if armor damage was handled by on_punchplayer
+		local time = last_punch_time[name] or 0
+		if time == 0 or time + 1 < minetest.get_gametime() then
+			armor:punch(player)
 		end
 	end
 	return hp_change
