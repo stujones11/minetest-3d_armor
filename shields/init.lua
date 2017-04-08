@@ -5,7 +5,7 @@ end
 local use_moreores = minetest.get_modpath("moreores")
 local function play_sound_effect(player, name)
 	if player then
-		local pos = player:get_pos()
+		local pos = player:getpos()
 		if pos then
 			minetest.sound_play({
 				pos = pos,
