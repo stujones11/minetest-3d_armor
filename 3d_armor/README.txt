@@ -112,7 +112,7 @@ armor:register_armor("mod_name:speed_boots", {
 	damage_groups = {cracky=3, snappy=3, choppy=3, crumbly=3, level=1},
 	reciprocate_damage = true,
 	on_destroy = function(player, item_name)
-		local pos = player:get_pos()
+		local pos = player:getpos()
 		if pos then
 			minetest.sound_play({
 				name = "mod_name_break_sound",
