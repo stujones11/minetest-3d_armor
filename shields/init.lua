@@ -120,7 +120,8 @@ if armor.materials.steel then
 	armor:register_armor("shields:shield_steel", {
 		description = S("Steel Shield"),
 		inventory_image = "shields_inv_shield_steel.png",
-		groups = {armor_shield=1, armor_heal=0, armor_use=800},
+		groups = {armor_shield=1, armor_heal=0, armor_use=800,
+			physics_speed=-0.025, physics_gravity=0.025},
 		armor_groups = {fleshy=10},
 		damage_groups = {cracky=2, snappy=3, choppy=2, crumbly=1, level=2},
 		reciprocate_damage = true,
@@ -137,7 +138,8 @@ if armor.materials.bronze then
 	armor:register_armor("shields:shield_bronze", {
 		description = S("Bronze Shield"),
 		inventory_image = "shields_inv_shield_bronze.png",
-		groups = {armor_shield=1, armor_heal=6, armor_use=400},
+		groups = {armor_shield=1, armor_heal=6, armor_use=400,
+			physics_speed=-0.025, physics_gravity=0.025},
 		armor_groups = {fleshy=10},
 		damage_groups = {cracky=2, snappy=3, choppy=2, crumbly=1, level=2},
 		reciprocate_damage = true,
@@ -171,7 +173,8 @@ if armor.materials.gold then
 	armor:register_armor("shields:shield_gold", {
 		description = S("Gold Shield"),
 		inventory_image = "shields_inv_shield_gold.png",
-		groups = {armor_shield=1, armor_heal=6, armor_use=300},
+		groups = {armor_shield=1, armor_heal=6, armor_use=300,
+			physics_speed=-0.03, physics_gravity=0.03},
 		armor_groups = {fleshy=10},
 		damage_groups = {cracky=1, snappy=2, choppy=2, crumbly=3, level=2},
 		reciprocate_damage = true,
