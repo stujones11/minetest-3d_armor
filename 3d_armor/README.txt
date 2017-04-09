@@ -107,7 +107,7 @@ armor:register_armor("mod_name:speed_boots", {
 	inventory_image = "mod_name_speed_boots_inv.png",
 	texture = "mod_name_speed_boots.png",
 	preview = "mod_name_speed_boots_preview.png",
-	groups = {armor_feet=1, armor_use=500},
+	groups = {armor_feet=1, armor_use=500, physics_speed=1.2},
 	armor_groups = {fleshy=10, radiation=10},
 	damage_groups = {cracky=3, snappy=3, choppy=3, crumbly=3, level=1},
 	reciprocate_damage = true,
@@ -128,7 +128,7 @@ See armor.lua, technic_armor and shields mods for more examples.
 Default groups:
 
 Elements: armor_head, armor_torso, armor_legs, armor_feet
-attributes: armor_heal, armor_fire, armor_water
+Attributes: armor_heal, armor_fire, armor_water
 Physics: physics_jump, physics_speed, physics_gravity
 Durability: armor_use
 
@@ -158,7 +158,7 @@ When armor is destroyed `stack` will contain a copy of the previous stack.
 Global Callbacks:
 
 armor:register_on_update(func(player))
-armor:register_on_equip(ifunc(player, stack))
+armor:register_on_equip(func(player, stack))
 armor:register_on_unequip(func(player, stack))
 armor:register_on_destroy(func(player, stack))
 
