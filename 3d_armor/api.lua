@@ -318,9 +318,10 @@ armor.punch = function(self, player, hitter, time_from_last_punch, tool_capabili
 				if damage == true and recip == true and hitter and
 						def.reciprocate_damage == true and uses > 0 then
 					local item = hitter:get_wielded_item()
-					local wear = 65535 / uses
-					item:add_wear(wear)
-					hitter:set_wielded_item(item)
+					if item and item:get_name() ~= "" then
+						item:add_wear(65535 / uses)
+						hitter:set_wielded_item(item)
+					end
 					-- reciprocate tool damage only once
 					recip = false
 				end
