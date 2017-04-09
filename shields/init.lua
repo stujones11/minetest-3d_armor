@@ -61,10 +61,10 @@ if armor.materials.wood then
 		damage_groups = {cracky=3, snappy=2, choppy=3, crumbly=2, level=2},
 		reciprocate_damage = true,
 		on_damage = function(player, stack)
-			play_sound_effect(player, "default_wood_footstep")
+			play_sound_effect(player, "default_dig_metal")
 		end,
 		on_destroy = function(player, stack)
-			play_sound_effect(player, "default_wood_footstep")
+			play_sound_effect(player, "default_dug_metal")
 		end,
 	})
 	minetest.register_craft({
@@ -100,10 +100,10 @@ if armor.materials.cactus then
 		damage_groups = {cracky=3, snappy=3, choppy=2, crumbly=2, level=2},
 		reciprocate_damage = true,
 		on_damage = function(player, stack)
-			play_sound_effect(player, "default_dirt_footstep")
+			play_sound_effect(player, "default_dig_metal")
 		end,
 		on_destroy = function(player, stack)
-			play_sound_effect(player, "default_dirt_footstep")
+			play_sound_effect(player, "default_dug_metal")
 		end,
 	})
 	minetest.register_craft({
