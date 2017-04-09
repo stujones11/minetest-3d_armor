@@ -345,7 +345,7 @@ armor.punch = function(self, player, hitter, time_from_last_punch, tool_capabili
 		end
 	end
 	self.def[name].state = state
-	self.def[name].count = items
+	self.def[name].count = count
 end
 
 armor.get_player_skin = function(self, name)
