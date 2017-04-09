@@ -284,7 +284,7 @@ armor.punch = function(self, player, hitter, time_from_last_punch, tool_capabili
 			local def = stack:get_definition() or {}
 			if type(def.on_punch) == "function" then
 				damage = def.on_punch(player, hitter, time_from_last_punch,
-					tool_capabilities) ~= false
+					tool_capabilities) ~= false and damage == true
 			end
 			if damage == true and tool_capabilities then
 				local damage_groups = def.damage_groups or default_groups
@@ -324,6 +324,9 @@ armor.punch = function(self, player, hitter, time_from_last_punch, tool_capabili
 					-- reciprocate tool damage only once
 					recip = false
 				end
+			end
+			if damage == true and hitter == "fire" then
+				damage = minetest.get_item_group(name, "flammable") > 0
 			end
 			if damage == true then
 				local old_stack = ItemStack(stack)

@@ -300,7 +300,7 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 				hp_change = 0
 			end
 		end
-		-- check if armor damage was handled by on_punchplayer
+		-- check if armor damage was handled by fire or on_punchplayer
 		local time = last_punch_time[name] or 0
 		if time == 0 or time + 1 < minetest.get_gametime() then
 			armor:punch(player)
@@ -343,6 +343,7 @@ if armor.config.water_protect == true or armor.config.fire_protect == true then
 			end
 			-- fire protection
 			if armor.config.fire_protect == true then
+				local fire_damage = true
 				pos.y = pos.y + 1.4 -- head level
 				local node_head = minetest.get_node(pos).name
 				pos.y = pos.y - 1.2 -- feet level
@@ -351,6 +352,11 @@ if armor.config.water_protect == true or armor.config.fire_protect == true then
 				for _, row in pairs(armor.fire_nodes) do
 					-- check fire protection, if not enough then get hurt
 					if row[1] == node_head or row[1] == node_feet then
+						if fire_damage == true then
+							armor:punch(player, "fire")
+							last_punch_time[name] = minetest.get_gametime()
+							fire_damage = false
+						end
 						if hp > 0 and armor.def[name].fire < row[2] then
 							hp = hp - row[3] * armor.config.update_time
 							player:set_hp(hp)

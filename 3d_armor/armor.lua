@@ -56,21 +56,21 @@ if armor.materials.wood then
 	armor:register_armor("3d_armor:helmet_wood", {
 		description = S("Wood Helmet"),
 		inventory_image = "3d_armor_inv_helmet_wood.png",
-		groups = {armor_head=1, armor_heal=0, armor_use=2000},
+		groups = {armor_head=1, armor_heal=0, armor_use=2000, flammable=1},
 		armor_groups = {fleshy=5},
 		damage_groups = {cracky=3, snappy=2, choppy=3, crumbly=2, level=1},
 	})
 	armor:register_armor("3d_armor:chestplate_wood", {
 		description = S("Wood Chestplate"),
 		inventory_image = "3d_armor_inv_chestplate_wood.png",
-		groups = {armor_torso=1, armor_heal=0, armor_use=2000},
+		groups = {armor_torso=1, armor_heal=0, armor_use=2000, flammable=1},
 		armor_groups = {fleshy=10},
 		damage_groups = {cracky=3, snappy=2, choppy=3, crumbly=2, level=1},
 	})
 	armor:register_armor("3d_armor:leggings_wood", {
 		description = S("Wood Leggings"),
 		inventory_image = "3d_armor_inv_leggings_wood.png",
-		groups = {armor_legs=1, armor_heal=0, armor_use=2000},
+		groups = {armor_legs=1, armor_heal=0, armor_use=2000, flammable=1},
 		armor_groups = {fleshy=5},
 		damage_groups = {cracky=3, snappy=2, choppy=3, crumbly=2, level=1},
 	})
@@ -79,7 +79,7 @@ if armor.materials.wood then
 		inventory_image = "3d_armor_inv_boots_wood.png",
 		armor_groups = {fleshy=5},
 		damage_groups = {cracky=3, snappy=2, choppy=3, crumbly=2, level=1},
-		groups = {armor_feet=1, armor_heal=0, armor_use=2000},
+		groups = {armor_feet=1, armor_heal=0, armor_use=2000, flammable=1},
 	})
 end
 

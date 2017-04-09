@@ -42,7 +42,7 @@ if armor.materials.wood then
 	armor:register_armor("shields:shield_wood", {
 		description = S("Wooden Shield"),
 		inventory_image = "shields_inv_shield_wood.png",
-		groups = {armor_shield=1, armor_heal=0, armor_use=2000},
+		groups = {armor_shield=1, armor_heal=0, armor_use=2000, flammable=1},
 		armor_groups = {fleshy=5},
 		damage_groups = {cracky=3, snappy=2, choppy=3, crumbly=2, level=1},
 		reciprocate_damage = true,

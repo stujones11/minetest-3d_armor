@@ -103,7 +103,7 @@ armor:register_armor("mod_name:speed_boots", {
 	inventory_image = "mod_name_speed_boots_inv.png",
 	texture = "mod_name_speed_boots.png",
 	preview = "mod_name_speed_boots_preview.png",
-	groups = {armor_feet=1, armor_use=500, physics_speed=1.2},
+	groups = {armor_feet=1, armor_use=500, physics_speed=1.2, flammable=1},
 	armor_groups = {fleshy=10, radiation=10},
 	damage_groups = {cracky=3, snappy=3, choppy=3, crumbly=3, level=1},
 	reciprocate_damage = true,
@@ -126,7 +126,7 @@ Default groups:
 Elements: armor_head, armor_torso, armor_legs, armor_feet
 Attributes: armor_heal, armor_fire, armor_water
 Physics: physics_jump, physics_speed, physics_gravity
-Durability: armor_use
+Durability: armor_use, flammable
 
 Notes:
 
@@ -150,7 +150,8 @@ Notes:
 
 `on_punch` is called every time a player is punched or takes damage, `hitter`,
 `time_from_last_punch` and `tool_capabilities` can be `nil` and will be in the
-case of fall damage, etc. Return `false` to override armor damage effects.
+case of fall damage, etc. When fire protection is enabled, hitter == "fire"
+in the event of fire damage. Return `false` to override armor damage effects.
 When armor is destroyed `stack` will contain a copy of the previous stack.
 
 Global Callbacks:
