@@ -58,7 +58,6 @@ armor.config = {
 	destroy = false,
 	level_multiplier = 1,
 	heal_multiplier = 1,
-	radiation_multiplier = 1,
 	material_wood = true,
 	material_cactus = true,
 	material_steel = true,

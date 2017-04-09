@@ -59,10 +59,6 @@ armor_level_multiplier = 1
 -- eg: armor_heal_multiplier = 0 will disable healing altogether.
 armor_heal_multiplier = 1
 
--- You can use this to increase or decrease overall armor radiation protection,
--- eg: armor_radiation_multiplier = 0 will completely disable radiation protection.
-armor_radiation_multiplier = 1
-
 -- Enable water protection (periodically restores breath when activated)
 armor_water_protect = true
 
@@ -111,7 +107,7 @@ armor:register_armor("mod_name:speed_boots", {
 	armor_groups = {fleshy=10, radiation=10},
 	damage_groups = {cracky=3, snappy=3, choppy=3, crumbly=3, level=1},
 	reciprocate_damage = true,
-	on_destroy = function(player, item_name)
+	on_destroy = function(player, stack)
 		local pos = player:getpos()
 		if pos then
 			minetest.sound_play({
@@ -150,7 +146,9 @@ on_destroy = func(player, stack)
 on_damage = func(player, stack)
 on_punch = func(player, hitter, time_from_last_punch, tool_capabilities)
 
-Notes: on_punch is called every time the player takes damage, `hitter`,
+Notes:
+
+`on_punch` is called every time a player is punched or takes damage, `hitter`,
 `time_from_last_punch` and `tool_capabilities` can be `nil` and will be in the
 case of fall damage, etc. Return `false` to override armor damage effects.
 When armor is destroyed `stack` will contain a copy of the previous stack.
