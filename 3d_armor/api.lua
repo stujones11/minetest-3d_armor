@@ -524,7 +524,7 @@ armor.get_valid_player = function(self, player, msg)
 		minetest.log("warning", "3d_armor: Player inventory is nil "..msg)
 		return
 	end
-	return name, inv, pos
+	return name, inv
 end
 
 armor.drop_armor = function(pos, stack)
