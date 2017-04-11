@@ -50,8 +50,8 @@ armor = {
 }
 
 armor.config = {
-	init_delay = 1,
-	init_times = 1,
+	init_delay = 2,
+	init_times = 10,
 	bones_delay = 1,
 	update_time = 1,
 	drop = minetest.get_modpath("bones") ~= nil,
@@ -144,6 +144,94 @@ armor.update_player_visuals = function(self, player)
 			self.textures[name].wielditem,
 		})
 	end
+end
+
+armor.init_player_armor = function(self, player)
+	local name = player:get_player_name()
+	local player_inv = player:get_inventory()
+	if not name or not player_inv then
+		return false
+	end
+	local armor_inv = minetest.create_detached_inventory(name.."_armor", {
+		on_put = function(inv, listname, index, stack, player)
+			player:get_inventory():set_stack(listname, index, stack)
+			armor:set_player_armor(player)
+			armor:run_callbacks("on_equip", player, stack)
+		end,
+		on_take = function(inv, listname, index, stack, player)
+			player:get_inventory():set_stack(listname, index, nil)
+			armor:set_player_armor(player)
+			armor:run_callbacks("on_unequip", player, stack)
+		end,
+		on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
+			local plaver_inv = player:get_inventory()
+			local stack = inv:get_stack(to_list, to_index)
+			player_inv:set_stack(to_list, to_index, stack)
+			player_inv:set_stack(from_list, from_index, nil)
+			armor:set_player_armor(player)
+		end,
+		allow_put = function(inv, listname, index, stack, player)
+			local def = stack:get_definition() or {}
+			for _, element in pairs(armor.elements) do
+				if def.groups["armor_"..element] then
+					for i = 1, 6 do
+						local item = inv:get_stack("armor", i):get_name()
+						if minetest.get_item_group(item, "armor_"..element) > 0 then
+							return 0
+						end
+					end
+				end
+			end
+			return 1
+		end,
+		allow_take = function(inv, listname, index, stack, player)
+			return stack:get_count()
+		end,
+		allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
+			return count
+		end,
+	}, name)
+	armor_inv:set_size("armor", 6)
+	player_inv:set_size("armor", 6)
+	for i=1, 6 do
+		local stack = player_inv:get_stack("armor", i)
+		armor_inv:set_stack("armor", i, stack)
+		self:run_callbacks("on_equip", player, stack)
+	end
+	self.def[name] = {
+		level = 0,
+		state = 0,
+		count = 0,
+		groups = {},
+	}
+	for _, phys in pairs(armor.physics) do
+		self.def[name][phys] = 1
+	end
+	for _, attr in pairs(armor.attributes) do
+		self.def[name][attr] = 0
+	end
+	for group, _ in pairs(armor.registered_groups) do
+		self.def[name].groups[group] = 0
+	end
+	local skin = self:get_player_skin(name)
+	self.textures[name] = {
+		skin = skin..".png",
+		armor = "3d_armor_trans.png",
+		wielditem = "3d_armor_trans.png",
+		preview = armor.default_skin.."_preview.png",
+	}
+	local texture_path = minetest.get_modpath("player_textures")
+	if texture_path then
+		local dir_list = minetest.get_dir_list(texture_path.."/textures")
+		for _, fn in pairs(dir_list) do
+			if fn == "player_"..name..".png" then
+				self.textures[name].skin = fn
+				break
+			end
+		end
+	end
+	self:set_player_armor(player)
+	return true
 end
 
 armor.set_player_armor = function(self, player)
@@ -431,16 +519,9 @@ armor.get_valid_player = function(self, player, msg)
 		minetest.log("warning", "3d_armor: Player name is nil "..msg)
 		return
 	end
-	local pos = player:getpos()
 	local inv = player:get_inventory()
-	if not pos then
-		minetest.log("warning", "3d_armor: Player position is nil "..msg)
-		return
-	elseif not inv then
+	if not inv then
 		minetest.log("warning", "3d_armor: Player inventory is nil "..msg)
-		return
-	elseif not minetest.get_inventory({type="detached", name=name.."_armor"}) then
-		minetest.log("warning", "3d_armor: Detached armor inventory is nil "..msg)
 		return
 	end
 	return name, inv, pos
