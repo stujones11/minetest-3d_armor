@@ -29,19 +29,22 @@ unified_inventory.register_page("armor", {
 		local name = player:get_player_name()
 		local formspec = "background[0.06,"..fy..";7.92,7.52;3d_armor_ui_form.png]"..
 			"label[0,0;Armor]"..
-			"list[detached:"..name.."_armor;armor;0,"..fy..";2,3;]"..
+			"list[detached:"..name.."_armor;armor;0,"..fy..";2,3;]"
+		if armor.def[name] then
+			formspec = formspec ..
 			"image[2.5,"..(fy - 0.25)..";2,4;"..armor.textures[name].preview.."]"..
 			"label[5.0,"..(fy + 0.0)..";"..S("Level")..": "..armor.def[name].level.."]"..
 			"label[5.0,"..(fy + 0.5)..";"..S("Heal")..":  "..armor.def[name].heal.."]"..
 			"listring[current_player;main]"..
 			"listring[detached:"..name.."_armor;armor]"
-		if armor.config.fire_protect then
-			formspec = formspec.."label[5.0,"..(fy + 1.0)..";"..
-				S("Fire")..":  "..armor.def[name].fire.."]"
-		end
-		if minetest.global_exists("technic") then
-			formspec = formspec.."label[5.0,"..(fy + 1.5)..";"..
-				S("Radiation")..":  "..armor.def[name].groups["radiation"].."]"
+			if armor.config.fire_protect then
+				formspec = formspec.."label[5.0,"..(fy + 1.0)..";"..
+					S("Fire")..":  "..armor.def[name].fire.."]"
+			end
+			if minetest.global_exists("technic") then
+				formspec = formspec.."label[5.0,"..(fy + 1.5)..";"..
+					S("Radiation")..":  "..armor.def[name].groups["radiation"].."]"
+			end
 		end
 		return {formspec=formspec}
 	end,
