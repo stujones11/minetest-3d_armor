@@ -30,7 +30,7 @@ armor:register_armor("shields:shield_admin", {
 	inventory_image = "shields_inv_shield_admin.png",
 	groups = {armor_shield=1000, armor_heal=100, armor_use=0, not_in_creative_inventory=1},
 	on_punch = function(player, hitter, time_from_last_punch, tool_capabilities)
-		if hitter then
+		if type(hitter) == "userdata" then
 			hitter:punch(player, time_from_last_punch, tool_capabilities)
 			play_sound_effect(player, "default_dig_metal")
 		end
