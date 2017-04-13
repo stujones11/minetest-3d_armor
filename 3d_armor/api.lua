@@ -172,7 +172,8 @@ end
 armor.init_player_armor = function(self, player)
 	local name = player:get_player_name()
 	local player_inv = player:get_inventory()
-	if not name or not player_inv then
+	local pos = player:getpos()
+	if not name or not player_inv or not pos then
 		return false
 	end
 	local armor_inv = minetest.create_detached_inventory(name.."_armor", {
