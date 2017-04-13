@@ -139,7 +139,7 @@ end)
 minetest.register_on_joinplayer(function(player)
 	default.player_set_model(player, "3d_armor_character.b3d")
 	if armor:init_player_armor(player) == false then
-		table.insert(pending_players, {player, 0})
+		pending_players[player] = 0
 	end
 end)
 
@@ -149,11 +149,7 @@ minetest.register_on_leaveplayer(function(player)
 		armor.def[name] = nil
 		armor.textures[name] = nil
 	end
-	for i, con in pairs(pending_players) do
-		if player == con[1] then
-			table.remove(pending_players, i)
-		end
-	end
+	pending_players[player] = nil
 end)
 
 if armor.config.drop == true or armor.config.destroy == true then
@@ -209,7 +205,7 @@ if armor.config.punch_damage == true then
 	minetest.register_on_punchplayer(function(player, hitter,
 			time_from_last_punch, tool_capabilities)
 		local name = player:get_player_name()
-		if name and armor.def[name] then
+		if name then
 			armor:punch(player, hitter, time_from_last_punch, tool_capabilities)
 			last_punch_time[name] = minetest.get_gametime()
 		end
@@ -219,8 +215,8 @@ end
 minetest.register_on_player_hpchange(function(player, hp_change)
 	if player and hp_change < 0 then
 		local name = player:get_player_name()
-		if name and armor.def[name] then
-			local heal = armor.def[name].heal or 0
+		if name then
+			local heal = armor.def[name].heal
 			heal = heal * armor.config.heal_multiplier
 			if heal >= math.random(100) then
 				hp_change = 0
@@ -238,15 +234,15 @@ end, true)
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
 	if timer > armor.config.init_delay then
-		for i, con in pairs(pending_players) do
-			local remove = armor:init_player_armor(con[1]) == true
-			con[2] = con[2] + 1
-			if remove == false and con[2] > armor.config.init_times then
+		for player, count in pairs(pending_players) do
+			local remove = armor:init_player_armor(player) == true
+			pending_players[player] = count + 1
+			if remove == false and count > armor.config.init_times then
 				minetest.log("warning", "3d_armor: Failed to initialize player")
 				remove = true
 			end
 			if remove == true then
-				table.remove(pending_players, i)
+				pending_players[player] = nil
 			end
 		end
 		timer = 0
@@ -281,7 +277,7 @@ if armor.config.water_protect == true or armor.config.fire_protect == true then
 			end
 			-- water breathing
 			if armor.config.water_protect == true then
-				if armor.def[name] and armor.def[name].water > 0 and
+				if armor.def[name].water > 0 and
 						player:get_breath() < 10 then
 					player:set_breath(10)
 				end

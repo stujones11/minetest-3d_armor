@@ -14,8 +14,29 @@ armor = {
 		default.get_hotbar_bg(0, 4.7)..
 		"list[current_player;main;0,4.7;8,1;]"..
 		"list[current_player;main;0,5.85;8,3;8]",
-	def = {},
-	textures = {},
+	def = setmetatable({}, {
+		__index = function()
+			return setmetatable({
+				groups = setmetatable({}, {
+					__index = function()
+						return 0
+					end})
+				}, {
+				__index = function()
+					return 0
+				end
+			})
+		end,
+	}),
+	textures = setmetatable({}, {
+		__index = function()
+			return setmetatable({}, {
+				__index = function()
+					return "blank.png"
+				end
+			})
+		end
+	}),
 	default_skin = "character",
 	materials = {
 		wood = "group:wood",
@@ -199,6 +220,7 @@ armor.init_player_armor = function(self, player)
 		self:run_callbacks("on_equip", player, stack)
 	end
 	self.def[name] = {
+		init_time = minetest.get_gametime(),
 		level = 0,
 		state = 0,
 		count = 0,
@@ -464,14 +486,14 @@ armor.get_preview = function(self, name)
 end
 
 armor.get_armor_formspec = function(self, name, listring)
+	if armor.def[name].init_time == 0 then
+		return "label[0,0;Armor not initialized!]"
+	end
 	local formspec = armor.formspec..
 		"list[detached:"..name.."_armor;armor;0,0.5;2,3;]"
 	if listring == true then
 		formspec = formspec.."listring[current_player;main]"..
 			"listring[detached:"..name.."_armor;armor]"
-	end
-	if not armor.def[name] or not armor.textures[name] then
-		return formspec
 	end
 	formspec = formspec:gsub("armor_preview", armor.textures[name].preview)
 	formspec = formspec:gsub("armor_level", armor.def[name].level)
