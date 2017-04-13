@@ -1,6 +1,29 @@
 local skin_previews = {}
 local use_player_monoids = minetest.global_exists("player_monoids")
 local use_armor_monoid = minetest.global_exists("armor_monoid")
+local armor_def = setmetatable({}, {
+	__index = function()
+		return setmetatable({
+			groups = setmetatable({}, {
+				__index = function()
+					return 0
+				end})
+			}, {
+			__index = function()
+				return 0
+			end
+		})
+	end,
+})
+local armor_textures = setmetatable({}, {
+	__index = function()
+		return setmetatable({}, {
+			__index = function()
+				return "blank.png"
+			end
+		})
+	end
+})
 
 armor = {
 	timer = 0,
@@ -14,29 +37,8 @@ armor = {
 		default.get_hotbar_bg(0, 4.7)..
 		"list[current_player;main;0,4.7;8,1;]"..
 		"list[current_player;main;0,5.85;8,3;8]",
-	def = setmetatable({}, {
-		__index = function()
-			return setmetatable({
-				groups = setmetatable({}, {
-					__index = function()
-						return 0
-					end})
-				}, {
-				__index = function()
-					return 0
-				end
-			})
-		end,
-	}),
-	textures = setmetatable({}, {
-		__index = function()
-			return setmetatable({}, {
-				__index = function()
-					return "blank.png"
-				end
-			})
-		end
-	}),
+	def = armor_def,
+	textures = armor_textures,
 	default_skin = "character",
 	materials = {
 		wood = "group:wood",
