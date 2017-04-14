@@ -40,6 +40,8 @@ armor:register_armor("shields:shield_admin", {
 	end,
 })
 
+minetest.register_alias("adminshield", "shields:shield_admin")
+
 if armor.materials.wood then
 	armor:register_armor("shields:shield_wood", {
 		description = S("Wooden Shield"),
