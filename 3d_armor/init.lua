@@ -164,7 +164,7 @@ if armor.config.drop == true or armor.config.destroy == true then
 			if stack:get_count() > 0 then
 				table.insert(drop, stack)
 				armor:set_inventory_stack(player, i, nil)
-				armor:run_callbacks("on_unequip", player, stack)
+				armor:run_callbacks("on_unequip", player, stack, i)
 			end
 		end
 		armor:set_player_armor(player)

@@ -140,17 +140,17 @@ armor.register_on_destroy = function(self, func)
 	end
 end
 
-armor.run_callbacks = function(self, callback, player, stack)
+armor.run_callbacks = function(self, callback, player, stack, index)
 	if stack then
 		local def = stack:get_definition() or {}
 		if type(def[callback]) == "function" then
-			def[callback](player, stack)
+			def[callback](player, stack, index)
 		end
 	end
 	local callbacks = self.registered_callbacks[callback]
 	if callbacks then
 		for _, func in pairs(callbacks) do
-			func(player, stack)
+			func(player, stack, index)
 		end
 	end
 end
@@ -180,12 +180,12 @@ armor.init_player_armor = function(self, player)
 		on_put = function(inv, listname, index, stack, player)
 			player:get_inventory():set_stack(listname, index, stack)
 			armor:set_player_armor(player)
-			armor:run_callbacks("on_equip", player, stack)
+			armor:run_callbacks("on_equip", player, stack, index)
 		end,
 		on_take = function(inv, listname, index, stack, player)
 			player:get_inventory():set_stack(listname, index, nil)
 			armor:set_player_armor(player)
-			armor:run_callbacks("on_unequip", player, stack)
+			armor:run_callbacks("on_unequip", player, stack, index)
 		end,
 		on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
 			local plaver_inv = player:get_inventory()
@@ -220,7 +220,7 @@ armor.init_player_armor = function(self, player)
 	for i=1, 6 do
 		local stack = player_inv:get_stack("armor", i)
 		armor_inv:set_stack("armor", i, stack)
-		self:run_callbacks("on_equip", player, stack)
+		self:run_callbacks("on_equip", player, stack, i)
 	end
 	self.def[name] = {
 		init_time = minetest.get_gametime(),
@@ -446,10 +446,10 @@ armor.punch = function(self, player, hitter, time_from_last_punch, tool_capabili
 				local old_stack = ItemStack(stack)
 				stack:add_wear(use)
 				self:set_inventory_stack(player, i, stack)
-				self:run_callbacks("on_damage", player, stack)
+				self:run_callbacks("on_damage", player, stack, i)
 				if stack:get_count() == 0 then
-					self:run_callbacks("on_unequip", player, old_stack)
-					self:run_callbacks("on_destroy", player, old_stack)
+					self:run_callbacks("on_unequip", player, old_stack, i)
+					self:run_callbacks("on_destroy", player, old_stack, i)
 					self:set_player_armor(player)
 				end
 			end
