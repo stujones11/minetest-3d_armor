@@ -196,8 +196,10 @@ armor.init_player_armor = function(self, player)
 		end,
 		allow_put = function(inv, listname, index, stack, player)
 			local def = stack:get_definition() or {}
+			local allowed = 0
 			for _, element in pairs(armor.elements) do
 				if def.groups["armor_"..element] then
+					allowed = 1
 					for i = 1, 6 do
 						local item = inv:get_stack("armor", i):get_name()
 						if minetest.get_item_group(item, "armor_"..element) > 0 then
@@ -206,7 +208,7 @@ armor.init_player_armor = function(self, player)
 					end
 				end
 			end
-			return 1
+			return allowed
 		end,
 		allow_take = function(inv, listname, index, stack, player)
 			return stack:get_count()
