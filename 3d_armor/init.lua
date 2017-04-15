@@ -63,7 +63,7 @@ armor.formspec = armor.formspec..
 if armor.config.fire_protect then
 	armor.formspec = armor.formspec.."label[5,2;"..S("Fire")..":  armor_fire]"
 end
-armor:register_on_destroy(function(player, stack)
+armor:register_on_destroy(function(player, index, stack)
 	local name = player:get_player_name()
 	local def = stack:get_definition()
 	if name and def and def.description then
@@ -164,7 +164,7 @@ if armor.config.drop == true or armor.config.destroy == true then
 			if stack:get_count() > 0 then
 				table.insert(drop, stack)
 				armor:set_inventory_stack(player, i, nil)
-				armor:run_callbacks("on_unequip", player, stack, i)
+				armor:run_callbacks("on_unequip", player, i, stack)
 			end
 		end
 		armor:set_player_armor(player)

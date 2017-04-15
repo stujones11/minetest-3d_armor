@@ -107,7 +107,7 @@ armor:register_armor("mod_name:speed_boots", {
 	armor_groups = {fleshy=10, radiation=10},
 	damage_groups = {cracky=3, snappy=3, choppy=3, crumbly=3, level=1},
 	reciprocate_damage = true,
-	on_destroy = function(player, stack, index)
+	on_destroy = function(player, index, stack)
 		local pos = player:getpos()
 		if pos then
 			minetest.sound_play({
@@ -140,10 +140,10 @@ Reciprocal tool damage will be done only by the first armor inventory item
 
 Item Callbacks:
 
-on_equip = func(player, stack, index)
-on_unequip = func(player, stack, index)
-on_destroy = func(player, stack, index)
-on_damage = func(player, stack, index)
+on_equip = func(player, index, stack)
+on_unequip = func(player, index, stack)
+on_destroy = func(player, index, stack)
+on_damage = func(player, index, stack)
 on_punch = func(player, hitter, time_from_last_punch, tool_capabilities)
 
 Notes:
@@ -157,9 +157,9 @@ When armor is destroyed `stack` will contain a copy of the previous stack.
 Global Callbacks:
 
 armor:register_on_update(func(player))
-armor:register_on_equip(func(player, stack, index))
-armor:register_on_unequip(func(player, stack, index))
-armor:register_on_destroy(func(player, stack, index))
+armor:register_on_equip(func(player, index, stack))
+armor:register_on_unequip(func(player, index, stack))
+armor:register_on_destroy(func(player, index, stack))
 
 Global Callback Example:
 
