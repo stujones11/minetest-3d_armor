@@ -138,9 +138,11 @@ end)
 
 minetest.register_on_joinplayer(function(player)
 	default.player_set_model(player, "3d_armor_character.b3d")
-	if armor:init_player_armor(player) == false then
-		pending_players[player] = 0
-	end
+	minetest.after(0, function(player)
+		if armor:init_player_armor(player) == false then
+			pending_players[player] = 0
+		end
+	end, player)
 end)
 
 minetest.register_on_leaveplayer(function(player)
