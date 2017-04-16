@@ -179,13 +179,13 @@ armor.init_player_armor = function(self, player)
 	local armor_inv = minetest.create_detached_inventory(name.."_armor", {
 		on_put = function(inv, listname, index, stack, player)
 			player:get_inventory():set_stack(listname, index, stack)
-			armor:set_player_armor(player)
 			armor:run_callbacks("on_equip", player, index, stack)
+			armor:set_player_armor(player)
 		end,
 		on_take = function(inv, listname, index, stack, player)
 			player:get_inventory():set_stack(listname, index, nil)
-			armor:set_player_armor(player)
 			armor:run_callbacks("on_unequip", player, index, stack)
+			armor:set_player_armor(player)
 		end,
 		on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
 			local plaver_inv = player:get_inventory()
