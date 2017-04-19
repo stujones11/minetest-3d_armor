@@ -71,7 +71,7 @@ if armor.materials.wood then
 		description = S("Wood Leggings"),
 		inventory_image = "3d_armor_inv_leggings_wood.png",
 		groups = {armor_legs=1, armor_heal=0, armor_use=2000, flammable=1},
-		armor_groups = {fleshy=5},
+		armor_groups = {fleshy=10},
 		damage_groups = {cracky=3, snappy=2, choppy=3, crumbly=2, level=1},
 	})
 	armor:register_armor("3d_armor:boots_wood", {
@@ -102,7 +102,7 @@ if armor.materials.cactus then
 		description = S("Cactus Leggings"),
 		inventory_image = "3d_armor_inv_leggings_cactus.png",
 		groups = {armor_legs=1, armor_heal=0, armor_use=1000},
-		armor_groups = {fleshy=5},
+		armor_groups = {fleshy=10},
 		damage_groups = {cracky=3, snappy=3, choppy=2, crumbly=2, level=1},
 	})
 	armor:register_armor("3d_armor:boots_cactus", {
