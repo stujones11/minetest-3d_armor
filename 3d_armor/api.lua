@@ -445,15 +445,7 @@ armor.punch = function(self, player, hitter, time_from_last_punch, tool_capabili
 				damage = minetest.get_item_group(name, "flammable") > 0
 			end
 			if damage == true then
-				local old_stack = ItemStack(stack)
-				stack:add_wear(use)
-				self:set_inventory_stack(player, i, stack)
-				self:run_callbacks("on_damage", player, i, stack)
-				if stack:get_count() == 0 then
-					self:run_callbacks("on_unequip", player, i, old_stack)
-					self:run_callbacks("on_destroy", player, i, old_stack)
-					self:set_player_armor(player)
-				end
+				self:damage(player, i, stack, use)
 			end
 			state = state + stack:get_wear()
 			count = count + 1
@@ -461,6 +453,18 @@ armor.punch = function(self, player, hitter, time_from_last_punch, tool_capabili
 	end
 	self.def[name].state = state
 	self.def[name].count = count
+end
+
+armor.damage = function(self, player, index, stack, use)
+	local old_stack = ItemStack(stack)
+	stack:add_wear(use)
+	self:run_callbacks("on_damage", player, i, stack)
+	self:set_inventory_stack(player, index, stack)
+	if stack:get_count() == 0 then
+		self:run_callbacks("on_unequip", player, index, old_stack)
+		self:run_callbacks("on_destroy", player, index, old_stack)
+		self:set_player_armor(player)
+	end
 end
 
 armor.get_player_skin = function(self, name)

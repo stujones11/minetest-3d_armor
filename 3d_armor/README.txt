@@ -138,6 +138,25 @@ damage groups need to be defined in the tool/weapon used against the player.
 Reciprocal tool damage will be done only by the first armor inventory item
  with `reciprocate_damage = true`
 
+Armor Functions:
+
+armor:set_player_armor(player)
+
+Primarily an internal function but can be called externally to apply any
+changes that might not otherwise get handled.
+
+armor:punch(player, hitter, time_from_last_punch, tool_capabilities)
+
+Used to apply damage to all equipped armor based on the damage groups of
+each individual item.`hitter`, `time_from_last_punch` and `tool_capabilities`
+are optional but should be valid if included.
+
+armor:damage(player, index, stack, use)
+
+Adds wear to a single armor itemstack, triggers `on_damage` callbacks and
+updates the necessary inventories. Also handles item destruction callbacks
+and so should NOT be called from `on_unequip` to avoid an infinite loop.
+
 Item Callbacks:
 
 on_equip = func(player, index, stack)
