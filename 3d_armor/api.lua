@@ -305,8 +305,8 @@ armor.punch = function(self, player, hitter, time_from_last_punch, tool_capabili
 			local use = minetest.get_item_group(name, "armor_use") or 0
 			local damage = use > 0
 			local def = stack:get_definition() or {}
-			if type(def.on_punch) == "function" then
-				damage = def.on_punch(player, hitter, time_from_last_punch,
+			if type(def.on_punched) == "function" then
+				damage = def.on_punched(player, hitter, time_from_last_punch,
 					tool_capabilities) ~= false and damage == true
 			end
 			if damage == true and tool_capabilities then
