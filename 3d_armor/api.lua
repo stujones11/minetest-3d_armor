@@ -69,7 +69,7 @@ armor = {
 		on_damage = {},
 		on_destroy = {},
 	},
-	version = "0.4.8",
+	version = "0.4.9",
 }
 
 armor.config = {
@@ -472,4 +472,3 @@ armor.drop_armor = function(pos, stack)
 		obj:setvelocity({x=math.random(-1, 1), y=5, z=math.random(-1, 1)})
 	end
 end
-

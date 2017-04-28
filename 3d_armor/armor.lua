@@ -346,4 +346,3 @@ for k, v in pairs(armor.materials) do
 		},
 	})
 end
-

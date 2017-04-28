@@ -65,7 +65,7 @@ armor_water_protect = true
 -- Enable fire protection (defaults true if using ethereal mod)
 armor_fire_protect = false
 
--- Enable punch damage effects (only works for armor with `damage_groups` table)
+-- Enable punch damage effects.
 armor_punch_damage = true
 
 API
