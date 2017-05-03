@@ -366,7 +366,7 @@ end
 armor.damage = function(self, player, index, stack, use)
 	local old_stack = ItemStack(stack)
 	stack:add_wear(use)
-	self:run_callbacks("on_damage", player, i, stack)
+	self:run_callbacks("on_damage", player, index, stack)
 	self:set_inventory_stack(player, index, stack)
 	if stack:get_count() == 0 then
 		self:run_callbacks("on_unequip", player, index, old_stack)
