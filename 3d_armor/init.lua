@@ -58,8 +58,6 @@ for material, _ in pairs(armor.materials) do
 	end
 end
 
-dofile(modpath.."/armor.lua")
-
 -- Mod Compatibility
 
 if minetest.get_modpath("technic") then
@@ -86,6 +84,8 @@ end
 if not minetest.get_modpath("ethereal") then
 	armor.materials.crystal = nil
 end
+
+dofile(modpath.."/armor.lua")
 
 -- Armor Initialization
 
