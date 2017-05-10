@@ -66,7 +66,7 @@ end
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	wieldview.wielded_item[name] = ""
-	minetest.after(0, function(player)
+	minetest.after(1, function(player)
 		wieldview:update_wielded_item(player)
 	end, player)
 end)

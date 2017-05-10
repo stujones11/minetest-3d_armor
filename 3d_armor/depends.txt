@@ -5,3 +5,4 @@ fire?
 ethereal?
 bakedclay?
 intllib?
+multiskin?

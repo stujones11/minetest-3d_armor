@@ -59,24 +59,13 @@ for material, _ in pairs(armor.materials) do
 end
 
 -- Mod Compatibility
-
+if minetest.get_modpath("multiskin") then
+	multiskin.model = "3d_armor_character.b3d"
+end
 if minetest.get_modpath("technic") then
 	armor.formspec = armor.formspec..
 		"label[5,2.5;"..S("Radiation")..":  armor_group_radiation]"
 	armor:register_armor_group("radiation")
-end
-local skin_mods = {"skins", "u_skins", "simple_skins", "wardrobe"}
-for _, mod in pairs(skin_mods) do
-	local path = minetest.get_modpath(mod)
-	if path then
-		local dir_list = minetest.get_dir_list(path.."/textures")
-		for _, fn in pairs(dir_list) do
-			if fn:find("_preview.png$") then
-				armor:add_preview(fn)
-			end
-		end
-		armor.skin_mod = mod
-	end
 end
 if not minetest.get_modpath("moreores") then
 	armor.materials.mithril = nil
@@ -175,24 +164,13 @@ local function init_player_armor(player)
 	for group, _ in pairs(armor.registered_groups) do
 		armor.def[name].groups[group] = 0
 	end
-	local skin = armor:get_player_skin(name)
 	armor.textures[name] = {
-		skin = skin..".png",
-		armor = "3d_armor_trans.png",
-		wielditem = "3d_armor_trans.png",
-		preview = armor.default_skin.."_preview.png",
+		armor = "blank.png",
+		wielditem = "blank.png",
 	}
-	local texture_path = minetest.get_modpath("player_textures")
-	if texture_path then
-		local dir_list = minetest.get_dir_list(texture_path.."/textures")
-		for _, fn in pairs(dir_list) do
-			if fn == "player_"..name..".png" then
-				armor.textures[name].skin = fn
-				break
-			end
-		end
-	end
-	armor:set_player_armor(player)
+	minetest.after(0, function(player)
+		armor:set_player_armor(player)
+	end, player)
 	return true
 end
 
@@ -201,9 +179,10 @@ end
 default.player_register_model("3d_armor_character.b3d", {
 	animation_speed = 30,
 	textures = {
-		armor.default_skin..".png",
-		"3d_armor_trans.png",
-		"3d_armor_trans.png",
+		armor.default_skin,
+		"blank.png",
+		"blank.png",
+		"blank.png",
 	},
 	animations = {
 		stand = {x=0, y=79},
@@ -214,22 +193,6 @@ default.player_register_model("3d_armor_character.b3d", {
 		sit = {x=81, y=160},
 	},
 })
-
-minetest.register_on_player_receive_fields(function(player, formname, fields)
-	local name = armor:get_valid_player(player, "[on_player_receive_fields]")
-	if not name then
-		return
-	end
-	for field, _ in pairs(fields) do
-		if string.find(field, "skins_set") then
-			minetest.after(0, function(player)
-				local skin = armor:get_player_skin(name)
-				armor.textures[name].skin = skin..".png"
-				armor:set_player_armor(player)
-			end, player)
-		end
-	end
-end)
 
 minetest.register_on_joinplayer(function(player)
 	default.player_set_model(player, "3d_armor_character.b3d")

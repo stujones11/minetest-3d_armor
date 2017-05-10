@@ -1,4 +1,4 @@
-local skin_previews = {}
+local use_multiskin = minetest.global_exists("multiskin")
 local use_player_monoids = minetest.global_exists("player_monoids")
 local use_armor_monoid = minetest.global_exists("armor_monoid")
 local armor_def = setmetatable({}, {
@@ -39,7 +39,7 @@ armor = {
 		"list[current_player;main;0,5.85;8,3;8]",
 	def = armor_def,
 	textures = armor_textures,
-	default_skin = "character",
+	default_skin = "character.png",
 	materials = {
 		wood = "group:wood",
 		cactus = "default:cactus",
@@ -156,16 +156,22 @@ armor.run_callbacks = function(self, callback, player, index, stack)
 end
 
 armor.update_player_visuals = function(self, player)
-	if not player then
+	local name = self:get_valid_player(player, "[update_player_visuals]")
+	if not name then
 		return
 	end
-	local name = player:get_player_name()
-	if self.textures[name] then
-		default.player_set_textures(player, {
-			self.textures[name].skin,
-			self.textures[name].armor,
-			self.textures[name].wielditem,
-		})
+	local textures = {
+		"blank.png",
+		"blank.png",
+		self.textures[name].armor,
+		self.textures[name].wielditem,
+	}
+	if use_multiskin then
+		multiskin.textures[name] = textures
+		multiskin.update_player_visuals(player)
+	else
+		textures[1] = armor.default_skin
+		default.player_set_textures(player, textures)
 	end
 end
 
@@ -177,14 +183,17 @@ armor.set_player_armor = function(self, player)
 	local state = 0
 	local count = 0
 	local material = {count=1}
-	local preview = armor:get_preview(name)
-	local texture = "3d_armor_trans.png"
+	local preview = "3d_armor_preview.png"
+	local texture = "blank.png"
 	local textures = {}
 	local physics = {}
 	local attributes = {}
 	local levels = {}
 	local groups = {}
 	local change = {}
+	if use_multiskin then
+		preview = multiskin.get_preview(player) or preview
+	end
 	for _, phys in pairs(self.physics) do
 		physics[phys] = 1
 	end
@@ -373,33 +382,6 @@ armor.damage = function(self, player, index, stack, use)
 		self:run_callbacks("on_destroy", player, index, old_stack)
 		self:set_player_armor(player)
 	end
-end
-
-armor.get_player_skin = function(self, name)
-	local skin = nil
-	if self.skin_mod == "skins" or self.skin_mod == "simple_skins" then
-		skin = skins.skins[name]
-	elseif self.skin_mod == "u_skins" then
-		skin = u_skins.u_skins[name]
-	elseif self.skin_mod == "wardrobe" then
-		local skins = wardrobe.playerSkins or {}
-		if skins[name] then
-			skin = string.gsub(skins[name], "%.png$","")
-		end
-	end
-	return skin or armor.default_skin
-end
-
-armor.add_preview = function(self, preview)
-	skin_previews[preview] = true
-end
-
-armor.get_preview = function(self, name)
-	local preview = armor:get_player_skin(name).."_preview.png"
-	if skin_previews[preview] then
-		return preview
-	end
-	return "character_preview.png"
 end
 
 armor.get_armor_formspec = function(self, name, listring)
