@@ -41,11 +41,11 @@ end
 -- Load Configuration
 
 for name, config in pairs(armor.config) do
-	local setting = minetest.setting_get("armor_"..name)
+	local setting = minetest.settings:get("armor_"..name)
 	if type(config) == "number" then
 		setting = tonumber(setting)
 	elseif type(config) == "boolean" then
-		setting = minetest.setting_getbool("armor_"..name)
+		setting = minetest.settings:get_bool("armor_"..name)
 	end
 	if setting ~= nil then
 		armor.config[name] = setting
