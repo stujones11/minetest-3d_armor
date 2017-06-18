@@ -376,18 +376,17 @@ armor.damage = function(self, player, index, stack, use)
 end
 
 armor.get_player_skin = function(self, name)
-	local skin = nil
-	if self.skin_mod == "skins" or self.skin_mod == "simple_skins" then
-		skin = skins.skins[name]
-	elseif self.skin_mod == "u_skins" then
-		skin = u_skins.u_skins[name]
+	if self.skin_mod == "skins" or self.skin_mod == "simple_skins" and skins.skins[name] then
+		return skins.skins[name]..".png"
+	elseif self.skin_mod == "u_skins" and u_skins.u_skins[name] then
+		return u_skins.u_skins[name]..".png"
 	elseif self.skin_mod == "wardrobe" then
 		local skins = wardrobe.playerSkins or {}
 		if skins[name] then
-			skin = string.gsub(skins[name], "%.png$","")
+			return skins[name]
 		end
 	end
-	return skin or armor.default_skin
+	return armor.default_skin..".png"
 end
 
 armor.add_preview = function(self, preview)
@@ -395,7 +394,7 @@ armor.add_preview = function(self, preview)
 end
 
 armor.get_preview = function(self, name)
-	local preview = armor:get_player_skin(name).."_preview.png"
+	local preview = string.gsub(armor:get_player_skin(name), ".png", "_preview.png")
 	if skin_previews[preview] then
 		return preview
 	end
