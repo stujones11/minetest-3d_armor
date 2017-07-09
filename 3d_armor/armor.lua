@@ -1,6 +1,12 @@
 local S = function(s) return s end
 if minetest.global_exists("intllib") then
-	S = intllib.Getter()
+	if intllib.make_gettext_pair then
+		-- New method using gettext.
+		S = intllib.make_gettext_pair()
+	else
+		-- Old method using text files.
+		S = intllib.Getter()
+	end
 end
 
 armor:register_armor("3d_armor:helmet_admin", {
