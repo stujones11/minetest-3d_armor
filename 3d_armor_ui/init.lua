@@ -4,7 +4,13 @@ if not minetest.global_exists("unified_inventory") then
 end
 local S = function(s) return s end
 if minetest.global_exists("intllib") then
-	S = intllib.Getter()
+	if intllib.make_gettext_pair then
+		-- New method using gettext.
+		S = intllib.make_gettext_pair()
+	else
+		-- Old method using text files.
+		S = intllib.Getter()
+	end
 end
 
 if unified_inventory.sfinv_compat_layer then
