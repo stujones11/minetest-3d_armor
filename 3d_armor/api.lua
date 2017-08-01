@@ -449,8 +449,11 @@ armor.get_valid_player = function(self, player, msg)
 end
 
 armor.drop_armor = function(pos, stack)
-	local obj = minetest.add_item(pos, stack)
-	if obj then
-		obj:setvelocity({x=math.random(-1, 1), y=5, z=math.random(-1, 1)})
+	local node = minetest.get_node_or_nil(pos)
+	if node then
+		local obj = minetest.add_item(pos, stack)
+		if obj then
+			obj:setvelocity({x=math.random(-1, 1), y=5, z=math.random(-1, 1)})
+		end
 	end
 end
