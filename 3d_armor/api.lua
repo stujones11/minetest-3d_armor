@@ -196,7 +196,7 @@ armor.set_player_armor = function(self, player)
 		change[group] = 1
 		levels[group] = 0
 	end
-	local list = player_inv:get_list("armor")
+	local list = player_inv:get_list("armor") or {}
 	for i, stack in pairs(list) do
 		if stack:get_count() == 1 then
 			local def = stack:get_definition()
