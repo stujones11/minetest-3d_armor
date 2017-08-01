@@ -167,6 +167,7 @@ armor.update_player_visuals = function(self, player)
 			self.textures[name].wielditem,
 		})
 	end
+	self:run_callbacks("on_update", player)
 end
 
 armor.set_player_armor = function(self, player)
@@ -286,7 +287,6 @@ armor.set_player_armor = function(self, player)
 	self.def[name].state = state
 	self.def[name].count = count
 	self:update_player_visuals(player)
-	self:run_callbacks("on_update", player)
 end
 
 armor.punch = function(self, player, hitter, time_from_last_punch, tool_capabilities)
