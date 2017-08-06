@@ -1,13 +1,13 @@
-local S = function(s) return s end
-if minetest.global_exists("intllib") then
-	if intllib.make_gettext_pair then
-		-- New method using gettext.
-		S = intllib.make_gettext_pair()
-	else
-		-- Old method using text files.
-		S = intllib.Getter()
-	end
-end
+-- support for i18n
+armor_i18n = { }
+local MP = minetest.get_modpath(minetest.get_current_modname())
+armor_i18n.gettext, armor_i18n.ngettext = dofile(MP.."/intllib.lua")
+-- escaping formspec
+armor_i18n.fgettext = function(...) return minetest.formspec_escape(armor_i18n.gettext(...)) end
+-- local functions
+local S = armor_i18n.gettext
+local F = armor_i18n.fgettext
+
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local worldpath = minetest.get_worldpath()
@@ -68,7 +68,7 @@ end
 
 if minetest.get_modpath("technic") then
 	armor.formspec = armor.formspec..
-		"label[5,2.5;"..S("Radiation")..":  armor_group_radiation]"
+		"label[5,2.5;"..F("Radiation")..":  armor_group_radiation]"
 	armor:register_armor_group("radiation")
 end
 local skin_mods = {"skins", "u_skins", "simple_skins", "wardrobe"}
@@ -96,17 +96,16 @@ dofile(modpath.."/armor.lua")
 -- Armor Initialization
 
 armor.formspec = armor.formspec..
-	"label[5,1;"..S("Level")..": armor_level]"..
-	"label[5,1.5;"..S("Heal")..":  armor_attr_heal]"
+	"label[5,1;"..F("Level")..": armor_level]"..
+	"label[5,1.5;"..F("Heal")..":  armor_attr_heal]"
 if armor.config.fire_protect then
-	armor.formspec = armor.formspec.."label[5,2;"..S("Fire")..":  armor_fire]"
+	armor.formspec = armor.formspec.."label[5,2;"..F("Fire")..":  armor_fire]"
 end
 armor:register_on_destroy(function(player, index, stack)
 	local name = player:get_player_name()
 	local def = stack:get_definition()
 	if name and def and def.description then
-		minetest.chat_send_player(name, S("Your").." "..def.description.." "..
-			S("got destroyed").."!")
+		minetest.chat_send_player(name, S("Your @1 got destroyed!", def.description))
 	end
 end)
 
@@ -341,7 +340,7 @@ minetest.register_globalstep(function(dtime)
 			local remove = init_player_armor(player) == true
 			pending_players[player] = count + 1
 			if remove == false and count > armor.config.init_times then
-				minetest.log("warning", "3d_armor: Failed to initialize player")
+				minetest.log("warning", S("3d_armor: Failed to initialize player"))
 				remove = true
 			end
 			if remove == true then
@@ -362,7 +361,7 @@ if armor.config.fire_protect == true then
 		end
 	end
 else
-	print ("[3d_armor] Fire Nodes disabled")
+	print (S("[3d_armor] Fire Nodes disabled"))
 end
 
 if armor.config.water_protect == true or armor.config.fire_protect == true then

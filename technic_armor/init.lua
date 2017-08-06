@@ -1,16 +1,10 @@
+-- support for i18n
+local S = armor_i18n.gettext
+local F = armor_i18n.fgettext
+
 if not minetest.get_modpath("technic_worldgen") then
-	minetest.log("warning", "technic_armor: Mod loaded but unused.")
+	minetest.log("warning", S("technic_armor: Mod loaded but unused."))
 	return
-end
-local S = function(s) return s end
-if minetest.global_exists("intllib") then
-	if intllib.make_gettext_pair then
-		-- New method using gettext.
-		S = intllib.make_gettext_pair()
-	else
-		-- Old method using text files.
-		S = intllib.Getter()
-	end
 end
 
 local stats = {
@@ -58,7 +52,8 @@ for key, armor in pairs(stats) do
 	for partkey, part in pairs(parts) do
 		local partname = "technic_armor:"..partkey.."_"..key
 		minetest.register_tool(partname, {
-			description = armor.name.." "..part.name,
+			-- Translators: @1 stands for material and @2 for part of the armor, so that you could use a conjunction if in your language part name comes first then material (e.g. in french 'Silver Boots' is translated in 'Bottes en argent' by using '@2 en @1' as translated string)
+			description = S("@1 @2", armor.name, part.name),
 			inventory_image = "technic_armor_inv_"..partkey.."_"..key..".png",
 			groups = {["armor_"..part.place]=math.floor(part.level*armor.armor), armor_heal=armor.heal, armor_use=armor.use, armor_radiation=math.floor(part.radlevel*armor.radiation)},
 			wear = 0,
