@@ -1,3 +1,6 @@
+-- support for i18n
+local S = armor_i18n.gettext
+
 local skin_previews = {}
 local use_player_monoids = minetest.global_exists("player_monoids")
 local use_armor_monoid = minetest.global_exists("armor_monoid")
@@ -427,16 +430,16 @@ armor.set_inventory_stack = function(self, player, i, stack)
 	local msg = "[set_inventory_stack]"
 	local name = player:get_player_name()
 	if not name then
-		minetest.log("warning", "3d_armor: Player name is nil "..msg)
+		minetest.log("warning", S("3d_armor: Player name is nil @1", msg))
 		return
 	end
 	local player_inv = player:get_inventory()
 	local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
 	if not player_inv then
-		minetest.log("warning", "3d_armor: Player inventory is nil "..msg)
+		minetest.log("warning", S("3d_armor: Player inventory is nil @1", msg))
 		return
 	elseif not armor_inv then
-		minetest.log("warning", "3d_armor: Detached armor inventory is nil "..msg)
+		minetest.log("warning", S("3d_armor: Detached armor inventory is nil @1", msg))
 		return
 	end
 	player_inv:set_stack("armor", i, stack)
@@ -446,17 +449,17 @@ end
 armor.get_valid_player = function(self, player, msg)
 	msg = msg or ""
 	if not player then
-		minetest.log("warning", "3d_armor: Player reference is nil "..msg)
+		minetest.log("warning", S("3d_armor: Player reference is nil @1", msg))
 		return
 	end
 	local name = player:get_player_name()
 	if not name then
-		minetest.log("warning", "3d_armor: Player name is nil "..msg)
+		minetest.log("warning", S("3d_armor: Player name is nil @1", msg))
 		return
 	end
 	local inv = player:get_inventory()
 	if not inv then
-		minetest.log("warning", "3d_armor: Player inventory is nil "..msg)
+		minetest.log("warning", S("3d_armor: Player inventory is nil @1", msg))
 		return
 	end
 	return name, inv

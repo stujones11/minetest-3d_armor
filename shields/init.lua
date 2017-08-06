@@ -1,13 +1,6 @@
-local S = function(s) return s end
-if minetest.global_exists("intllib") then
-	if intllib.make_gettext_pair then
-		-- New method using gettext.
-		S = intllib.make_gettext_pair()
-	else
-		-- Old method using text files.
-		S = intllib.Getter()
-	end
-end
+-- support for i18n
+local S = armor_i18n.gettext
+
 local use_moreores = minetest.get_modpath("moreores")
 local function play_sound_effect(player, name)
 	if player then

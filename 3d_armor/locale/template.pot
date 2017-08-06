@@ -1,0 +1,383 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-08-06 18:20+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../3d_armor/api.lua
+msgid "3d_armor: Player name is nil @1"
+msgstr ""
+
+#: ../3d_armor/api.lua
+msgid "3d_armor: Player inventory is nil @1"
+msgstr ""
+
+#: ../3d_armor/api.lua
+msgid "3d_armor: Detached armor inventory is nil @1"
+msgstr ""
+
+#: ../3d_armor/api.lua
+msgid "3d_armor: Player reference is nil @1"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Admin Helmet"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Admin Chestplate"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Admin Leggings"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Admin Boots"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Wood Helmet"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Wood Chestplate"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Wood Leggings"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Wood Boots"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Cactus Helmet"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Cactus Chestplate"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Cactus Leggings"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Cactus Boots"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Steel Helmet"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Steel Chestplate"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Steel Leggings"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Steel Boots"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Bronze Helmet"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Bronze Chestplate"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Bronze Leggings"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Bronze Boots"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Diamond Helmet"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Diamond Chestplate"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Diamond Leggings"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Diamond Boots"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Gold Helmet"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Gold Chestplate"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Gold Leggings"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Gold Boots"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Mithril Helmet"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Mithril Chestplate"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Mithril Leggings"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Mithril Boots"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Crystal Helmet"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Crystal Chestplate"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Crystal Leggings"
+msgstr ""
+
+#: ../3d_armor/armor.lua
+msgid "Crystal Boots"
+msgstr ""
+
+#: ../3d_armor/init.lua ../3d_armor_ui/init.lua
+msgid "Radiation"
+msgstr ""
+
+#: ../3d_armor/init.lua ../3d_armor_ui/init.lua
+msgid "Level"
+msgstr ""
+
+#: ../3d_armor/init.lua ../3d_armor_ui/init.lua
+msgid "Heal"
+msgstr ""
+
+#: ../3d_armor/init.lua ../3d_armor_ui/init.lua
+msgid "Fire"
+msgstr ""
+
+#: ../3d_armor/init.lua
+msgid "Your @1 got destroyed!"
+msgstr ""
+
+#: ../3d_armor/init.lua
+msgid "3d_armor: Failed to initialize player"
+msgstr ""
+
+#: ../3d_armor/init.lua
+msgid "[3d_armor] Fire Nodes disabled"
+msgstr ""
+
+#: ../3d_armor_ip/init.lua
+msgid "3d_armor_ip: Mod loaded but unused."
+msgstr ""
+
+#: ../3d_armor_ip/init.lua
+msgid "Back"
+msgstr ""
+
+#: ../3d_armor_ip/init.lua ../3d_armor_sfinv/init.lua ../3d_armor_ui/init.lua
+msgid "Armor"
+msgstr ""
+
+#: ../3d_armor_sfinv/init.lua
+msgid "3d_armor_sfinv: Mod loaded but unused."
+msgstr ""
+
+#: ../3d_armor_stand/init.lua
+msgid "Armor stand top"
+msgstr ""
+
+#: ../3d_armor_stand/init.lua
+msgid "Armor stand"
+msgstr ""
+
+#: ../3d_armor_stand/init.lua
+msgid "Armor Stand"
+msgstr ""
+
+#: ../3d_armor_stand/init.lua
+msgid "Locked Armor stand"
+msgstr ""
+
+#: ../3d_armor_stand/init.lua
+msgid "Armor Stand (owned by @1)"
+msgstr ""
+
+#: ../3d_armor_ui/init.lua
+msgid "3d_armor_ui: Mod loaded but unused."
+msgstr ""
+
+#: ../3d_armor_ui/init.lua
+msgid "3d Armor"
+msgstr ""
+
+#: ../3d_armor_ui/init.lua
+msgid "Armor not initialized!"
+msgstr ""
+
+#: ../hazmat_suit/init.lua
+msgid "hazmat_suit: Mod loaded but unused."
+msgstr ""
+
+#: ../hazmat_suit/init.lua
+msgid "Hazmat Helmet"
+msgstr ""
+
+#: ../hazmat_suit/init.lua
+msgid "Hazmat Chestplate"
+msgstr ""
+
+#: ../hazmat_suit/init.lua
+msgid "Hazmat Sleeve"
+msgstr ""
+
+#: ../hazmat_suit/init.lua
+msgid "Hazmat Leggins"
+msgstr ""
+
+#: ../hazmat_suit/init.lua
+msgid "Hazmat Boots"
+msgstr ""
+
+#: ../hazmat_suit/init.lua
+msgid "Hazmat Suit"
+msgstr ""
+
+#: ../shields/init.lua
+msgid "Admin Shield"
+msgstr ""
+
+#: ../shields/init.lua
+msgid "Wooden Shield"
+msgstr ""
+
+#: ../shields/init.lua
+msgid "Enhanced Wood Shield"
+msgstr ""
+
+#: ../shields/init.lua
+msgid "Cactus Shield"
+msgstr ""
+
+#: ../shields/init.lua
+msgid "Enhanced Cactus Shield"
+msgstr ""
+
+#: ../shields/init.lua
+msgid "Steel Shield"
+msgstr ""
+
+#: ../shields/init.lua
+msgid "Bronze Shield"
+msgstr ""
+
+#: ../shields/init.lua
+msgid "Diamond Shield"
+msgstr ""
+
+#: ../shields/init.lua
+msgid "Gold Shield"
+msgstr ""
+
+#: ../shields/init.lua
+msgid "Mithril Shield"
+msgstr ""
+
+#: ../shields/init.lua
+msgid "Crystal Shield"
+msgstr ""
+
+#: ../technic_armor/init.lua
+msgid "technic_armor: Mod loaded but unused."
+msgstr ""
+
+#: ../technic_armor/init.lua
+msgid "Lead"
+msgstr ""
+
+#: ../technic_armor/init.lua
+msgid "Brass"
+msgstr ""
+
+#: ../technic_armor/init.lua
+msgid "Cast Iron"
+msgstr ""
+
+#: ../technic_armor/init.lua
+msgid "Carbon Steel"
+msgstr ""
+
+#: ../technic_armor/init.lua
+msgid "Stainless Steel"
+msgstr ""
+
+#: ../technic_armor/init.lua
+msgid "Tin"
+msgstr ""
+
+#: ../technic_armor/init.lua
+msgid "Silver"
+msgstr ""
+
+#: ../technic_armor/init.lua
+msgid "Helmet"
+msgstr ""
+
+#: ../technic_armor/init.lua
+msgid "Chestplate"
+msgstr ""
+
+#: ../technic_armor/init.lua
+msgid "Leggings"
+msgstr ""
+
+#: ../technic_armor/init.lua
+msgid "Boots"
+msgstr ""
+
+#: ../technic_armor/init.lua
+msgid "Shield"
+msgstr ""
+
+#. Translators: @1 stands for material and @2 for part of the armor, so that you could use a conjunction if in your language part name comes first then material (e.g. in french 'Silver Boots' is translated in 'Bottes en argent' by using '@2 en @1' as translated string)
+#: ../technic_armor/init.lua
+msgid "@1 @2"
+msgstr ""
