@@ -72,7 +72,7 @@ armor = {
 		on_damage = {},
 		on_destroy = {},
 	},
-	version = "0.4.9",
+	version = "0.4.10",
 }
 
 armor.config = {
