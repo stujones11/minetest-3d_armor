@@ -332,8 +332,8 @@ minetest.register_entity("3d_armor_stand:armor_entity", {
 minetest.register_craft({
 	output = "3d_armor_stand:armor_stand",
 	recipe = {
-		{"", "default:fence_wood", ""},
-		{"", "default:fence_wood", ""},
+		{"", "group:fence", ""},
+		{"", "group:fence", ""},
 		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"},
 	}
 })
