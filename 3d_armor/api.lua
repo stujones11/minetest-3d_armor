@@ -218,6 +218,7 @@ armor.set_player_armor = function(self, player)
 						local level = def.groups["armor_"..element]
 						levels["fleshy"] = levels["fleshy"] + level
 					end
+					break
 				end
 				-- DEPRECATED, use armor_groups instead
 				if def.groups["armor_radiation"] and levels["radiation"] then
@@ -419,8 +420,9 @@ armor.get_armor_formspec = function(self, name, listring)
 	for _, attr in pairs(self.attributes) do
 		formspec = formspec:gsub("armor_attr_"..attr, armor.def[name][attr])
 	end
-	for _, group in pairs(self.attributes) do
-		formspec = formspec:gsub("armor_group_"..group, armor.def[name][group])
+	for group, _ in pairs(self.registered_groups) do
+		formspec = formspec:gsub("armor_group_"..group,
+			armor.def[name].groups[group])
 	end
 	return formspec
 end
