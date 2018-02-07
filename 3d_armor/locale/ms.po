@@ -1,0 +1,386 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-08-06 18:20+0200\n"
+"PO-Revision-Date: 2018-02-07 13:25+0800\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"Last-Translator: MuhdNurHidayat (MNH48) <mnh48mail@gmail.com>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: ms\n"
+
+#: ../3d_armor/api.lua
+msgid "3d_armor: Player name is nil @1"
+msgstr "3d_armor: Nama pemain tiada nilai @1"
+
+#: ../3d_armor/api.lua
+msgid "3d_armor: Player inventory is nil @1"
+msgstr "3d_armor: Inventori pemain tiada nilai @1"
+
+#: ../3d_armor/api.lua
+msgid "3d_armor: Detached armor inventory is nil @1"
+msgstr "3d_armor: Inventori perisai terpisah tiada nilai @1"
+
+#: ../3d_armor/api.lua
+msgid "3d_armor: Player reference is nil @1"
+msgstr "3d_armor: Rujukan pemain tiada nilai @1"
+
+#: ../3d_armor/armor.lua
+msgid "Admin Helmet"
+msgstr "Helmet Pentadbir"
+
+#: ../3d_armor/armor.lua
+msgid "Admin Chestplate"
+msgstr "Perisai Dada Pentadbir"
+
+#: ../3d_armor/armor.lua
+msgid "Admin Leggings"
+msgstr "Perisai Kaki Pentadbir"
+
+#: ../3d_armor/armor.lua
+msgid "Admin Boots"
+msgstr "But Pentadbir"
+
+#: ../3d_armor/armor.lua
+msgid "Wood Helmet"
+msgstr "Helmet Kayu"
+
+#: ../3d_armor/armor.lua
+msgid "Wood Chestplate"
+msgstr "Perisai Dada Kayu"
+
+#: ../3d_armor/armor.lua
+msgid "Wood Leggings"
+msgstr "Perisai Kaki Kayu"
+
+#: ../3d_armor/armor.lua
+msgid "Wood Boots"
+msgstr "But Kayu"
+
+#: ../3d_armor/armor.lua
+msgid "Cactus Helmet"
+msgstr "Helmet Kaktus"
+
+#: ../3d_armor/armor.lua
+msgid "Cactus Chestplate"
+msgstr "Perisai Dada Kaktus"
+
+#: ../3d_armor/armor.lua
+msgid "Cactus Leggings"
+msgstr "Perisai Kaki Kaktus"
+
+#: ../3d_armor/armor.lua
+msgid "Cactus Boots"
+msgstr "But Kaktus"
+
+#: ../3d_armor/armor.lua
+msgid "Steel Helmet"
+msgstr "Helmet Keluli"
+
+#: ../3d_armor/armor.lua
+msgid "Steel Chestplate"
+msgstr "Perisai Dada Keluli"
+
+#: ../3d_armor/armor.lua
+msgid "Steel Leggings"
+msgstr "Perisai Kaki Keluli"
+
+#: ../3d_armor/armor.lua
+msgid "Steel Boots"
+msgstr "But Keluli"
+
+#: ../3d_armor/armor.lua
+msgid "Bronze Helmet"
+msgstr "Helmet Gangsa"
+
+#: ../3d_armor/armor.lua
+msgid "Bronze Chestplate"
+msgstr "Perisai Dada Gangsa"
+
+#: ../3d_armor/armor.lua
+msgid "Bronze Leggings"
+msgstr "Perisai Kaki Gangsa"
+
+#: ../3d_armor/armor.lua
+msgid "Bronze Boots"
+msgstr "But Gangsa"
+
+# 'Diamond' should be translated as 'intan' because the more common word 'berlian' is only specifically used for the gemstone diamond.
+#: ../3d_armor/armor.lua
+msgid "Diamond Helmet"
+msgstr "Helmet Intan"
+
+#: ../3d_armor/armor.lua
+msgid "Diamond Chestplate"
+msgstr "Perisai Dada Intan"
+
+#: ../3d_armor/armor.lua
+msgid "Diamond Leggings"
+msgstr "Perisai Kaki Intan"
+
+#: ../3d_armor/armor.lua
+msgid "Diamond Boots"
+msgstr "But Intan"
+
+#: ../3d_armor/armor.lua
+msgid "Gold Helmet"
+msgstr "Helmet Emas"
+
+#: ../3d_armor/armor.lua
+msgid "Gold Chestplate"
+msgstr "Perisai Dada Emas"
+
+#: ../3d_armor/armor.lua
+msgid "Gold Leggings"
+msgstr "Perisai Kaki Emas"
+
+#: ../3d_armor/armor.lua
+msgid "Gold Boots"
+msgstr "But Emas"
+
+#: ../3d_armor/armor.lua
+msgid "Mithril Helmet"
+msgstr "Helmet Mithril"
+
+#: ../3d_armor/armor.lua
+msgid "Mithril Chestplate"
+msgstr "Perisai Dada Mithril"
+
+#: ../3d_armor/armor.lua
+msgid "Mithril Leggings"
+msgstr "Perisai Kaki Mithril"
+
+#: ../3d_armor/armor.lua
+msgid "Mithril Boots"
+msgstr "But Mithril"
+
+#: ../3d_armor/armor.lua
+msgid "Crystal Helmet"
+msgstr "Helmet Kristal"
+
+#: ../3d_armor/armor.lua
+msgid "Crystal Chestplate"
+msgstr "Perisai Dada Kristal"
+
+#: ../3d_armor/armor.lua
+msgid "Crystal Leggings"
+msgstr "Perisai Kaki Kristal"
+
+#: ../3d_armor/armor.lua
+msgid "Crystal Boots"
+msgstr "But Kristal"
+
+#: ../3d_armor/init.lua ../3d_armor_ui/init.lua
+msgid "Radiation"
+msgstr "Radiasi"
+
+#: ../3d_armor/init.lua ../3d_armor_ui/init.lua
+msgid "Level"
+msgstr "Tahap"
+
+#: ../3d_armor/init.lua ../3d_armor_ui/init.lua
+msgid "Heal"
+msgstr "Pulih"
+
+#: ../3d_armor/init.lua ../3d_armor_ui/init.lua
+msgid "Fire"
+msgstr "Api"
+
+#: ../3d_armor/init.lua
+msgid "Your @1 got destroyed!"
+msgstr "@1 anda telah musnah!"
+
+#: ../3d_armor/init.lua
+msgid "3d_armor: Failed to initialize player"
+msgstr "3d_armor: Gagal mengasalkan pemain"
+
+#: ../3d_armor/init.lua
+msgid "[3d_armor] Fire Nodes disabled"
+msgstr "[3d_armor] Nod-nod Api dilumpuhkan"
+
+#: ../3d_armor_ip/init.lua
+msgid "3d_armor_ip: Mod loaded but unused."
+msgstr "3d_armor_ip: Mods dimuatkan tetapi tidak digunakan."
+
+#: ../3d_armor_ip/init.lua
+msgid "Back"
+msgstr "Kembali"
+
+#: ../3d_armor_ip/init.lua ../3d_armor_sfinv/init.lua ../3d_armor_ui/init.lua
+msgid "Armor"
+msgstr "Perisai"
+
+#: ../3d_armor_sfinv/init.lua
+msgid "3d_armor_sfinv: Mod loaded but unused."
+msgstr "3d_armor_sfinv: Mods dimuatkan tetapi tidak digunakan."
+
+#: ../3d_armor_stand/init.lua
+msgid "Armor stand top"
+msgstr "Bhg atas dirian perisai"
+
+#: ../3d_armor_stand/init.lua
+msgid "Armor stand"
+msgstr "Dirian perisai"
+
+#: ../3d_armor_stand/init.lua
+msgid "Armor Stand"
+msgstr "Dirian Perisai"
+
+#: ../3d_armor_stand/init.lua
+msgid "Locked Armor stand"
+msgstr "Dirian perisai Berkunci"
+
+#: ../3d_armor_stand/init.lua
+msgid "Armor Stand (owned by @1)"
+msgstr "Dirian Perisai (milik @1)"
+
+#: ../3d_armor_ui/init.lua
+msgid "3d_armor_ui: Mod loaded but unused."
+msgstr "3d_armor_ui: Mods dimuatkan tetapi tidak digunakan."
+
+#: ../3d_armor_ui/init.lua
+msgid "3d Armor"
+msgstr "Perisai 3d"
+
+#: ../3d_armor_ui/init.lua
+msgid "Armor not initialized!"
+msgstr "Perisai tidak diasalkan!"
+
+#: ../hazmat_suit/init.lua
+msgid "hazmat_suit: Mod loaded but unused."
+msgstr "hazmat_suit: Mods dimuatkan tetapi tidak digunakan."
+
+#: ../hazmat_suit/init.lua
+msgid "Hazmat Helmet"
+msgstr "Helmet Keselamatan"
+
+#: ../hazmat_suit/init.lua
+msgid "Hazmat Chestplate"
+msgstr "Perisai Dada Keselamatan"
+
+#: ../hazmat_suit/init.lua
+msgid "Hazmat Sleeve"
+msgstr "Perisai Tangan Keselamatan"
+
+#: ../hazmat_suit/init.lua
+msgid "Hazmat Leggins"
+msgstr "Perisai Kaki Keselamatan"
+
+#: ../hazmat_suit/init.lua
+msgid "Hazmat Boots"
+msgstr "But Keselamatan"
+
+#: ../hazmat_suit/init.lua
+msgid "Hazmat Suit"
+msgstr "Pakaian Keselamatan"
+
+#: ../shields/init.lua
+msgid "Admin Shield"
+msgstr "Perisai Pegang Pentadbir"
+
+#: ../shields/init.lua
+msgid "Wooden Shield"
+msgstr "Perisai Pegang Kayu"
+
+#: ../shields/init.lua
+msgid "Enhanced Wood Shield"
+msgstr "Perisai Pegang Kayu Kukuh"
+
+#: ../shields/init.lua
+msgid "Cactus Shield"
+msgstr "Perisai Pegang Kaktus"
+
+#: ../shields/init.lua
+msgid "Enhanced Cactus Shield"
+msgstr "Perisai Pegang Kaktus Kukuh"
+
+#: ../shields/init.lua
+msgid "Steel Shield"
+msgstr "Perisai Pegang Keluli"
+
+#: ../shields/init.lua
+msgid "Bronze Shield"
+msgstr "Perisai Pegang Gangsa"
+
+#: ../shields/init.lua
+msgid "Diamond Shield"
+msgstr "Perisai Pegang Intan"
+
+#: ../shields/init.lua
+msgid "Gold Shield"
+msgstr "Perisai Pegang Emas"
+
+#: ../shields/init.lua
+msgid "Mithril Shield"
+msgstr "Perisai Pegang Mithril"
+
+#: ../shields/init.lua
+msgid "Crystal Shield"
+msgstr "Perisai Pegang Kristal"
+
+#: ../technic_armor/init.lua
+msgid "technic_armor: Mod loaded but unused."
+msgstr "technic_armor: Mods dimuatkan tetapi tidak digunakan."
+
+# 'Lead' here is the chemical compound so the translation is 'plumbum', not 'pimpin' (act of leading).
+#: ../technic_armor/init.lua
+msgid "Lead"
+msgstr "Plumbum"
+
+#: ../technic_armor/init.lua
+msgid "Brass"
+msgstr "Loyang"
+
+#: ../technic_armor/init.lua
+msgid "Cast Iron"
+msgstr "Besi Tuang"
+
+#: ../technic_armor/init.lua
+msgid "Carbon Steel"
+msgstr "Keluli Karbon"
+
+#: ../technic_armor/init.lua
+msgid "Stainless Steel"
+msgstr "Keluli Tahan Karat"
+
+#: ../technic_armor/init.lua
+msgid "Tin"
+msgstr "Timah"
+
+#: ../technic_armor/init.lua
+msgid "Silver"
+msgstr "Perak"
+
+#: ../technic_armor/init.lua
+msgid "Helmet"
+msgstr "Helmet"
+
+#: ../technic_armor/init.lua
+msgid "Chestplate"
+msgstr "Perisai Dada"
+
+#: ../technic_armor/init.lua
+msgid "Leggings"
+msgstr "Perisai Kaki"
+
+#: ../technic_armor/init.lua
+msgid "Boots"
+msgstr "But"
+
+#: ../technic_armor/init.lua
+msgid "Shield"
+msgstr "Perisai Pegang"
+
+#. Translators: @1 stands for material and @2 for part of the armor, so that you could use a conjunction if in your language part name comes first then material (e.g. in french 'Silver Boots' is translated in 'Bottes en argent' by using '@2 en @1' as translated string)
+#: ../technic_armor/init.lua
+msgid "@1 @2"
+msgstr "@2 @1"
