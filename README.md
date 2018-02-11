@@ -9,8 +9,6 @@ Modpack - 3d Armor [0.4.10]
 - [[mod] Visible Player Armor [3d_armor]](#mod-visible-player-armor-3d_armor)
 - [[mod] Visible Wielded Items [wieldview]](#mod-visible-wielded-items-wieldview)
 - [[mod] Shields [shields]](#mod-shields-shields)
-- [[mod] Technic Armor [technic_armor]](#mod-technic-armor-technic_armor)
-- [[mod] Hazmat Suit [hazmat_suit]](#mod-hazmat-suit-hazmat_suit)
 - [[mod] 3d Armor Stand [3d_armor_stand]](#mod-3d-armor-stand-3d_armor_stand)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -62,23 +60,6 @@ Depends: 3d_armor
 
 Originally a part of 3d_armor, shields have been re-included as an optional extra.
 If you do not want shields then simply remove the shields folder from the modpack.
-
-[mod] Technic Armor [technic_armor]
------------------------------------
-
-Depends: 3d_armor, technic_worldgen
-
-Adds tin, silver and technic materials to 3d_armor.
-Requires technic (technic_worldgen at least) mod.
-
-[mod] Hazmat Suit [hazmat_suit]
--------------------------------
-
-Depends: 3d_armor, technic
-
-Adds hazmat suit to 3d_armor. It protects rather well from fire (if enabled in configuration) and radiation*, and it has built-in oxygen supply.
-
-Requires technic mod.
 
 [mod] 3d Armor Stand [3d_armor_stand]
 -------------------------------------
