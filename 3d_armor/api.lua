@@ -72,6 +72,7 @@ armor = {
 		on_damage = {},
 		on_destroy = {},
 	},
+	migrate_old_inventory = true,
 	version = "0.4.10",
 }
 
@@ -174,7 +175,7 @@ armor.update_player_visuals = function(self, player)
 end
 
 armor.set_player_armor = function(self, player)
-	local name, player_inv = self:get_valid_player(player, "[set_player_armor]")
+	local name, armor_inv = self:get_valid_player(player, "[set_player_armor]")
 	if not name then
 		return
 	end
@@ -199,7 +200,7 @@ armor.set_player_armor = function(self, player)
 		change[group] = 1
 		levels[group] = 0
 	end
-	local list = player_inv:get_list("armor")
+	local list = armor_inv:get_list("armor")
 	if type(list) ~= "table" then
 		return
 	end
@@ -297,7 +298,7 @@ armor.set_player_armor = function(self, player)
 end
 
 armor.punch = function(self, player, hitter, time_from_last_punch, tool_capabilities)
-	local name, player_inv = self:get_valid_player(player, "[punch]")
+	local name, armor_inv = self:get_valid_player(player, "[punch]")
 	if not name then
 		return
 	end
@@ -305,7 +306,7 @@ armor.punch = function(self, player, hitter, time_from_last_punch, tool_capabili
 	local count = 0
 	local recip = true
 	local default_groups = {cracky=3, snappy=3, choppy=3, crumbly=3, level=1}
-	local list = player_inv:get_list("armor")
+	local list = armor_inv:get_list("armor")
 	for i, stack in pairs(list) do
 		if stack:get_count() == 1 then
 			local name = stack:get_name()
@@ -427,6 +428,57 @@ armor.get_armor_formspec = function(self, name, listring)
 	return formspec
 end
 
+armor.serialize_inventory_list = function(self, list)
+	local list_table = {}
+	for _, stack in ipairs(list) do
+		table.insert(list_table, stack:to_string())
+	end
+	return minetest.serialize(list_table)
+end
+
+armor.deserialize_inventory_list = function(self, list_string)
+	local list_table = minetest.deserialize(list_string)
+	local list = {}
+	for _, stack in ipairs(list_table or {}) do
+		table.insert(list, ItemStack(stack))
+	end
+	return list
+end
+
+armor.load_armor_inventory = function(self, player)
+	local msg = "[load_armor_inventory]"
+	local name = player:get_player_name()
+	if not name then
+		minetest.log("warning", S("3d_armor: Player name is nil @1", msg))
+		return
+	end
+	local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
+	if not armor_inv then
+		minetest.log("warning", S("3d_armor: Detached armor inventory is nil @1", msg))
+		return
+	end
+	local armor_list_string = player:get_attribute("3d_armor_inventory")
+	if armor_list_string then
+		armor_inv:set_list("armor", self:deserialize_inventory_list(armor_list_string))
+		return true
+	end
+end
+
+armor.save_armor_inventory = function(self, player)
+	local msg = "[save_armor_inventory]"
+	local name = player:get_player_name()
+	if not name then
+		minetest.log("warning", S("3d_armor: Player name is nil @1", msg))
+		return
+	end
+	local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
+	if not armor_inv then
+		minetest.log("warning", S("3d_armor: Detached armor inventory is nil @1", msg))
+		return
+	end
+	player:set_attribute("3d_armor_inventory", self:serialize_inventory_list(armor_inv:get_list("armor")))
+end
+
 armor.update_inventory = function(self, player)
 	-- DEPRECATED: Legacy inventory support
 end
@@ -438,17 +490,13 @@ armor.set_inventory_stack = function(self, player, i, stack)
 		minetest.log("warning", S("3d_armor: Player name is nil @1", msg))
 		return
 	end
-	local player_inv = player:get_inventory()
 	local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
-	if not player_inv then
-		minetest.log("warning", S("3d_armor: Player inventory is nil @1", msg))
-		return
-	elseif not armor_inv then
+	if not armor_inv then
 		minetest.log("warning", S("3d_armor: Detached armor inventory is nil @1", msg))
 		return
 	end
-	player_inv:set_stack("armor", i, stack)
 	armor_inv:set_stack("armor", i, stack)
+	self:save_armor_inventory(player)
 end
 
 armor.get_valid_player = function(self, player, msg)
@@ -462,9 +510,9 @@ armor.get_valid_player = function(self, player, msg)
 		minetest.log("warning", S("3d_armor: Player name is nil @1", msg))
 		return
 	end
-	local inv = player:get_inventory()
+	local inv = minetest.get_inventory({type="detached", name=name.."_armor"})
 	if not inv then
-		minetest.log("warning", S("3d_armor: Player inventory is nil @1", msg))
+		minetest.log("warning", S("3d_armor: Detached armor inventory is nil @1", msg))
 		return
 	end
 	return name, inv

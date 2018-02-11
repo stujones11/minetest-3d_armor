@@ -111,27 +111,23 @@ end)
 
 local function init_player_armor(player)
 	local name = player:get_player_name()
-	local player_inv = player:get_inventory()
 	local pos = player:getpos()
-	if not name or not player_inv or not pos then
+	if not name or not pos then
 		return false
 	end
 	local armor_inv = minetest.create_detached_inventory(name.."_armor", {
 		on_put = function(inv, listname, index, stack, player)
-			player:get_inventory():set_stack(listname, index, stack)
+			armor:save_armor_inventory(player)
 			armor:run_callbacks("on_equip", player, index, stack)
 			armor:set_player_armor(player)
 		end,
 		on_take = function(inv, listname, index, stack, player)
-			player:get_inventory():set_stack(listname, index, nil)
+			armor:save_armor_inventory(player)
 			armor:run_callbacks("on_unequip", player, index, stack)
 			armor:set_player_armor(player)
 		end,
 		on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
-			local plaver_inv = player:get_inventory()
-			local stack = inv:get_stack(to_list, to_index)
-			player_inv:set_stack(to_list, to_index, stack)
-			player_inv:set_stack(from_list, from_index, nil)
+			armor:save_armor_inventory(player)
 			armor:set_player_armor(player)
 		end,
 		allow_put = function(inv, listname, index, stack, player)
@@ -158,10 +154,18 @@ local function init_player_armor(player)
 		end,
 	}, name)
 	armor_inv:set_size("armor", 6)
-	player_inv:set_size("armor", 6)
+	if not armor:load_armor_inventory(player) and armor.migrate_old_inventory then
+		local player_inv = player:get_inventory()
+		player_inv:set_size("armor", 6)
+		for i=1, 6 do
+			local stack = player_inv:get_stack("armor", i)
+			armor_inv:set_stack("armor", i, stack)
+		end
+		armor:save_armor_inventory(player)
+		player_inv:set_size("armor", 0)
+	end
 	for i=1, 6 do
-		local stack = player_inv:get_stack("armor", i)
-		armor_inv:set_stack("armor", i, stack)
+		local stack = armor_inv:get_stack("armor", i)
 		armor:run_callbacks("on_equip", player, i, stack)
 	end
 	armor.def[name] = {
@@ -256,13 +260,13 @@ end)
 
 if armor.config.drop == true or armor.config.destroy == true then
 	minetest.register_on_dieplayer(function(player)
-		local name, player_inv = armor:get_valid_player(player, "[on_dieplayer]")
+		local name, armor_inv = armor:get_valid_player(player, "[on_dieplayer]")
 		if not name then
 			return
 		end
 		local drop = {}
-		for i=1, player_inv:get_size("armor") do
-			local stack = player_inv:get_stack("armor", i)
+		for i=1, armor_inv:get_size("armor") do
+			local stack = armor_inv:get_stack("armor", i)
 			if stack:get_count() > 0 then
 				table.insert(drop, stack)
 				armor:set_inventory_stack(player, i, nil)
