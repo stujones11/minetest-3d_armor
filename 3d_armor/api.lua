@@ -73,7 +73,7 @@ armor = {
 		on_destroy = {},
 	},
 	migrate_old_inventory = true,
-	version = "0.4.10",
+	version = "0.4.11",
 }
 
 armor.config = {

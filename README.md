@@ -1,5 +1,5 @@
-Modpack - 3d Armor [0.4.10]
-==========================
+Modpack - 3d Armor [0.4.11]
+===========================
 
 ### Table of Contents
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
