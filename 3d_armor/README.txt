@@ -68,6 +68,9 @@ armor_fire_protect = false
 -- Enable punch damage effects.
 armor_punch_damage = true
 
+-- Enable migration of old armor inventories
+armor_migrate_old_inventory = true
+
 API
 ---
 
