@@ -1,9 +1,10 @@
 -- support for i18n
 local S = armor_i18n.gettext
 
+local disable_sounds = minetest.settings:get_bool("shields_disable_sounds")
 local use_moreores = minetest.get_modpath("moreores")
 local function play_sound_effect(player, name)
-	if player then
+	if not disable_sounds and player then
 		local pos = player:getpos()
 		if pos then
 			minetest.sound_play({
