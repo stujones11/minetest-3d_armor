@@ -1,6 +1,7 @@
 -- support for i18n
 local S = armor_i18n.gettext
 local F = armor_i18n.fgettext
+local has_technic = minetest.get_modpath("technic") ~= nil
 
 if not minetest.global_exists("unified_inventory") then
 	minetest.log("warning", S("3d_armor_ui: Mod loaded but unused."))
@@ -43,7 +44,7 @@ unified_inventory.register_page("armor", {
 			formspec = formspec.."label[5.0,"..(fy + 1.0)..";"..
 				F("Fire")..":  "..armor.def[name].fire.."]"
 		end
-		if minetest.global_exists("technic") then
+		if has_technic then
 			formspec = formspec.."label[5.0,"..(fy + 1.5)..";"..
 				F("Radiation")..":  "..armor.def[name].groups["radiation"].."]"
 		end
