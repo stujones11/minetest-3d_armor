@@ -4,6 +4,7 @@ local S = armor_i18n.gettext
 local skin_previews = {}
 local use_player_monoids = minetest.global_exists("player_monoids")
 local use_armor_monoid = minetest.global_exists("armor_monoid")
+local use_pova_mod = minetest.get_modpath("pova")
 local armor_def = setmetatable({}, {
 	__index = function()
 		return setmetatable({
@@ -286,6 +287,14 @@ armor.set_player_armor = function(self, player)
 			"3d_armor:physics")
 		player_monoids.gravity:add_change(player, physics.gravity,
 			"3d_armor:physics")
+	elseif use_pova_mod then
+		-- only add the changes, not the default 1.0 for each physics setting
+		pova.add_override(name, "3d_armor", {
+			speed = physics.speed - 1,
+			jump = physics.jump - 1,
+			gravity = physics.gravity - 1,
+		})
+		pova.do_override(player)
 	else
 		player:set_physics_override(physics)
 	end
