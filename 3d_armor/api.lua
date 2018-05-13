@@ -270,7 +270,8 @@ armor.set_player_armor = function(self, player)
 		change[group] = groups[group] / base
 	end
 	for _, attr in pairs(self.attributes) do
-		self.def[name][attr] = attributes[attr]
+		local mult = attr == "heal" and self.config.heal_multiplier or 1
+		self.def[name][attr] = attributes[attr] * mult
 	end
 	for _, phys in pairs(self.physics) do
 		self.def[name][phys] = physics[phys]
