@@ -7,9 +7,8 @@ local function play_sound_effect(player, name)
 	if not disable_sounds and player then
 		local pos = player:getpos()
 		if pos then
-			minetest.sound_play({
+			minetest.sound_play(name, {
 				pos = pos,
-				name = name,
 				max_hear_distance = 10,
 				gain = 0.5,
 			})
