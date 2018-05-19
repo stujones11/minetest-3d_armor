@@ -132,19 +132,18 @@ local function init_player_armor(player)
 		end,
 		allow_put = function(inv, listname, index, stack, player)
 			local def = stack:get_definition() or {}
-			local allowed = 0
-			for _, element in pairs(armor.elements) do
+			local element = armor:get_element(stack:get_name())
+			if not element then
+				return 0
+			end
+			for i = 1, 6 do
+				local stack = inv:get_stack("armor", i)
+				local def = stack:get_definition() or {}
 				if def.groups["armor_"..element] then
-					allowed = 1
-					for i = 1, 6 do
-						local item = inv:get_stack("armor", i):get_name()
-						if minetest.get_item_group(item, "armor_"..element) > 0 then
-							return 0
-						end
-					end
+					return 0
 				end
 			end
-			return allowed
+			return 1
 		end,
 		allow_take = function(inv, listname, index, stack, player)
 			return stack:get_count()
