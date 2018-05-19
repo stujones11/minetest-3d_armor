@@ -482,6 +482,7 @@ armor.save_armor_inventory = function(self, player)
 		return
 	end
 	local elements = {}
+	local player_inv = player:get_inventory()
 	for i = 1, 6 do
 		local stack = inv:get_stack("armor", i)
 		local element = self:get_element(stack:get_name())
@@ -489,7 +490,6 @@ armor.save_armor_inventory = function(self, player)
 			elements[element] = true;
 		else
 			inv:remove_item("armor", stack)
-			local player_inv = player:get_inventory()
 			if player_inv and player_inv:room_for_item("main", stack) then
 				player_inv:add_item("main", stack)
 			end
