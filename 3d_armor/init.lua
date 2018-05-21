@@ -130,16 +130,18 @@ local function init_player_armor(player)
 			armor:save_armor_inventory(player)
 			armor:set_player_armor(player)
 		end,
-		allow_put = function(inv, listname, index, stack, player)
-			local def = stack:get_definition() or {}
-			local element = armor:get_element(stack:get_name())
+		allow_put = function(inv, listname, index, put_stack, player)
+			local element = armor:get_element(put_stack:get_name())
+
 			if not element then
 				return 0
 			end
+
 			for i = 1, 6 do
 				local stack = inv:get_stack("armor", i)
 				local def = stack:get_definition() or {}
-				if def.groups["armor_"..element] then
+				if def.groups and def.groups["armor_"..element]
+						and i ~= index then
 					return 0
 				end
 			end
