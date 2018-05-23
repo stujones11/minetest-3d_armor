@@ -481,6 +481,7 @@ armor.save_armor_inventory = function(self, player)
 	if not name then
 		return
 	end
+	-- Workaround for detached inventory swap exploit
 	local armor_list = {}
 	local armor_list_string = player:get_attribute("3d_armor_inventory")
 	if armor_list_string then
@@ -488,7 +489,6 @@ armor.save_armor_inventory = function(self, player)
 			armor_list[item] = item ~= "" and i or nil
 		end
 	end
-	-- Workaround for detached inventory swap exploit
 	local elements = {}
 	local player_inv = player:get_inventory()
 	for i = 1, 6 do
