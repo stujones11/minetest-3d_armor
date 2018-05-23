@@ -481,19 +481,41 @@ armor.save_armor_inventory = function(self, player)
 	if not name then
 		return
 	end
+	local armor_list = {}
+	local armor_list_string = player:get_attribute("3d_armor_inventory")
+	if armor_list_string then
+		for i, item in pairs(minetest.deserialize(armor_list_string)) do
+			armor_list[item] = item ~= "" and i or nil
+		end
+	end
+	-- Workaround for detached inventory swap exploit
 	local elements = {}
 	local player_inv = player:get_inventory()
 	for i = 1, 6 do
 		local stack = inv:get_stack("armor", i)
-		local element = self:get_element(stack:get_name())
-		if element and not elements[element] then
-			elements[element] = true;
-		else
-			inv:remove_item("armor", stack)
-			if player_inv and player_inv:room_for_item("main", stack) then
-				player_inv:add_item("main", stack)
+		if stack:get_count() > 0 then
+			local item = stack:get_name()
+			local element = self:get_element(item)
+			if element and not elements[element] then
+				if armor_list[item] then
+					armor_list[item] = nil
+				else
+					-- Item was not in previous inventory
+					armor:run_callbacks("on_equip", player, i, stack)
+				end
+				elements[element] = true;
+			else
+				inv:remove_item("armor", stack)
+				if player_inv and player_inv:room_for_item("main", stack) then
+					player_inv:add_item("main", stack)
+				end
 			end
 		end
+	end
+	for item, i in pairs(armor_list) do
+		local stack = ItemStack(item)
+		-- Previous item is not in current inventory
+		armor:run_callbacks("on_unequip", player, i, stack)
 	end
 	player:set_attribute("3d_armor_inventory",
 		self:serialize_inventory_list(inv:get_list("armor")))
