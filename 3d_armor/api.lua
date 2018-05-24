@@ -387,7 +387,6 @@ armor.damage = function(self, player, index, stack, use)
 	self:run_callbacks("on_damage", player, index, stack)
 	self:set_inventory_stack(player, index, stack)
 	if stack:get_count() == 0 then
-		self:run_callbacks("on_unequip", player, index, old_stack)
 		self:run_callbacks("on_destroy", player, index, old_stack)
 		self:set_player_armor(player)
 	end
@@ -482,11 +481,14 @@ armor.save_armor_inventory = function(self, player)
 		return
 	end
 	-- Workaround for detached inventory swap exploit
-	local armor_list = {}
+	local armor_prev = {}
 	local armor_list_string = player:get_attribute("3d_armor_inventory")
 	if armor_list_string then
-		for i, item in pairs(minetest.deserialize(armor_list_string)) do
-			armor_list[item] = item ~= "" and i or nil
+		local armor_list = self:deserialize_inventory_list(armor_list_string)
+		for i, stack in ipairs(armor_list) do
+			if stack:get_count() > 0 then
+				armor_prev[stack:get_name()] = i
+			end
 		end
 	end
 	local elements = {}
@@ -497,8 +499,8 @@ armor.save_armor_inventory = function(self, player)
 			local item = stack:get_name()
 			local element = self:get_element(item)
 			if element and not elements[element] then
-				if armor_list[item] then
-					armor_list[item] = nil
+				if armor_prev[item] then
+					armor_prev[item] = nil
 				else
 					-- Item was not in previous inventory
 					armor:run_callbacks("on_equip", player, i, stack)
@@ -512,7 +514,7 @@ armor.save_armor_inventory = function(self, player)
 			end
 		end
 	end
-	for item, i in pairs(armor_list) do
+	for item, i in pairs(armor_prev) do
 		local stack = ItemStack(item)
 		-- Previous item is not in current inventory
 		armor:run_callbacks("on_unequip", player, i, stack)
@@ -527,11 +529,10 @@ end
 
 armor.set_inventory_stack = function(self, player, i, stack)
 	local name, inv = self:get_valid_player(player, "[set_inventory_stack]")
-	if not name then
-		return
+	if inv then
+		inv:set_stack("armor", i, stack)
+		self:save_armor_inventory(player)
 	end
-	inv:set_stack("armor", i, stack)
-	self:save_armor_inventory(player)
 end
 
 armor.get_valid_player = function(self, player, msg)
