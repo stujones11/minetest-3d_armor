@@ -464,25 +464,23 @@ armor.deserialize_inventory_list = function(self, list_string)
 end
 
 armor.load_armor_inventory = function(self, player)
-	local name, inv = self:get_valid_player(player, "[load_armor_inventory]")
-	if not name then
-		return
-	end
-	local armor_list_string = player:get_attribute("3d_armor_inventory")
-	if armor_list_string then
-		inv:set_list("armor",
-			self:deserialize_inventory_list(armor_list_string))
-		return true
+	local _, inv = self:get_valid_player(player, "[load_armor_inventory]")
+	if inv then
+		local armor_list_string = player:get_attribute("3d_armor_inventory")
+		if armor_list_string then
+			inv:set_list("armor",
+				self:deserialize_inventory_list(armor_list_string))
+			return true
+		end
 	end
 end
 
 armor.save_armor_inventory = function(self, player)
-	local name, inv = self:get_valid_player(player, "[save_armor_inventory]")
-	if not name then
-		return
+	local _, inv = self:get_valid_player(player, "[save_armor_inventory]")
+	if inv then
+		player:set_attribute("3d_armor_inventory",
+			self:serialize_inventory_list(inv:get_list("armor")))
 	end
-	player:set_attribute("3d_armor_inventory",
-		self:serialize_inventory_list(inv:get_list("armor")))
 end
 
 armor.update_inventory = function(self, player)
@@ -490,7 +488,7 @@ armor.update_inventory = function(self, player)
 end
 
 armor.set_inventory_stack = function(self, player, i, stack)
-	local name, inv = self:get_valid_player(player, "[set_inventory_stack]")
+	local _, inv = self:get_valid_player(player, "[set_inventory_stack]")
 	if inv then
 		inv:set_stack("armor", i, stack)
 		self:save_armor_inventory(player)
