@@ -143,13 +143,13 @@ local function validate_armor_inventory(player)
 			else
 				inv:remove_item("armor", stack)
 				-- The following code returns invalid items to the player's main
-				-- inventory but could open up the possibity for hacked client
+				-- inventory but could open up the possibity for a hacked client
 				-- to receive items back they never really had. I am not certain
-				-- so un-comment this section at your own risk :)
-
-				--if player_inv and player_inv:room_for_item("main", stack) then
-				--	player_inv:add_item("main", stack)
-				--end
+				-- so remove the is_singleplayer check at your own risk :]
+				if minetest.is_singleplayer() and player_inv and
+						player_inv:room_for_item("main", stack) then
+					player_inv:add_item("main", stack)
+				end
 			end
 		end
 	end
