@@ -109,6 +109,57 @@ armor:register_on_destroy(function(player, index, stack)
 	end
 end)
 
+local function validate_armor_inventory(player)
+	-- Workaround for detached inventory swap exploit
+	local _, inv = armor:get_valid_player(player, "[validate_armor_inventory]")
+	if not inv then
+		return
+	end
+	local armor_prev = {}
+	local armor_list_string = player:get_attribute("3d_armor_inventory")
+	if armor_list_string then
+		local armor_list = armor:deserialize_inventory_list(armor_list_string)
+		for i, stack in ipairs(armor_list) do
+			if stack:get_count() > 0 then
+				armor_prev[stack:get_name()] = i
+			end
+		end
+	end
+	local elements = {}
+	local player_inv = player:get_inventory()
+	for i = 1, 6 do
+		local stack = inv:get_stack("armor", i)
+		if stack:get_count() > 0 then
+			local item = stack:get_name()
+			local element = armor:get_element(item)
+			if element and not elements[element] then
+				if armor_prev[item] then
+					armor_prev[item] = nil
+				else
+					-- Item was not in previous inventory
+					armor:run_callbacks("on_equip", player, i, stack)
+				end
+				elements[element] = true;
+			else
+				inv:remove_item("armor", stack)
+				-- The following code returns invalid items to the player's main
+				-- inventory but could open up the possibity for hacked client
+				-- to receive items back they never really had. I am not certain
+				-- so un-comment this section at your own risk :)
+
+				--if player_inv and player_inv:room_for_item("main", stack) then
+				--	player_inv:add_item("main", stack)
+				--end
+			end
+		end
+	end
+	for item, i in pairs(armor_prev) do
+		local stack = ItemStack(item)
+		-- Previous item is not in current inventory
+		armor:run_callbacks("on_unequip", player, i, stack)
+	end
+end
+
 local function init_player_armor(player)
 	local name = player:get_player_name()
 	local pos = player:getpos()
@@ -117,14 +168,17 @@ local function init_player_armor(player)
 	end
 	local armor_inv = minetest.create_detached_inventory(name.."_armor", {
 		on_put = function(inv, listname, index, stack, player)
+			validate_armor_inventory(player)
 			armor:save_armor_inventory(player)
 			armor:set_player_armor(player)
 		end,
 		on_take = function(inv, listname, index, stack, player)
+			validate_armor_inventory(player)
 			armor:save_armor_inventory(player)
 			armor:set_player_armor(player)
 		end,
 		on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
+			validate_armor_inventory(player)
 			armor:save_armor_inventory(player)
 			armor:set_player_armor(player)
 		end,
@@ -268,6 +322,7 @@ if armor.config.drop == true or armor.config.destroy == true then
 			local stack = armor_inv:get_stack("armor", i)
 			if stack:get_count() > 0 then
 				table.insert(drop, stack)
+				armor:run_callbacks("on_unequip", player, i, stack)
 				armor_inv:set_stack("armor", i, nil)
 			end
 		end
