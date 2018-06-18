@@ -99,7 +99,7 @@ armor.formspec = armor.formspec..
 	"label[5,1;"..F("Level")..": armor_level]"..
 	"label[5,1.5;"..F("Heal")..":  armor_attr_heal]"
 if armor.config.fire_protect then
-	armor.formspec = armor.formspec.."label[5,2;"..F("Fire")..":  armor_fire]"
+	armor.formspec = armor.formspec.."label[5,2;"..F("Fire")..":  armor_attr_fire]"
 end
 armor:register_on_destroy(function(player, index, stack)
 	local name = player:get_player_name()
