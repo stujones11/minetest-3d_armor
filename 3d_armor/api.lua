@@ -192,7 +192,7 @@ armor.set_player_armor = function(self, player)
 	local groups = {}
 	local change = {}
 	for _, phys in pairs(self.physics) do
-		physics[phys] = 1
+		physics[phys] = player:get_physics_override()[phys]
 	end
 	for _, attr in pairs(self.attributes) do
 		attributes[attr] = 0
