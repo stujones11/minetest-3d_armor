@@ -32,11 +32,11 @@ armor_material_mithril = true
 armor_material_crystal = true
 
 -- Increase this if you get initialization glitches when a player first joins.
-armor_init_delay = 1
+armor_init_delay = 2
 
 -- Number of initialization attempts.
 -- Use in conjunction with armor_init_delay if initialization problems persist.
-armor_init_times = 1
+armor_init_times = 10
 
 -- Increase this if armor is not getting into bones due to server lag.
 armor_bones_delay = 1
