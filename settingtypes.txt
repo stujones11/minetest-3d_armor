@@ -1,0 +1,65 @@
+
+[3d_armor]
+
+armor_material_wood (Enable wood armor) bool true
+armor_material_cactus (Enable cactus armor) bool true
+armor_material_steel (Enable steel armor) bool true
+armor_material_bronze (Enable bronze armor) bool true
+armor_material_diamond (Enable diamond armor) bool true
+armor_material_gold (Enable gold armor) bool true
+armor_material_mithril (Enable mithril armor) bool true
+armor_material_crystal (Enable crystal armor) bool true
+
+# Increase this if you get initialization glitches when a player first joins.
+armor_init_delay (Initialization delay) int 2
+
+# Number of initialization attempts.
+# Use in conjunction with armor_init_delay if initialization problems persist.
+armor_init_times (Initialization attempts) int 10
+
+# Increase this if armor is not getting into bones due to server lag.
+armor_bones_delay (Delay for bones) int 1
+
+# How often player armor items are updated.
+armor_update_time (Armor refresh rate (seconds)) int 1
+
+# Drop armor when a player dies.
+# Uses bones mod if present, otherwise items are dropped around the player.
+armor_drop (Drop armor on death) bool true
+
+# Pulverize armor when a player dies, overrides armor_drop.
+armor_destroy (Pulverize armor on death) bool false
+
+# You can use this to increase or decrease overall armor effectiveness,
+# eg: level_multiplier = 0.5 will reduce armor level by half.
+armor_level_multiplier (Armor effectiveness multiplier) float 1
+
+# You can use this to increase or decrease overall armor healing,
+# eg: armor_heal_multiplier = 0 will disable healing altogether.
+armor_heal_multiplier (Armor healing multiplier) float 1
+
+# Enable water protection (periodically restores breath when activated).
+armor_water_protect (Enable water protection) bool true
+
+# Enable fire protection (defaults true if using ethereal mod).
+armor_fire_protect (Enable fire protection) bool false
+
+# Enable punch damage effects.
+armor_punch_damage (Enable damage effects) bool true
+
+# Enable migration of old armor inventories.
+armor_migrate_old_inventory (Migrate old armor inventories) bool true
+
+
+[shields]
+
+shields_disable_sounds (Disable shield sounds) bool false
+
+
+[wieldview]
+
+# Set number of seconds between visible wielded item updates.
+wieldview_update_time (Wieldview refresh rate (seconds)) int 2
+
+# Show nodes as tiles, disabled by default.
+wieldview_node_tiles (Show nodes as tiles) bool false
