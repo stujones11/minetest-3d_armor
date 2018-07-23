@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3d_armor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-22 18:48+0200\n"
-"PO-Revision-Date: \n"
+"POT-Creation-Date: 2018-07-23 21:21+0200\n"
+"PO-Revision-Date: 2018-07-23 21:30+0200\n"
 "Last-Translator: CodeXP <codexp@gmx.net>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -173,19 +173,19 @@ msgstr "кристалловые гамаши"
 msgid "Crystal Boots"
 msgstr "кристалловые ботинки"
 
-#: ../3d_armor_ui/init.lua
+#: ../3d_armor/init.lua ../3d_armor_ui/init.lua
 msgid "Radiation"
 msgstr "излучение"
 
-#: ../3d_armor_ui/init.lua
+#: ../3d_armor/init.lua ../3d_armor_ui/init.lua
 msgid "Level"
 msgstr "уровень"
 
-#: ../3d_armor_ui/init.lua
+#: ../3d_armor/init.lua ../3d_armor_ui/init.lua
 msgid "Heal"
 msgstr "исцеление"
 
-#: ../3d_armor_ui/init.lua
+#: ../3d_armor/init.lua ../3d_armor_ui/init.lua
 msgid "Fire"
 msgstr "огонь"
 
@@ -209,7 +209,7 @@ msgstr "3d_armor_ip: мод загружен но не используется.
 msgid "Back"
 msgstr "назад"
 
-#: ../3d_armor_ui/init.lua
+#: ../3d_armor_ip/init.lua ../3d_armor_sfinv/init.lua ../3d_armor_ui/init.lua
 msgid "Armor"
 msgstr "бронь"
 
@@ -248,10 +248,6 @@ msgstr "3D бронь"
 #: ../3d_armor_ui/init.lua
 msgid "Armor not initialized!"
 msgstr "бронь не подготовлена!"
-
-#: ../hazmat_suit/init.lua
-msgid "hazmat_suit: Mod loaded but unused."
-msgstr "hazmat_suit: мод загружен но не используется."
 
 #: ../shields/init.lua
 msgid "Admin Shield"
