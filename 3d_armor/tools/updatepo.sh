@@ -12,7 +12,6 @@ xgettext --from-code=UTF-8 \
 		--keyword=S \
 		--keyword=NS:1,2 \
 		--keyword=N_ \
-		--keyword=F \
 		--add-comments='Translators:' \
 		--add-location=file \
 		-o locale/template.pot \
