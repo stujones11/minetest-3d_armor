@@ -1,13 +1,13 @@
 -- support for i18n
 local S = armor_i18n.gettext
-local F = armor_i18n.fgettext
+local F = minetest.formspec_escape
 
 if not minetest.global_exists("inventory_plus") then
 	minetest.log("warning", S("3d_armor_ip: Mod loaded but unused."))
 	return
 end
 
-armor.formspec = "size[8,8.5]button[6,0;2,0.5;main;"..F("Back").."]"..armor.formspec
+armor.formspec = "size[8,8.5]button[6,0;2,0.5;main;"..F(S("Back")).."]"..armor.formspec
 armor:register_on_update(function(player)
 	local name = player:get_player_name()
 	local formspec = armor:get_armor_formspec(name, true)

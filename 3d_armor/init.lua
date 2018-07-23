@@ -1,19 +1,17 @@
--- support for i18n
-armor_i18n = { }
-local MP = minetest.get_modpath(minetest.get_current_modname())
-armor_i18n.gettext, armor_i18n.ngettext = dofile(MP.."/intllib.lua")
--- escaping formspec
-armor_i18n.fgettext = function(...) return minetest.formspec_escape(armor_i18n.gettext(...)) end
--- local functions
-local S = armor_i18n.gettext
-local F = armor_i18n.fgettext
-
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local worldpath = minetest.get_worldpath()
 local last_punch_time = {}
 local pending_players = {}
 local timer = 0
+
+-- support for i18n
+armor_i18n = { }
+armor_i18n.gettext, armor_i18n.ngettext = dofile(modpath.."/intllib.lua")
+
+-- local functions
+local S = armor_i18n.gettext
+local F = minetest.formspec_escape
 
 dofile(modpath.."/api.lua")
 
@@ -68,7 +66,7 @@ end
 
 if minetest.get_modpath("technic") then
 	armor.formspec = armor.formspec..
-		"label[5,2.5;"..F("Radiation")..":  armor_group_radiation]"
+		"label[5,2.5;"..F(S("Radiation"))..":  armor_group_radiation]"
 	armor:register_armor_group("radiation")
 end
 local skin_mods = {"skins", "u_skins", "simple_skins", "wardrobe"}
@@ -96,10 +94,10 @@ dofile(modpath.."/armor.lua")
 -- Armor Initialization
 
 armor.formspec = armor.formspec..
-	"label[5,1;"..F("Level")..": armor_level]"..
-	"label[5,1.5;"..F("Heal")..":  armor_attr_heal]"
+	"label[5,1;"..F(S("Level"))..": armor_level]"..
+	"label[5,1.5;"..F(S("Heal"))..":  armor_attr_heal]"
 if armor.config.fire_protect then
-	armor.formspec = armor.formspec.."label[5,2;"..F("Fire")..":  armor_attr_fire]"
+	armor.formspec = armor.formspec.."label[5,2;"..F(S("Fire"))..":  armor_attr_fire]"
 end
 armor:register_on_destroy(function(player, index, stack)
 	local name = player:get_player_name()

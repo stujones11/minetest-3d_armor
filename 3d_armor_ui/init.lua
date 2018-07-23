@@ -1,6 +1,6 @@
 -- support for i18n
 local S = armor_i18n.gettext
-local F = armor_i18n.fgettext
+local F = minetest.formspec_escape
 local has_technic = minetest.get_modpath("technic") ~= nil
 
 if not minetest.global_exists("unified_inventory") then
@@ -30,23 +30,23 @@ unified_inventory.register_page("armor", {
 		local fy = perplayer_formspec.formspec_y
 		local name = player:get_player_name()
 		if armor.def[name].init_time == 0 then
-			return {formspec="label[0,0;"..F("Armor not initialized!").."]"}
+			return {formspec="label[0,0;"..F(S("Armor not initialized!")).."]"}
 		end
 		local formspec = "background[0.06,"..fy..";7.92,7.52;3d_armor_ui_form.png]"..
-			"label[0,0;"..F("Armor").."]"..
+			"label[0,0;"..F(S("Armor")).."]"..
 			"list[detached:"..name.."_armor;armor;0,"..fy..";2,3;]"..
 			"image[2.5,"..(fy - 0.25)..";2,4;"..armor:get_preview(name).."]"..
-			"label[5.0,"..(fy + 0.0)..";"..F("Level")..": "..armor.def[name].level.."]"..
-			"label[5.0,"..(fy + 0.5)..";"..F("Heal")..":  "..armor.def[name].heal.."]"..
+			"label[5.0,"..(fy + 0.0)..";"..F(S("Level"))..": "..armor.def[name].level.."]"..
+			"label[5.0,"..(fy + 0.5)..";"..F(S("Heal"))..":  "..armor.def[name].heal.."]"..
 			"listring[current_player;main]"..
 			"listring[detached:"..name.."_armor;armor]"
 		if armor.config.fire_protect then
 			formspec = formspec.."label[5.0,"..(fy + 1.0)..";"..
-				F("Fire")..":  "..armor.def[name].fire.."]"
+				F(S("Fire"))..":  "..armor.def[name].fire.."]"
 		end
 		if has_technic then
 			formspec = formspec.."label[5.0,"..(fy + 1.5)..";"..
-				F("Radiation")..":  "..armor.def[name].groups["radiation"].."]"
+				F(S("Radiation"))..":  "..armor.def[name].groups["radiation"].."]"
 		end
 		return {formspec=formspec}
 	end,
