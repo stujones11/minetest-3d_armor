@@ -1,38 +1,34 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Malay translation for 3D ARMOR MOD
+# Copyright (C) 2018 by Stuart Jones
+# This file is distributed under the same license as the 3D ARMOR MOD package.
+# MuhdNurHidayat (MNH48) <mnh48mail@gmail.com>, 2018.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-06 18:20+0200\n"
-"PO-Revision-Date: 2018-02-07 13:25+0800\n"
+"POT-Creation-Date: 2018-07-23 21:21+0200\n"
+"PO-Revision-Date: 2018-07-23 21:30+0200\n"
+"Last-Translator: MuhdNurHidayat (MNH48) <mnh48mail@gmail.com>\n"
 "Language-Team: \n"
+"Language: ms\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
-"Last-Translator: MuhdNurHidayat (MNH48) <mnh48mail@gmail.com>\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"Language: ms\n"
+
+#: ../3d_armor/api.lua
+msgid "3d_armor: Player reference is nil @1"
+msgstr "3d_armor: Rujukan pemain tiada nilai @1"
 
 #: ../3d_armor/api.lua
 msgid "3d_armor: Player name is nil @1"
 msgstr "3d_armor: Nama pemain tiada nilai @1"
 
 #: ../3d_armor/api.lua
-msgid "3d_armor: Player inventory is nil @1"
-msgstr "3d_armor: Inventori pemain tiada nilai @1"
-
-#: ../3d_armor/api.lua
 msgid "3d_armor: Detached armor inventory is nil @1"
 msgstr "3d_armor: Inventori perisai terpisah tiada nilai @1"
-
-#: ../3d_armor/api.lua
-msgid "3d_armor: Player reference is nil @1"
-msgstr "3d_armor: Rujukan pemain tiada nilai @1"
 
 #: ../3d_armor/armor.lua
 msgid "Admin Helmet"
@@ -255,34 +251,6 @@ msgstr "Perisai 3d"
 msgid "Armor not initialized!"
 msgstr "Perisai tidak diasalkan!"
 
-#: ../hazmat_suit/init.lua
-msgid "hazmat_suit: Mod loaded but unused."
-msgstr "hazmat_suit: Mods dimuatkan tetapi tidak digunakan."
-
-#: ../hazmat_suit/init.lua
-msgid "Hazmat Helmet"
-msgstr "Helmet Keselamatan"
-
-#: ../hazmat_suit/init.lua
-msgid "Hazmat Chestplate"
-msgstr "Perisai Dada Keselamatan"
-
-#: ../hazmat_suit/init.lua
-msgid "Hazmat Sleeve"
-msgstr "Perisai Tangan Keselamatan"
-
-#: ../hazmat_suit/init.lua
-msgid "Hazmat Leggins"
-msgstr "Perisai Kaki Keselamatan"
-
-#: ../hazmat_suit/init.lua
-msgid "Hazmat Boots"
-msgstr "But Keselamatan"
-
-#: ../hazmat_suit/init.lua
-msgid "Hazmat Suit"
-msgstr "Pakaian Keselamatan"
-
 #: ../shields/init.lua
 msgid "Admin Shield"
 msgstr "Perisai Pegang Pentadbir"
@@ -326,61 +294,3 @@ msgstr "Perisai Pegang Mithril"
 #: ../shields/init.lua
 msgid "Crystal Shield"
 msgstr "Perisai Pegang Kristal"
-
-#: ../technic_armor/init.lua
-msgid "technic_armor: Mod loaded but unused."
-msgstr "technic_armor: Mods dimuatkan tetapi tidak digunakan."
-
-# 'Lead' here is the chemical compound so the translation is 'plumbum', not 'pimpin' (act of leading).
-#: ../technic_armor/init.lua
-msgid "Lead"
-msgstr "Plumbum"
-
-#: ../technic_armor/init.lua
-msgid "Brass"
-msgstr "Loyang"
-
-#: ../technic_armor/init.lua
-msgid "Cast Iron"
-msgstr "Besi Tuang"
-
-#: ../technic_armor/init.lua
-msgid "Carbon Steel"
-msgstr "Keluli Karbon"
-
-#: ../technic_armor/init.lua
-msgid "Stainless Steel"
-msgstr "Keluli Tahan Karat"
-
-#: ../technic_armor/init.lua
-msgid "Tin"
-msgstr "Timah"
-
-#: ../technic_armor/init.lua
-msgid "Silver"
-msgstr "Perak"
-
-#: ../technic_armor/init.lua
-msgid "Helmet"
-msgstr "Helmet"
-
-#: ../technic_armor/init.lua
-msgid "Chestplate"
-msgstr "Perisai Dada"
-
-#: ../technic_armor/init.lua
-msgid "Leggings"
-msgstr "Perisai Kaki"
-
-#: ../technic_armor/init.lua
-msgid "Boots"
-msgstr "But"
-
-#: ../technic_armor/init.lua
-msgid "Shield"
-msgstr "Perisai Pegang"
-
-#. Translators: @1 stands for material and @2 for part of the armor, so that you could use a conjunction if in your language part name comes first then material (e.g. in french 'Silver Boots' is translated in 'Bottes en argent' by using '@2 en @1' as translated string)
-#: ../technic_armor/init.lua
-msgid "@1 @2"
-msgstr "@2 @1"
