@@ -35,7 +35,7 @@ unified_inventory.register_page("armor", {
 		local formspec = "background[0.06,"..fy..";7.92,7.52;3d_armor_ui_form.png]"..
 			"label[0,0;"..F(S("Armor")).."]"..
 			"list[detached:"..name.."_armor;armor;0,"..fy..";2,3;]"..
-			"image[2.5,"..(fy - 0.25)..";2,4;"..armor:get_preview(name).."]"..
+			"image[2.5,"..(fy - 0.25)..";2,4;"..armor.textures[name].preview.."]"..
 			"label[5.0,"..(fy + 0.0)..";"..F(S("Level"))..": "..armor.def[name].level.."]"..
 			"label[5.0,"..(fy + 0.5)..";"..F(S("Heal"))..":  "..armor.def[name].heal.."]"..
 			"listring[current_player;main]"..
