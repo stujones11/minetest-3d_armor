@@ -328,7 +328,7 @@ msgstr "Escudo de cristal"
 
 #: ../technic_armor/init.lua
 msgid "technic_armor: Mod loaded but unused."
-msgstr ""
+msgstr "technic_armor: Mod cargado, pero no usado."
 
 #: ../technic_armor/init.lua
 msgid "Lead"
@@ -352,7 +352,7 @@ msgstr "Acero inoxidable"
 
 #: ../technic_armor/init.lua
 msgid "Tin"
-msgstr "Hojalata"
+msgstr "Estaño"
 
 #: ../technic_armor/init.lua
 msgid "Silver"
