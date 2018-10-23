@@ -381,4 +381,4 @@ msgstr "Escudo"
 #. Translators: @1 stands for material and @2 for part of the armor, so that you could use a conjunction if in your language part name comes first then material (e.g. in french 'Silver Boots' is translated in 'Bottes en argent' by using '@2 en @1' as translated string)
 #: ../technic_armor/init.lua
 msgid "@1 @2"
-msgstr "@1 @2"
+msgstr "@2 de @1"
