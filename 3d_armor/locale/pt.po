@@ -1,0 +1,295 @@
+# LANGUAGE translation for 3D ARMOR MOD
+# Copyright (C) 2018 by Stuart Jones
+# This file is distributed under the same license as the 3D ARMOR MOD package.
+# BrunoMine <borgesdossantosbruno@gmail.com>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 3d_armor\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-23 21:24+0200\n"
+"PO-Revision-Date: 2018-11-08 13:12-0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"Last-Translator: BrunoMine <borgesdossantosbruno@gmail.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: pt\n"
+
+#: ../3d_armor/api.lua
+msgid "3d_armor: Player reference is nil @1"
+msgstr "3d_armor: Referência Jogador é nula @1"
+
+#: ../3d_armor/api.lua
+msgid "3d_armor: Player name is nil @1"
+msgstr "3d_armor: Nome de jogador é nulo @1"
+
+#: ../3d_armor/api.lua
+msgid "3d_armor: Detached armor inventory is nil @1"
+msgstr "3d_armor: Inventario avulso de armadura é nulo @1"
+
+#: ../3d_armor/armor.lua
+msgid "Admin Helmet"
+msgstr "Capacete de Administrador"
+
+#: ../3d_armor/armor.lua
+msgid "Admin Chestplate"
+msgstr "Peitoral de Administrador"
+
+#: ../3d_armor/armor.lua
+msgid "Admin Leggings"
+msgstr "Calças de Administrador"
+
+#: ../3d_armor/armor.lua
+msgid "Admin Boots"
+msgstr "Botas de Administrador"
+
+#: ../3d_armor/armor.lua
+msgid "Wood Helmet"
+msgstr "Capacete de Madeira"
+
+#: ../3d_armor/armor.lua
+msgid "Wood Chestplate"
+msgstr "Peitoral de Madeira"
+
+#: ../3d_armor/armor.lua
+msgid "Wood Leggings"
+msgstr "Calças de Madeira"
+
+#: ../3d_armor/armor.lua
+msgid "Wood Boots"
+msgstr "Botas de Madeira"
+
+#: ../3d_armor/armor.lua
+msgid "Cactus Helmet"
+msgstr "Capacete de Cacto"
+
+#: ../3d_armor/armor.lua
+msgid "Cactus Chestplate"
+msgstr "Peitoral de Cacto"
+
+#: ../3d_armor/armor.lua
+msgid "Cactus Leggings"
+msgstr "Calças de Cacto"
+
+#: ../3d_armor/armor.lua
+msgid "Cactus Boots"
+msgstr "Botas de Madeira"
+
+#: ../3d_armor/armor.lua
+msgid "Steel Helmet"
+msgstr "Capacete de Aço"
+
+#: ../3d_armor/armor.lua
+msgid "Steel Chestplate"
+msgstr "Peitoral de Aço"
+
+#: ../3d_armor/armor.lua
+msgid "Steel Leggings"
+msgstr "Calças de Aço"
+
+#: ../3d_armor/armor.lua
+msgid "Steel Boots"
+msgstr "Botas de Aço"
+
+#: ../3d_armor/armor.lua
+msgid "Bronze Helmet"
+msgstr "Capacete de Bronze"
+
+#: ../3d_armor/armor.lua
+msgid "Bronze Chestplate"
+msgstr "Peitoral de Bronze"
+
+#: ../3d_armor/armor.lua
+msgid "Bronze Leggings"
+msgstr "Calças de Bronze"
+
+#: ../3d_armor/armor.lua
+msgid "Bronze Boots"
+msgstr "Botas de Bronze"
+
+#: ../3d_armor/armor.lua
+msgid "Diamond Helmet"
+msgstr "Capacete de Diamante"
+
+#: ../3d_armor/armor.lua
+msgid "Diamond Chestplate"
+msgstr "Peitoral de Diamante"
+
+#: ../3d_armor/armor.lua
+msgid "Diamond Leggings"
+msgstr "Calças de Diamante"
+
+#: ../3d_armor/armor.lua
+msgid "Diamond Boots"
+msgstr "Botas de Diamante"
+
+#: ../3d_armor/armor.lua
+msgid "Gold Helmet"
+msgstr "Capacete de Ouro"
+
+#: ../3d_armor/armor.lua
+msgid "Gold Chestplate"
+msgstr "Peitoral de Ouro"
+
+#: ../3d_armor/armor.lua
+msgid "Gold Leggings"
+msgstr "Calças de Ouro"
+
+#: ../3d_armor/armor.lua
+msgid "Gold Boots"
+msgstr "Botas de Ouro"
+
+#: ../3d_armor/armor.lua
+msgid "Mithril Helmet"
+msgstr "Capacete de Mithril"
+
+#: ../3d_armor/armor.lua
+msgid "Mithril Chestplate"
+msgstr "Peitoral de Mithril"
+
+#: ../3d_armor/armor.lua
+msgid "Mithril Leggings"
+msgstr "Calças de Mithril"
+
+#: ../3d_armor/armor.lua
+msgid "Mithril Boots"
+msgstr "Botas de Mithril"
+
+#: ../3d_armor/armor.lua
+msgid "Crystal Helmet"
+msgstr "Capacete de Cristal"
+
+#: ../3d_armor/armor.lua
+msgid "Crystal Chestplate"
+msgstr "Peitoral de Cristal"
+
+#: ../3d_armor/armor.lua
+msgid "Crystal Leggings"
+msgstr "Calças de Cristal"
+
+#: ../3d_armor/armor.lua
+msgid "Crystal Boots"
+msgstr "Botas de Cristal"
+
+#: ../3d_armor/init.lua ../3d_armor_ui/init.lua
+msgid "Radiation"
+msgstr "Radiação"
+
+#: ../3d_armor/init.lua ../3d_armor_ui/init.lua
+msgid "Level"
+msgstr "Nível"
+
+#: ../3d_armor/init.lua ../3d_armor_ui/init.lua
+msgid "Heal"
+msgstr "Saúde"
+
+#: ../3d_armor/init.lua ../3d_armor_ui/init.lua
+msgid "Fire"
+msgstr "Fogo"
+
+#: ../3d_armor/init.lua
+msgid "Your @1 got destroyed!"
+msgstr "@1 foi destruído(a)!"
+
+#: ../3d_armor/init.lua
+msgid "3d_armor: Failed to initialize player"
+msgstr "3d_armor: Falha ao inicializar jogador"
+
+#: ../3d_armor/init.lua
+msgid "[3d_armor] Fire Nodes disabled"
+msgstr "[3d_armor] Nodes de gofo desabilitados"
+
+#: ../3d_armor_ip/init.lua
+msgid "3d_armor_ip: Mod loaded but unused."
+msgstr "3d_armor_ip: Mod carregado mas inoperante."
+
+#: ../3d_armor_ip/init.lua
+msgid "Back"
+msgstr "Voltar"
+
+#: ../3d_armor_ip/init.lua ../3d_armor_sfinv/init.lua ../3d_armor_ui/init.lua
+msgid "Armor"
+msgstr "Armadura"
+
+#: ../3d_armor_sfinv/init.lua
+msgid "3d_armor_sfinv: Mod loaded but unused."
+msgstr "3d_armor_sfinv: Mod carregado mas inoperante."
+
+#: ../3d_armor_stand/init.lua
+msgid "Armor stand top"
+msgstr "Topo de estande de armadura"
+
+#: ../3d_armor_stand/init.lua
+msgid "Armor stand"
+msgstr "Estande de armadura"
+
+#: ../3d_armor_stand/init.lua
+msgid "Armor Stand"
+msgstr "Estande de Armadura"
+
+#: ../3d_armor_stand/init.lua
+msgid "Locked Armor stand"
+msgstr "Estande de Armadura Trancada"
+
+#: ../3d_armor_stand/init.lua
+msgid "Armor Stand (owned by @1)"
+msgstr "Estande de Armadura (pertente a @1)"
+
+#: ../3d_armor_ui/init.lua
+msgid "3d_armor_ui: Mod loaded but unused."
+msgstr "3d_armor_ui: Mod carregado mas inoperante."
+
+#: ../3d_armor_ui/init.lua
+msgid "3d Armor"
+msgstr "3d Armor"
+
+#: ../3d_armor_ui/init.lua
+msgid "Armor not initialized!"
+msgstr "Armadura não inicializada!"
+
+#: ../shields/init.lua
+msgid "Admin Shield"
+msgstr "Escudo de Administrador"
+
+#: ../shields/init.lua
+msgid "Wooden Shield"
+msgstr "Escudo de Madeira"
+
+#: ../shields/init.lua
+msgid "Enhanced Wood Shield"
+msgstr "Escudo de Madeira Melhorado"
+
+#: ../shields/init.lua
+msgid "Cactus Shield"
+msgstr "Escudo de Cacto"
+
+#: ../shields/init.lua
+msgid "Enhanced Cactus Shield"
+msgstr "Escudo de Cacto Melhorado"
+
+#: ../shields/init.lua
+msgid "Steel Shield"
+msgstr "Escudo de Aço"
+
+#: ../shields/init.lua
+msgid "Bronze Shield"
+msgstr "Escudo de Bronze"
+
+#: ../shields/init.lua
+msgid "Diamond Shield"
+msgstr "Escudo de Diamante"
+
+#: ../shields/init.lua
+msgid "Gold Shield"
+msgstr "Escudo de Ouro"
+
+#: ../shields/init.lua
+msgid "Mithril Shield"
+msgstr "Escudo de Mithril"
+
+#: ../shields/init.lua
+msgid "Crystal Shield"
+msgstr "Escudo de Cristal"
