@@ -75,11 +75,11 @@ local function update_entity(pos)
 					local def = stack:get_definition() or {}
 					local groups = def.groups or {}
 					if groups["armor_"..element] then
-                        if def.texture then
-                            table.insert(textures, def.texture)
+						if def.texture then
+							table.insert(textures, def.texture)
 						else
-    						table.insert(textures, item:gsub("%:", "_")..".png")
-                        end
+							table.insert(textures, item:gsub("%:", "_")..".png")
+						end
 					end
 				end
 			end
