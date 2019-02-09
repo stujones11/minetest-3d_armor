@@ -315,6 +315,10 @@ if armor.config.drop == true or armor.config.destroy == true then
 		if not name then
 			return
 		end
+		if creative and creative.is_enabled_for and creative.is_enabled_for(name) then 
+			return
+		end
+		
 		local drop = {}
 		for i=1, armor_inv:get_size("armor") do
 			local stack = armor_inv:get_stack("armor", i)
