@@ -21,7 +21,7 @@ armor_init_times (Initialization attempts) int 10
 armor_bones_delay (Delay for bones) int 1
 
 # How often player armor items are updated.
-armor_update_time (Armor refresh rate (seconds)) int 1
+armor_update_time (Armor refresh rate [seconds]) int 1
 
 # Drop armor when a player dies.
 # Uses bones mod if present, otherwise items are dropped around the player.
@@ -59,7 +59,7 @@ shields_disable_sounds (Disable shield sounds) bool false
 [wieldview]
 
 # Set number of seconds between visible wielded item updates.
-wieldview_update_time (Wieldview refresh rate (seconds)) int 2
+wieldview_update_time (Wieldview refresh rate [seconds]) int 2
 
 # Show nodes as tiles, disabled by default.
 wieldview_node_tiles (Show nodes as tiles) bool false
