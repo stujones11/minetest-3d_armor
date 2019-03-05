@@ -1,4 +1,4 @@
-Modpack - 3d Armor [0.4.12]
+Modpack - 3d Armor [0.4.13]
 ===========================
 
 ### Table of Contents
@@ -17,7 +17,7 @@ Modpack - 3d Armor [0.4.12]
 [mod] Visible Player Armor [3d_armor]
 -------------------------------------
 
-Minetest Version: 0.4.16 - 0.4.17.1
+Minetest Version: 5.0.0
 
 Game: minetest_game and many derivatives
 
