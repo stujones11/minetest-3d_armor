@@ -307,7 +307,7 @@ minetest.register_entity("3d_armor_stand:armor_entity", {
 	pos = nil,
 	timer = 0,
 	on_activate = function(self)
-		local pos = self.object:getpos()
+		local pos = self.object:get_pos()
 		if pos then
 			self.pos = vector.round(pos)
 			update_entity(pos)
