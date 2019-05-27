@@ -1,8 +1,26 @@
 [mod] Shields [shields]
 =======================
 
-License Source Code: Copyright (C) 2013-2018 Stuart Jones - LGPL v2.1
+License Source Code
+-------------------
 
-License Textures: Copyright (C) 2017-2018 davidthecreator - CC-BY-SA 3.0
+Copyright (C) 2012-2019 stujones11, Stuart Jones <stujones111@gmail.com>
 
-https://github.com/daviddoesminetest/3d-armors-new-textures
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 2.1 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+License Textures
+----------------
+
+Copyright (C) 2017-2019 davidthecreator - CC-BY-SA 3.0

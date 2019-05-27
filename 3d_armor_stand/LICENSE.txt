@@ -1,22 +1,43 @@
 [mod] 3d Armor Stand [3d_armor_stand]
 =====================================
 
-License Source Code: (C) 2016-2018 Stuart Jones - LGPL v2.1
+License Source Code
+-------------------
 
-Lecense Models: (C) 2016-2018 Stuart Jones - CC BY-SA 3.0
+Copyright (C) 2012-2019 stujones11, Stuart Jones <stujones111@gmail.com>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 2.1 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+Lecense Models
+--------------
+
+Copyright (C) 2016-2019 Stuart Jones - CC BY-SA 3.0
 
 UV model mapping by tobyplowy(aka toby109tt)
 
-License Textures:
+License Textures
+----------------
 
 3d_armor_stand.png
 3d_armor_stand_locked.png
 
-(C) 2017 tobyplowy - CC BY-SA 3.0
+Copyright (C) 2017-2019 tobyplowy - CC BY-SA 3.0
 
 3d_armor_stand_feet.png
 3d_armor_stand_head.png
 3d_armor_stand_legs.png
 3d_armor_stand_torso.png
 
-(C) 2016-2017 Stuart Jones - CC BY-SA 3.0
+Copyright (C) 2016-2019 Stuart Jones - CC BY-SA 3.0
