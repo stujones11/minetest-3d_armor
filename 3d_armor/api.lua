@@ -95,7 +95,7 @@ armor.config = {
 	material_mithril = true,
 	material_crystal = true,
 	water_protect = true,
-	fire_protect = true,
+	fire_protect = minetest.get_modpath("ethereal") ~= nil or minetest.get_modpath("terumet") ~= nil,
 	punch_damage = true,
 }
 
