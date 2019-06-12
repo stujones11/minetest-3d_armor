@@ -446,10 +446,12 @@ if armor.config.water_protect == true or armor.config.fire_protect == true then
 				local node_head = minetest.get_node(pos).name
 				pos.y = pos.y - 1.2 -- feet level
 				local node_feet = minetest.get_node(pos).name
+				pos.y = pos.y - 1 -- below level
+				local node_below = minetest.get_node(pos).name
 				-- is player inside a hot node?
 				for _, row in pairs(armor.fire_nodes) do
 					-- check fire protection, if not enough then get hurt
-					if row[1] == node_head or row[1] == node_feet then
+					if row[1] == node_head or row[1] == node_feet or row[1] == node_below then
 						if fire_damage == true then
 							armor:punch(player, "fire")
 							last_punch_time[name] = minetest.get_gametime()
