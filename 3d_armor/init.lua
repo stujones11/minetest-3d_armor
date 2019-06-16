@@ -114,7 +114,8 @@ local function validate_armor_inventory(player)
 		return
 	end
 	local armor_prev = {}
-	local armor_list_string = player:get_attribute("3d_armor_inventory")
+	local attribute_meta = player:get_meta() -- I know, the function's name is weird but let it be like that. ;)
+	local armor_list_string = attribute_meta:get_string("3d_armor_inventory")
 	if armor_list_string then
 		local armor_list = armor:deserialize_inventory_list(armor_list_string)
 		for i, stack in ipairs(armor_list) do
@@ -406,7 +407,7 @@ minetest.register_globalstep(function(dtime)
 	end
 end)
 
--- Fire Protection and water breating, added by TenPlus1
+-- Fire Protection and water breathing, added by TenPlus1.
 
 if armor.config.fire_protect == true then
 	-- override hot nodes so they do not hurt player anywhere but mod

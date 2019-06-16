@@ -465,8 +465,9 @@ end
 
 armor.load_armor_inventory = function(self, player)
 	local _, inv = self:get_valid_player(player, "[load_armor_inventory]")
+	local meta = player:get_meta()
 	if inv then
-		local armor_list_string = player:get_attribute("3d_armor_inventory")
+		local armor_list_string = meta:get_string("3d_armor_inventory")
 		if armor_list_string then
 			inv:set_list("armor",
 				self:deserialize_inventory_list(armor_list_string))
@@ -477,8 +478,9 @@ end
 
 armor.save_armor_inventory = function(self, player)
 	local _, inv = self:get_valid_player(player, "[save_armor_inventory]")
+	local meta = player:get_meta()	
 	if inv then
-		player:set_attribute("3d_armor_inventory",
+		meta:set_string("3d_armor_inventory",
 			self:serialize_inventory_list(inv:get_list("armor")))
 	end
 end
@@ -519,7 +521,7 @@ armor.drop_armor = function(pos, stack)
 	if node then
 		local obj = minetest.add_item(pos, stack)
 		if obj then
-			obj:setvelocity({x=math.random(-1, 1), y=5, z=math.random(-1, 1)})
+			obj:set_velocity({x=math.random(-1, 1), y=5, z=math.random(-1, 1)})
 		end
 	end
 end

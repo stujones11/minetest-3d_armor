@@ -1,1 +1,1 @@
-Adds 3d_armor page to the unified inventory
+Adds 3d_armor page to the unified inventory.
