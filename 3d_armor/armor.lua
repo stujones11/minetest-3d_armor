@@ -1,6 +1,9 @@
 -- support for i18n
 local S = armor_i18n.gettext
 
+-- frame compatibility
+local use_frame = minetest.get_modpath("frame")
+
 armor:register_armor("3d_armor:helmet_admin", {
 	description = S("Admin Helmet"),
 	inventory_image = "3d_armor_inv_helmet_admin.png",
@@ -343,4 +346,18 @@ for k, v in pairs(armor.materials) do
 			{v, "", v},
 		},
 	})
+end
+
+-- add frame compatibility
+if use_frame then
+	frame.register("3d_armor:helmet_admin")
+	frame.register("3d_armor:chestplate_admin")
+	frame.register("3d_armor:leggings_admin")
+	frame.register("3d_armor:boots_admin")
+	for k, v in pairs(armor.materials) do
+		frame.register("3d_armor:helmet_"..k)
+		frame.register("3d_armor:chestplate_"..k)
+		frame.register("3d_armor:leggings_"..k)
+		frame.register("3d_armor:boots_"..k)
+	end
 end
