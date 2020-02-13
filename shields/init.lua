@@ -2,7 +2,7 @@
 local S = armor_i18n.gettext
 
 local disable_sounds = minetest.settings:get_bool("shields_disable_sounds")
-local use_moreores = minetest.get_modpath("moreores")
+local use_frame = minetest.get_modpath("frame")
 local function play_sound_effect(player, name)
 	if not disable_sounds and player then
 		local pos = player:get_pos()
@@ -224,4 +224,18 @@ for k, v in pairs(armor.materials) do
 			{"", v, ""},
 		},
 	})
+end
+
+-- Add compatibility with frame
+if use_frame then
+	frame.register("shields:shield_admin")
+	if armor.materials.wood then
+		frame.register("shields:shield_enhanced_wood")
+	end
+	if armor.materials.cactus then
+		frame.register("shields:shield_enhanced_cactus")
+	end
+	for k, v in pairs(armor.materials) do
+		frame.register("shields:shield_"..k)
+	end
 end

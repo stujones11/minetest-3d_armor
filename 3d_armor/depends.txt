@@ -3,6 +3,7 @@ player_monoids?
 armor_monoid?
 pova?
 fire?
+frame?
 ethereal?
 bakedclay?
 intllib?
