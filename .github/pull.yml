@@ -1,0 +1,5 @@
+version: "1"
+rules:
+  - base: update_integration_test
+    upstream: minetest-mods:master
+    mergeMethod: hardreset
